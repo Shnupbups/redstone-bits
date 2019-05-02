@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "redstonebits",
+  "version": "1.0.0",
+
+  "name": "Redstone Bits",
+  "description": "Adds new blocks that interact with redstone.",
+  "authors": [
+    "Shnupbups"
+  ],
+  "contact": {
+    "homepage": "https://minecraft.curseforge.com/projects/redstone-bits",
+    "sources": "https://github.com/Shnupbups/redstone-bits",
+    "issues": "https://github.com/Shnupbups/redstone-bits/issues"
+  },
+
+  "license": "All Rights Reserved",
+  "icon": "assets/redstonebits/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.shnupbups.redstonebits.RedstoneBits"
+    ],
+    "client": [
+      "com.shnupbups.redstonebits.RedstoneBitsClient"
+    ]
+  },
+  "mixins": [
+  ],
+
+  "requires": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*"
+  }
+}

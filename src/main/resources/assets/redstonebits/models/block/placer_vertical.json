@@ -1,0 +1,7 @@
+{
+    "parent": "block/orientable_vertical",
+    "textures": {
+        "front": "redstonebits:block/placer_front_vertical",
+        "side": "block/furnace_top"
+    }
+}

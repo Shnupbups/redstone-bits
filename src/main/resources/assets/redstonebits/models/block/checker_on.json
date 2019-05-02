@@ -1,0 +1,6 @@
+{
+    "parent": "redstonebits:block/checker",
+    "textures": {
+        "bottom": "block/observer_back_on"
+    }
+}

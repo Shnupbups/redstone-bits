@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "facing=up,powered=false": { "model": "redstonebits:block/checker", "x": 270 },
+        "facing=down,powered=false": { "model": "redstonebits:block/checker", "x": 90 },
+        "facing=north,powered=false": { "model": "redstonebits:block/checker" },
+        "facing=south,powered=false": { "model": "redstonebits:block/checker", "y": 180 },
+        "facing=west,powered=false": { "model": "redstonebits:block/checker", "y": 270 },
+        "facing=east,powered=false": { "model": "redstonebits:block/checker", "y": 90 },
+        "facing=up,powered=true": { "model": "redstonebits:block/checker_on", "x": 270 },
+        "facing=down,powered=true": { "model": "redstonebits:block/checker_on", "x": 90 },
+        "facing=north,powered=true": { "model": "redstonebits:block/checker_on" },
+        "facing=south,powered=true": { "model": "redstonebits:block/checker_on", "y": 180 },
+        "facing=west,powered=true": { "model": "redstonebits:block/checker_on", "y": 270 },
+        "facing=east,powered=true": { "model": "redstonebits:block/checker_on", "y": 90 }
+    }
+}
