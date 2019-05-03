@@ -96,7 +96,6 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		this.breakStack = ItemStack.EMPTY;
 		this.breakProgress=0;
 		BlockState state = this.getWorld().getBlockState(this.getPos());
-		this.getWorld().setBlockBreakingProgress(0,this.getBreakPos(),0);
 		this.markDirty();
 	}
 
@@ -128,7 +127,6 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 
 	public void continueBreak() {
 		this.breakProgress++;
-		this.getWorld().setBlockBreakingProgress(0,this.getBreakPos(),this.getBreakPercentage()/10);
 		this.markDirty();
 	}
 
@@ -150,7 +148,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 			this.getWorld().setBlockState(this.getPos(), this.getWorld().getBlockState(this.getPos()).with(ModProperties.BREAKING, this.isBreaking()));
 			this.markDirty();
 		}
-		this.getWorld().setBlockBreakingProgress(0,this.getBreakPos(),this.getBreakPercentage()/10);
+
 	}
 
 	public TextComponent getContainerName() {
