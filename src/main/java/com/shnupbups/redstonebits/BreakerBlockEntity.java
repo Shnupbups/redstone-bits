@@ -260,7 +260,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	public int getBreakPercentage() {
 		if(this.getBreakTime()>0) {
 			float div = ((float)this.breakProgress/(float)this.getBreakTime());
-			return (int)(div*100);
+			return Math.min((int)(div*100),100);
 		} else return 0;
 	}
 }
