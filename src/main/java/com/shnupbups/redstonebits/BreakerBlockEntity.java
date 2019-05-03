@@ -82,7 +82,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 
 	public void startBreak() {
-		System.out.println("start break at "+getBreakPos().toString());
+		//System.out.println("start break at "+getBreakPos().toString());
 		this.breakState = this.getWorld().getBlockState(this.getBreakPos());
 		this.breakStack = this.getInvStack(0);
 		this.breakProgress++;
@@ -91,16 +91,17 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 
 	public void cancelBreak() {
-		System.out.println("finish/cancel break at "+getBreakPos().toString());
+		//System.out.println("finish/cancel break at "+getBreakPos().toString());
 		this.breakState=null;
 		this.breakStack = ItemStack.EMPTY;
 		this.breakProgress=0;
 		BlockState state = this.getWorld().getBlockState(this.getPos());
+		this.getWorld().setBlockBreakingProgress(0,this.getBreakPos(),0);
 		this.markDirty();
 	}
 
 	public void finishBreak() {
-		System.out.println("finish break at "+getBreakPos().toString());
+		//System.out.println("finish break at "+getBreakPos().toString());
 		this.breakBlock();
 		this.cancelBreak();
 		if(this.getInvStack(0).getItem().canDamage()) {
@@ -121,12 +122,13 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 
 	public boolean breakBlock() {
-		System.out.println("break at "+getBreakPos().toString());
+		//System.out.println("break at "+getBreakPos().toString());
 		return world.breakBlock(getBreakPos(),true);
 	}
 
 	public void continueBreak() {
 		this.breakProgress++;
+		this.getWorld().setBlockBreakingProgress(0,this.getBreakPos(),this.getBreakPercentage()/10);
 		this.markDirty();
 	}
 
@@ -144,6 +146,11 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 				continueBreak();
 			}
 		}
+		if(this.isBreaking()!=this.getWorld().getBlockState(this.getPos()).get(ModProperties.BREAKING)) {
+			this.getWorld().setBlockState(this.getPos(), this.getWorld().getBlockState(this.getPos()).with(ModProperties.BREAKING, this.isBreaking()));
+			this.markDirty();
+		}
+		this.getWorld().setBlockBreakingProgress(0,this.getBreakPos(),this.getBreakPercentage()/10);
 	}
 
 	public TextComponent getContainerName() {

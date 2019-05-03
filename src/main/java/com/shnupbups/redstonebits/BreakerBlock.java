@@ -29,10 +29,11 @@ import java.util.Random;
 public class BreakerBlock extends BlockWithEntity {
 	public static final DirectionProperty FACING;
 	public static final BooleanProperty TRIGGERED;
+	public static final BooleanProperty BREAKING;
 
 	public BreakerBlock(Block.Settings block$Settings_1) {
 		super(block$Settings_1);
-		this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateFactory.getDefaultState()).with(FACING, Direction.NORTH)).with(TRIGGERED, false));
+		this.setDefaultState(this.stateFactory.getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false).with(BREAKING, false));
 	}
 
 	public BlockEntity createBlockEntity(BlockView blockView_1) {
@@ -152,11 +153,12 @@ public class BreakerBlock extends BlockWithEntity {
 	}
 
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1) {
-		stateFactory$Builder_1.with(FACING, TRIGGERED);
+		stateFactory$Builder_1.with(FACING, TRIGGERED, BREAKING);
 	}
 
 	static {
 		FACING = FacingBlock.FACING;
 		TRIGGERED = Properties.TRIGGERED;
+		BREAKING = ModProperties.BREAKING;
 	}
 }
