@@ -207,7 +207,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 
 	public ItemStack getInvStack(int int_1) {
-		return (ItemStack)this.inventory.get(int_1);
+		return this.inventory.get(int_1);
 	}
 
 	public ItemStack takeInvStack(int int_1, int int_2) {
@@ -251,7 +251,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	@Nullable
 	public Container createMenu(int int_1, PlayerInventory playerInventory_1, PlayerEntity playerEntity_1) {
 		if (this.checkUnlocked(playerEntity_1)) {
-			return (BreakerContainer)this.createContainer(int_1, playerInventory_1);
+			return this.createContainer(int_1, playerInventory_1);
 		} else {
 			return null;
 		}

@@ -57,7 +57,7 @@ public class BreakerContainer extends Container {
 
 	public ItemStack transferSlot(PlayerEntity playerEntity_1, int int_1) {
 		ItemStack itemStack_1 = ItemStack.EMPTY;
-		Slot slot_1 = (Slot)this.slotList.get(int_1);
+		Slot slot_1 = this.slotList.get(int_1);
 		if (slot_1 != null && slot_1.hasStack()) {
 			ItemStack itemStack_2 = slot_1.getStack();
 			itemStack_1 = itemStack_2.copy();

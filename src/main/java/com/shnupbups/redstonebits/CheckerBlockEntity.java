@@ -84,7 +84,7 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	public ItemStack getInvStack(int int_1) {
-		return (ItemStack)this.inventory.get(int_1);
+		return this.inventory.get(int_1);
 	}
 
 	public ItemStack takeInvStack(int int_1, int int_2) {

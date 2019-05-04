@@ -3,22 +3,16 @@ package com.shnupbups.redstonebits;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.gui.ContainerScreen;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class BreakerContainerScreen extends ContainerScreen<BreakerContainer> {
 
 	private static final Identifier TEXTURE = new Identifier("redstonebits","textures/gui/container/breaker.png");
 
 	private BreakerContainer container;
-	private World world;
-	private BlockPos pos;
 
 	public BreakerContainerScreen(BreakerContainer container) {
 		super(container, container.playerInventory, ((BreakerBlockEntity)container.inventory).getContainerName());
 		this.container = container;
-		this.world = ((BreakerBlockEntity) container.inventory).getWorld();
-		this.pos = ((BreakerBlockEntity) container.inventory).getPos();
 	}
 
 	public void render(int int_1, int int_2, float float_1) {

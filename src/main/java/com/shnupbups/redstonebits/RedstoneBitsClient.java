@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
 
+@SuppressWarnings("unused")
 public class RedstoneBitsClient implements ClientModInitializer {
 
 	public void onInitializeClient() {

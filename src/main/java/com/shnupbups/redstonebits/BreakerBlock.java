@@ -6,7 +6,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateFactory;
@@ -58,13 +57,12 @@ public class BreakerBlock extends BlockWithEntity {
 
 	public void neighborUpdate(BlockState blockState_1, World world_1, BlockPos blockPos_1, Block block_1, BlockPos blockPos_2, boolean boolean_1) {
 		boolean boolean_2 = world_1.isReceivingRedstonePower(blockPos_1) || world_1.isReceivingRedstonePower(blockPos_1.up());
-		boolean boolean_3 = (Boolean)blockState_1.get(TRIGGERED);
-		BreakerBlockEntity be = (BreakerBlockEntity)world_1.getBlockEntity(blockPos_1);
+		boolean boolean_3 = blockState_1.get(TRIGGERED);
 		if (boolean_2 && !boolean_3) {
 			world_1.getBlockTickScheduler().schedule(blockPos_1, this, this.getTickRate(world_1));
-			world_1.setBlockState(blockPos_1, (BlockState)blockState_1.with(TRIGGERED, true), 4);
+			world_1.setBlockState(blockPos_1, blockState_1.with(TRIGGERED, true), 4);
 		} else if (!boolean_2 && boolean_3) {
-			world_1.setBlockState(blockPos_1, (BlockState)blockState_1.with(TRIGGERED, false), 4);
+			world_1.setBlockState(blockPos_1, blockState_1.with(TRIGGERED, false), 4);
 		}
 		if(isBreaking(world_1, blockPos_1) && blockPos_2 == getBreakPos(world_1, blockPos_1)) {
 			cancelBreak(world_1, blockPos_1);
@@ -100,14 +98,14 @@ public class BreakerBlock extends BlockWithEntity {
 		if(this.isBreaking(world_1, blockPos_1)) this.cancelBreak(world_1, blockPos_1);
 		else this.startBreak(world_1, blockPos_1);
 		boolean boolean_2 = world_1.isReceivingRedstonePower(blockPos_1) || world_1.isReceivingRedstonePower(blockPos_1.up());
-		boolean boolean_3 = (Boolean)blockState_1.get(TRIGGERED);
+		boolean boolean_3 = blockState_1.get(TRIGGERED);
 		if (!boolean_2 && boolean_3) {
-			world_1.setBlockState(blockPos_1, (BlockState)blockState_1.with(TRIGGERED, false), 4);
+			world_1.setBlockState(blockPos_1, blockState_1.with(TRIGGERED, false), 4);
 		}
 	}
 
 	public BlockState getPlacementState(ItemPlacementContext itemPlacementContext_1) {
-		return (BlockState)this.getDefaultState().with(FACING, itemPlacementContext_1.getPlayerFacing().getOpposite());
+		return this.getDefaultState().with(FACING, itemPlacementContext_1.getPlayerFacing().getOpposite());
 	}
 
 	public void onPlaced(World world_1, BlockPos blockPos_1, BlockState blockState_1, LivingEntity livingEntity_1, ItemStack itemStack_1) {
@@ -124,7 +122,7 @@ public class BreakerBlock extends BlockWithEntity {
 		if (blockState_1.getBlock() != blockState_2.getBlock()) {
 			BlockEntity blockEntity_1 = world_1.getBlockEntity(blockPos_1);
 			if (blockEntity_1 instanceof BreakerBlockEntity) {
-				ItemScatterer.spawn(world_1, (BlockPos)blockPos_1, (Inventory)((BreakerBlockEntity)blockEntity_1));
+				ItemScatterer.spawn(world_1, blockPos_1, ((BreakerBlockEntity)blockEntity_1));
 				world_1.updateHorizontalAdjacent(blockPos_1, this);
 			}
 
@@ -145,11 +143,11 @@ public class BreakerBlock extends BlockWithEntity {
 	}
 
 	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
-		return (BlockState)blockState_1.with(FACING, blockRotation_1.rotate((Direction)blockState_1.get(FACING)));
+		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
 	}
 
 	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
-		return blockState_1.rotate(blockMirror_1.getRotation((Direction)blockState_1.get(FACING)));
+		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
 	}
 
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1) {
