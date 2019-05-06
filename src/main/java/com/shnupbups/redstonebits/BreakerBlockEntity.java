@@ -1,6 +1,5 @@
 package com.shnupbups.redstonebits;
 
-import com.sun.istack.internal.Nullable;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -265,8 +264,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	public boolean checkUnlocked(PlayerEntity playerEntity_1) {
 		return super.checkUnlocked(playerEntity_1) && !playerEntity_1.isSpectator();
 	}
-
-	@Nullable
+	
 	public Container createMenu(int int_1, PlayerInventory playerInventory_1, PlayerEntity playerEntity_1) {
 		if (this.checkUnlocked(playerEntity_1)) {
 			return this.createContainer(int_1, playerInventory_1);
