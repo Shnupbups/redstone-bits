@@ -264,7 +264,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	public boolean checkUnlocked(PlayerEntity playerEntity_1) {
 		return super.checkUnlocked(playerEntity_1) && !playerEntity_1.isSpectator();
 	}
-	
+
 	public Container createMenu(int int_1, PlayerInventory playerInventory_1, PlayerEntity playerEntity_1) {
 		if (this.checkUnlocked(playerEntity_1)) {
 			return this.createContainer(int_1, playerInventory_1);
