@@ -2,7 +2,9 @@ package com.shnupbups.redstonebits;
 
 import com.sun.istack.internal.Nullable;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.container.PropertyDelegate;
@@ -11,12 +13,15 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.TextComponent;
 import net.minecraft.text.TranslatableTextComponent;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.loot.context.LootContext;
+import net.minecraft.world.loot.context.LootContextParameters;
 
 import java.util.Iterator;
 
@@ -122,12 +127,25 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 
 	public boolean breakBlock() {
 		//System.out.println("break at "+getBreakPos().toString());
-		return world.breakBlock(getBreakPos(),true);
+		if(!world.isClient()) {
+			ServerWorld sworld = (ServerWorld)this.getWorld();
+			BlockEntity blockEntity = breakState.getBlock().hasBlockEntity() ? this.world.getBlockEntity(getBreakPos()) : null;
+			LootContext.Builder lcb = new LootContext.Builder(sworld).put(LootContextParameters.POSITION, getBreakPos()).put(LootContextParameters.BLOCK_STATE,breakState).put(LootContextParameters.TOOL,this.getTool());
+			if(blockEntity!=null) {
+				lcb = lcb.put(LootContextParameters.BLOCK_ENTITY,blockEntity);
+			}
+			if(isToolEffective()) Block.dropStacks(breakState,lcb);
+			return world.breakBlock(getBreakPos(),false);
+		} else return true;
 	}
 
 	public void continueBreak() {
 		this.breakProgress++;
 		this.markDirty();
+	}
+
+	public ItemStack getTool() {
+		return this.getInvStack(0);
 	}
 
 	public void tick() {

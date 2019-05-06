@@ -14,11 +14,12 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.text.TextComponent;
 import net.minecraft.text.TranslatableTextComponent;
 import net.minecraft.util.DefaultedList;
+import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Iterator;
 
-public class CheckerBlockEntity extends LockableContainerBlockEntity {
+public class CheckerBlockEntity extends LockableContainerBlockEntity implements Tickable {
 	private DefaultedList<ItemStack> inventory;
 
 	public CheckerBlockEntity() {
@@ -26,14 +27,20 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 		this.inventory = DefaultedList.create(9, ItemStack.EMPTY);
 	}
 
+	public void tick() {
+		if(!world.isClient()) {
+			if(matches() != this.world.getBlockState(this.getPos()).get(Properties.POWERED)) {
+				this.world.setBlockState(this.getPos(),world.getBlockState(this.getPos()).with(Properties.POWERED,matches()));
+			}
+		}
+	}
+
 	public boolean matches() {
 		BlockState state = this.getWorld().getBlockState(this.getCheckPos());
-		Iterator var1 = this.inventory.iterator();
 
-		ItemStack itemStack_1;
-		while(!var1.hasNext()) {
-			itemStack_1 = (ItemStack)var1.next();
-			if(itemStack_1.getItem().equals(state.getBlock().getItem())) {
+		for(int i=0;i<this.getInvSize();i++) {
+			ItemStack itemStack_1 = this.getInvStack(i);
+			if(!itemStack_1.isEmpty() && itemStack_1.getItem().equals(state.getBlock().getItem())) {
 				return true;
 			}
 		}
@@ -41,7 +48,11 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	public BlockPos getCheckPos() {
-		return this.getPos().add(this.getWorld().getBlockState(this.getPos()).get(Properties.FACING).getVector());
+		try {
+			return this.getPos().add(this.getWorld().getBlockState(this.getPos()).get(Properties.FACING).getVector());
+		} catch(Exception e) {
+			return this.getPos();
+		}
 	}
 
 	public TextComponent getContainerName() {
