@@ -7,6 +7,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.container.PropertyDelegate;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -64,7 +66,11 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	public int getBreakTime() {
 		if(this.breakState==null) return 0;
 		float baseTime = this.calcBlockBreakingTime();
-		float itemMultiplier = this.getInvStack(0).getBlockBreakingSpeed(breakState);
+		float itemMultiplier = this.getTool().getBlockBreakingSpeed(breakState);
+		int level = EnchantmentHelper.getLevel(Enchantments.EFFICIENCY,this.getTool());
+		if(level>0) {
+			itemMultiplier+=(level*level+1);
+		}
 		float time = baseTime/itemMultiplier;
 		return (int)time;
 	}
@@ -88,7 +94,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	public void startBreak() {
 		//System.out.println("start break at "+getBreakPos().toString());
 		this.breakState = this.getWorld().getBlockState(this.getBreakPos());
-		this.breakStack = this.getInvStack(0);
+		this.breakStack = this.getTool();
 		this.breakProgress++;
 		BlockState state = this.getWorld().getBlockState(this.getPos());
 		this.markDirty();
@@ -107,9 +113,9 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		//System.out.println("finish break at "+getBreakPos().toString());
 		this.breakBlock();
 		this.cancelBreak();
-		if(this.getInvStack(0).getItem().canDamage()) {
-			this.getInvStack(0).setDamage(this.getInvStack(0).getDamage()+1);
-			if(this.getInvStack(0).getDamage()>=this.getInvStack(0).getDurability()) {
+		if(this.getTool().getItem().canDamage()) {
+			this.getTool().setDamage(this.getInvStack(0).getDamage()+1);
+			if(this.getTool().getDamage()>=this.getInvStack(0).getDurability()) {
 				this.removeInvStack(0);
 			}
 		}
@@ -151,7 +157,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		BlockState currentBreakState = this.getWorld().getBlockState(this.getBreakPos());
 		if(this.isBreaking()) {
 			if(breakState==null) startBreak();
-			if (!breakStack.equals(this.getInvStack(0)) || !breakState.equals(currentBreakState) || currentBreakState.isAir() || currentBreakState.getHardness(world,pos)<0) {
+			if (!breakStack.equals(this.getTool()) || !breakState.equals(currentBreakState) || currentBreakState.isAir() || currentBreakState.getHardness(world,pos)<0) {
 				//System.out.println("cancel");
 				cancelBreak();
 			} else if(breakProgress>=getBreakTime()) {
