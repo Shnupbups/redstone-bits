@@ -28,9 +28,11 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 
 	public void tick() {
 		if(!world.isClient()) {
-			if(matches() != this.world.getBlockState(this.getPos()).get(Properties.POWERED)) {
-				this.world.setBlockState(this.getPos(),world.getBlockState(this.getPos()).with(Properties.POWERED,matches()));
-			}
+			try {
+				if(matches() != this.world.getBlockState(this.getPos()).get(Properties.POWERED)) {
+					this.world.setBlockState(this.getPos(),world.getBlockState(this.getPos()).with(Properties.POWERED,matches()));
+				}
+			} catch(Exception e) {}
 		}
 	}
 
@@ -134,7 +136,7 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 	public boolean checkUnlocked(PlayerEntity playerEntity_1) {
 		return super.checkUnlocked(playerEntity_1) && !playerEntity_1.isSpectator();
 	}
-	
+
 	public Container createMenu(int int_1, PlayerInventory playerInventory_1, PlayerEntity playerEntity_1) {
 		if (this.checkUnlocked(playerEntity_1)) {
 			return this.createContainer(int_1, playerInventory_1);
