@@ -127,7 +127,11 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 
 	public BlockPos getBreakPos() {
-		return this.getPos().add(this.getWorld().getBlockState(this.getPos()).get(Properties.FACING).getVector());
+		try {
+			return this.getPos().add(this.getWorld().getBlockState(this.getPos()).get(Properties.FACING).getVector());
+		} catch(Exception e) {
+			return this.getPos();
+		}
 	}
 
 	public boolean breakBlock() {
