@@ -33,7 +33,7 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1) {
-		stateFactory$Builder_1.with(FACING, POWERED);
+		stateFactory$Builder_1.add(FACING, POWERED);
 	}
 
 	public BlockRenderType getRenderType(BlockState blockState_1) {

@@ -14,10 +14,10 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.TextComponent;
-import net.minecraft.text.TranslatableTextComponent;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -178,8 +178,8 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 
 	}
 
-	public TextComponent getContainerName() {
-		return new TranslatableTextComponent("container.redstonebits.breaker", new Object[0]);
+	public Component getContainerName() {
+		return new TranslatableComponent("container.redstonebits.breaker", new Object[0]);
 	}
 
 	protected Container createContainer(int int_1, PlayerInventory playerInventory_1) {

@@ -9,9 +9,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.TextComponent;
-import net.minecraft.text.TranslatableTextComponent;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -41,7 +41,7 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 
 		for(int i=0;i<this.getInvSize();i++) {
 			ItemStack itemStack_1 = this.getInvStack(i);
-			if(!itemStack_1.isEmpty() && itemStack_1.getItem().equals(state.getBlock().getItem())) {
+			if(!itemStack_1.isEmpty() && itemStack_1.getItem().equals(state.getBlock().asItem())) {
 				return true;
 			}
 		}
@@ -56,8 +56,8 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 		}
 	}
 
-	public TextComponent getContainerName() {
-		return new TranslatableTextComponent("container.redstonebits.checker", new Object[0]);
+	public Component getContainerName() {
+		return new TranslatableComponent("container.redstonebits.checker", new Object[0]);
 	}
 
 	protected Container createContainer(int int_1, PlayerInventory playerInventory_1) {
