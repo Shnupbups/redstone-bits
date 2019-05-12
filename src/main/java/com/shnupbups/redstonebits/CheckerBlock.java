@@ -49,12 +49,13 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 
 	public void onScheduledTick(BlockState blockState_1, World world_1, BlockPos blockPos_1, Random random_1) {
-		if (blockState_1.get(POWERED) && !((CheckerBlockEntity)world_1.getBlockEntity(blockPos_1)).matches()) {
-			world_1.setBlockState(blockPos_1, blockState_1.with(POWERED, false), 2);
-		} else if(!blockState_1.get(POWERED) && ((CheckerBlockEntity)world_1.getBlockEntity(blockPos_1)).matches()) {
-			world_1.setBlockState(blockPos_1, blockState_1.with(POWERED, true), 2);
+		BlockEntity be = world_1.getBlockEntity(blockPos_1);
+		if(be instanceof CheckerBlockEntity) {
+			boolean matches = ((CheckerBlockEntity)be).matches();
+			if (blockState_1.get(POWERED) != matches) {
+				world_1.setBlockState(blockPos_1, blockState_1.with(POWERED, matches), 2);
+			}
 		}
-
 		this.updateNeighbors(world_1, blockPos_1, blockState_1);
 	}
 

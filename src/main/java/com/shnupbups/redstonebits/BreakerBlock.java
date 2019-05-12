@@ -70,24 +70,28 @@ public class BreakerBlock extends BlockWithEntity {
 	}
 
 	public boolean startBreak(World world, BlockPos pos) {
-		BreakerBlockEntity be = (BreakerBlockEntity)world.getBlockEntity(pos);
+		BlockEntity be = world.getBlockEntity(pos);
 		BlockState state = world.getBlockState(pos);
 		BlockState breakState = world.getBlockState(pos.add(state.get(FACING).getVector()));
 		boolean isBreakable = !(breakState.isAir() || breakState.getHardness(world,pos)<0);
-		if(isBreakable) {
-			be.startBreak();
+		if(be instanceof BreakerBlockEntity && isBreakable) {
+			((BreakerBlockEntity)be).startBreak();
 		}
 		return isBreakable;
 	}
 
 	public void cancelBreak(World world, BlockPos pos) {
-		BreakerBlockEntity be = (BreakerBlockEntity)world.getBlockEntity(pos);
-		be.cancelBreak();
+		BlockEntity be = world.getBlockEntity(pos);
+		if(be instanceof BreakerBlockEntity) {
+			((BreakerBlockEntity)be).cancelBreak();
+		}
 	}
 
 	public boolean isBreaking(World world, BlockPos pos) {
-		BreakerBlockEntity be = (BreakerBlockEntity)world.getBlockEntity(pos);
-		return be.isBreaking();
+		BlockEntity be = world.getBlockEntity(pos);
+		if(be instanceof BreakerBlockEntity) {
+			return ((BreakerBlockEntity)be).isBreaking();
+		} return false;
 	}
 
 	public BlockPos getBreakPos(World world, BlockPos pos) {
