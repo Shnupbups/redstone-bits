@@ -1,10 +1,12 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.container.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.gui.ContainerScreen;
+import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
+import com.shnupbups.redstonebits.container.BreakerContainer;
+import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
 import net.minecraft.util.Identifier;
 
-public class BreakerContainerScreen extends ContainerScreen<BreakerContainer> {
+public class BreakerContainerScreen extends AbstractContainerScreen<BreakerContainer> {
 
 	private static final Identifier TEXTURE = new Identifier("redstonebits","textures/gui/container/breaker.png");
 

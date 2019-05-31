@@ -1,5 +1,6 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.blockentity;
 
+import com.shnupbups.redstonebits.RedstoneBits;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.container.Container;

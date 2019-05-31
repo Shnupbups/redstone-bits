@@ -1,5 +1,8 @@
 package com.shnupbups.redstonebits;
 
+import com.shnupbups.redstonebits.block.BreakerBlock;
+import com.shnupbups.redstonebits.block.CheckerBlock;
+import com.shnupbups.redstonebits.block.PlacerBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;

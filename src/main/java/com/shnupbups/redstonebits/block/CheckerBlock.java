@@ -1,5 +1,6 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.block;
 
+import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;

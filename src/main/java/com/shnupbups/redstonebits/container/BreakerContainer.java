@@ -1,4 +1,4 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.container;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

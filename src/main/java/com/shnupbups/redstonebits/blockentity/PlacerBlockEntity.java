@@ -1,5 +1,6 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.blockentity;
 
+import com.shnupbups.redstonebits.RedstoneBits;
 import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;

@@ -1,5 +1,6 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.blockentity.renderer;
 
+import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;

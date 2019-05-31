@@ -1,5 +1,8 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.block;
 
+import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
+import com.shnupbups.redstonebits.ModProperties;
+import com.shnupbups.redstonebits.RedstoneBits;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

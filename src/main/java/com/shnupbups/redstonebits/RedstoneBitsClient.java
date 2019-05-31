@@ -1,5 +1,8 @@
 package com.shnupbups.redstonebits;
 
+import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
+import com.shnupbups.redstonebits.container.screen.BreakerContainerScreen;
+import com.shnupbups.redstonebits.blockentity.renderer.BreakerBlockEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
