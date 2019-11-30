@@ -1,17 +1,18 @@
 package com.shnupbups.redstonebits;
 
-import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
-import com.shnupbups.redstonebits.container.screen.BreakerContainerScreen;
-import com.shnupbups.redstonebits.blockentity.renderer.BreakerBlockEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
+import net.fabricmc.fabric.impl.client.renderer.registry.BlockEntityRendererRegistryImpl;
+
+import com.shnupbups.redstonebits.blockentity.renderer.BreakerBlockEntityRenderer;
+import com.shnupbups.redstonebits.container.screen.BreakerContainerScreen;
 
 @SuppressWarnings("unused")
 public class RedstoneBitsClient implements ClientModInitializer {
-
+	
+	@Override
 	public void onInitializeClient() {
 		ScreenProviderRegistry.INSTANCE.registerFactory(RedstoneBits.BREAKER_CONTAINER, BreakerContainerScreen::new);
-		BlockEntityRendererRegistry.INSTANCE.register(BreakerBlockEntity.class, new BreakerBlockEntityRenderer());
+		BlockEntityRendererRegistryImpl.INSTANCE.register(RedstoneBits.BREAKER, BreakerBlockEntityRenderer::new);
 	}
 }
