@@ -10,6 +10,7 @@ import net.minecraft.util.registry.Registry;
 
 import com.shnupbups.redstonebits.block.BreakerBlock;
 import com.shnupbups.redstonebits.block.CheckerBlock;
+import com.shnupbups.redstonebits.block.CounterBlock;
 import com.shnupbups.redstonebits.block.PlacerBlock;
 
 public class ModBlocks {
@@ -17,6 +18,7 @@ public class ModBlocks {
 	public static final PlacerBlock PLACER = new PlacerBlock(Block.Settings.copy(Blocks.DISPENSER));
 	public static final BreakerBlock BREAKER = new BreakerBlock(Block.Settings.copy(Blocks.DISPENSER));
 	public static final CheckerBlock CHECKER = new CheckerBlock(Block.Settings.copy(Blocks.OBSERVER));
+	public static final CounterBlock COUNTER = new CounterBlock(Block.Settings.copy(Blocks.REPEATER));
 	
 	public static void registerBlock(Block block, String name) {
 		Registry.register(Registry.BLOCK, RedstoneBits.id(name), block);
@@ -29,5 +31,6 @@ public class ModBlocks {
 		registerBlock(PLACER, "placer");
 		registerBlock(BREAKER, "breaker");
 		registerBlock(CHECKER, "checker");
+		registerBlock(COUNTER, "counter");
 	}
 }

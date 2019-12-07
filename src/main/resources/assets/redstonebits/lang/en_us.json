@@ -4,5 +4,6 @@
   "block.redstonebits.breaker": "Breaker",
   "container.redstonebits.breaker": "Breaker",
   "block.redstonebits.checker": "Checker",
-  "container.redstonebits.checker": "Checker"
+  "container.redstonebits.checker": "Checker",
+  "block.redstonebits.counter": "Redstone Counter"
 }

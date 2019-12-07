@@ -4,24 +4,29 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SnowBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Packet;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
+import com.shnupbups.redstonebits.FakeEntity;
 import com.shnupbups.redstonebits.ModProperties;
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.container.BreakerContainer;
@@ -144,7 +149,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		if (!world.isClient()) {
 			BlockEntity blockEntity = breakState.getBlock().hasBlockEntity() ? this.world.getBlockEntity(getBreakPos()) : null;
 			if (isToolEffective()) {
-				Block.dropStacks(breakState, world, getBreakPos(), blockEntity, null, getTool());
+				Block.dropStacks(breakState, world, getBreakPos(), blockEntity, new FakeEntity(world), getTool());
 			}
 			return world.breakBlock(getBreakPos(), false);
 		} else return true;
