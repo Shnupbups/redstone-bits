@@ -3,7 +3,6 @@ package com.shnupbups.redstonebits.block;
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.enums.ComparatorMode;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -20,17 +19,17 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.TickPriority;
 import net.minecraft.world.World;
 
-import com.shnupbups.redstonebits.ModProperties;
+import com.shnupbups.redstonebits.properties.ModProperties;
 
 import java.util.Random;
 
 public class CounterBlock extends AbstractRedstoneGateBlock {
 	public static final IntProperty COUNT = ModProperties.COUNT;
-	public static final BooleanProperty FORWARDS = BooleanProperty.of("forwards");
+	public static final BooleanProperty BACKWARDS = ModProperties.BACKWARDS;
 	
 	public CounterBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(FORWARDS, true).with(COUNT, 0));
+		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(BACKWARDS, false).with(COUNT, 0));
 	}
 	
 	@Override
@@ -50,20 +49,20 @@ public class CounterBlock extends AbstractRedstoneGateBlock {
 	
 	@Override
 	public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, COUNT, POWERED, FORWARDS);
+		builder.add(FACING, COUNT, POWERED, BACKWARDS);
 	}
 	
 	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!this.isLocked(world, pos, state)) {
 			boolean bl = state.get(POWERED);
-			boolean forward = state.get(FORWARDS);
+			boolean backwards = state.get(BACKWARDS);
 			int c = state.get(COUNT);
 			boolean bl2 = this.hasPower(world, pos, state);
 			if (bl && !bl2) {
 				world.setBlockState(pos, state.with(POWERED, false), 2);
 			} else if (!bl) {
-				int nc = forward ? c+1>15?0:c+1 : c-1<0?15:c-1;
+				int nc = backwards ? c-1<0?15:c-1 : c+1>15?0:c+1;
 				world.setBlockState(pos, state.with(POWERED, true).with(COUNT, nc), 2);
 				if (!bl2) {
 					world.getBlockTickScheduler().schedule(pos, this, this.getUpdateDelayInternal(state), TickPriority.HIGH);
@@ -77,10 +76,10 @@ public class CounterBlock extends AbstractRedstoneGateBlock {
 		if (!player.abilities.allowModifyWorld) {
 			return ActionResult.PASS;
 		} else {
-			boolean forwards = state.get(FORWARDS);
-			float f = forwards ? 0.55F : 0.5F;
+			boolean backwards = state.get(BACKWARDS);
+			float f = backwards ? 0.55F : 0.5F;
 			world.playSound(player, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3F, f);
-			world.setBlockState(pos, state.with(FORWARDS, !forwards), 2);
+			world.setBlockState(pos, state.with(BACKWARDS, !backwards), 2);
 			return ActionResult.SUCCESS;
 		}
 	}

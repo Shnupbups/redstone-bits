@@ -4,30 +4,26 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SnowBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.container.PropertyDelegate;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Packet;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.FakeEntity;
-import com.shnupbups.redstonebits.ModProperties;
+import com.shnupbups.redstonebits.properties.ModProperties;
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.container.BreakerContainer;
 
@@ -106,7 +102,6 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		this.breakState = this.getWorld().getBlockState(this.getBreakPos());
 		this.breakStack = this.getTool();
 		this.breakProgress++;
-		BlockState state = this.getWorld().getBlockState(this.getPos());
 		this.markDirty();
 	}
 	
@@ -115,7 +110,6 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		this.breakState = null;
 		this.breakStack = ItemStack.EMPTY;
 		this.breakProgress = 0;
-		BlockState state = this.getWorld().getBlockState(this.getPos());
 		this.markDirty();
 	}
 	
@@ -123,12 +117,6 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		//System.out.println("finish break at "+getBreakPos().toString());
 		this.breakBlock();
 		this.cancelBreak();
-		if (this.getTool().getItem().isDamageable()) {
-			this.getTool().setDamage(this.getInvStack(0).getDamage() + 1);
-			if (this.getTool().getDamage() >= this.getInvStack(0).getMaxDamage()) {
-				this.removeInvStack(0);
-			}
-		}
 		this.markDirty();
 	}
 	
@@ -148,9 +136,11 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		//System.out.println("break at "+getBreakPos().toString());
 		if (!world.isClient()) {
 			BlockEntity blockEntity = breakState.getBlock().hasBlockEntity() ? this.world.getBlockEntity(getBreakPos()) : null;
-			if (isToolEffective()) {
-				Block.dropStacks(breakState, world, getBreakPos(), blockEntity, new FakeEntity(world), getTool());
+			FakeEntity entity = new FakeEntity(world, getTool());
+			if (getTool().getItem().canMine(breakState, world, getBreakPos(), null) && isToolEffective()) {
+				Block.dropStacks(breakState, world, getBreakPos(), blockEntity, entity, getTool());
 			}
+			getTool().getItem().postMine(getTool(), world, breakState, getBreakPos(), entity);
 			return world.breakBlock(getBreakPos(), false);
 		} else return true;
 	}

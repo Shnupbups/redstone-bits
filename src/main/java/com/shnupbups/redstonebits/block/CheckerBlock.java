@@ -36,29 +36,29 @@ public class CheckerBlock extends BlockWithEntity {
 		POWERED = Properties.POWERED;
 	}
 	
-	public CheckerBlock(Block.Settings block$Settings_1) {
-		super(block$Settings_1);
+	public CheckerBlock(Settings settings) {
+		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.SOUTH).with(POWERED, false));
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> stateFactory$Builder_1) {
-		stateFactory$Builder_1.add(FACING, POWERED);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING, POWERED);
 	}
 	
 	@Override
-	public BlockRenderType getRenderType(BlockState blockState_1) {
+	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 	
 	@Override
-	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
-		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
+	public BlockState rotate(BlockState state, BlockRotation blockRotation_1) {
+		return state.with(FACING, blockRotation_1.rotate(state.get(FACING)));
 	}
 	
 	@Override
-	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
-		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
+	public BlockState mirror(BlockState state, BlockMirror blockMirror_1) {
+		return state.rotate(blockMirror_1.getRotation(state.get(FACING)));
 	}
 	
 	@Override
@@ -74,71 +74,71 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState blockState_1, Direction direction_1, BlockState blockState_2, IWorld iWorld_1, BlockPos blockPos_1, BlockPos blockPos_2) {
-		if (blockState_1.get(FACING) == direction_1 && !blockState_1.get(POWERED)) {
-			this.scheduleTick(iWorld_1, blockPos_1);
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState state2, IWorld iworld, BlockPos pos, BlockPos pos2) {
+		if (state.get(FACING) == direction && !state.get(POWERED)) {
+			this.scheduleTick(iworld, pos);
 		}
 		
-		return super.getStateForNeighborUpdate(blockState_1, direction_1, blockState_2, iWorld_1, blockPos_1, blockPos_2);
+		return super.getStateForNeighborUpdate(state, direction, state2, iworld, pos, pos2);
 	}
 	
-	private void scheduleTick(IWorld iWorld_1, BlockPos blockPos_1) {
-		if (!iWorld_1.isClient() && !iWorld_1.getBlockTickScheduler().isScheduled(blockPos_1, this)) {
-			iWorld_1.getBlockTickScheduler().schedule(blockPos_1, this, 2);
+	private void scheduleTick(IWorld iworld, BlockPos pos) {
+		if (!iworld.isClient() && !iworld.getBlockTickScheduler().isScheduled(pos, this)) {
+			iworld.getBlockTickScheduler().schedule(pos, this, 2);
 		}
 	}
 	
-	protected void updateNeighbors(World world_1, BlockPos blockPos_1, BlockState blockState_1) {
-		Direction direction_1 = blockState_1.get(FACING);
-		BlockPos blockPos_2 = blockPos_1.offset(direction_1.getOpposite());
-		world_1.updateNeighbor(blockPos_2, this, blockPos_1);
-		world_1.updateNeighborsExcept(blockPos_2, this, direction_1);
+	protected void updateNeighbors(World world, BlockPos pos, BlockState state) {
+		Direction direction = state.get(FACING);
+		BlockPos pos2 = pos.offset(direction.getOpposite());
+		world.updateNeighbor(pos2, this, pos);
+		world.updateNeighborsExcept(pos2, this, direction);
 	}
 	
 	@Override
-	public boolean emitsRedstonePower(BlockState blockState_1) {
+	public boolean emitsRedstonePower(BlockState state) {
 		return true;
 	}
 	
 	@Override
-	public int getStrongRedstonePower(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, Direction direction_1) {
-		return blockState_1.getWeakRedstonePower(blockView_1, blockPos_1, direction_1);
+	public int getStrongRedstonePower(BlockState state, BlockView view, BlockPos pos, Direction direction) {
+		return state.getWeakRedstonePower(view, pos, direction);
 	}
 	
 	@Override
-	public int getWeakRedstonePower(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, Direction direction_1) {
-		return blockState_1.get(POWERED) && blockState_1.get(FACING) == direction_1 ? 15 : 0;
+	public int getWeakRedstonePower(BlockState state, BlockView view, BlockPos pos, Direction direction) {
+		return state.get(POWERED) && state.get(FACING) == direction ? 15 : 0;
 	}
 	
 	@Override
-	public void onBlockAdded(BlockState blockState_1, World world_1, BlockPos blockPos_1, BlockState blockState_2, boolean boolean_1) {
-		if (blockState_1.getBlock() != blockState_2.getBlock()) {
-			if (!world_1.isClient() && blockState_1.get(POWERED) && !world_1.getBlockTickScheduler().isScheduled(blockPos_1, this)) {
-				BlockState blockState_3 = blockState_1.with(POWERED, false);
-				world_1.setBlockState(blockPos_1, blockState_3, 18);
-				this.updateNeighbors(world_1, blockPos_1, blockState_3);
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
+		if (state.getBlock() != state2.getBlock()) {
+			if (!world.isClient() && state.get(POWERED) && !world.getBlockTickScheduler().isScheduled(pos, this)) {
+				BlockState blockState_3 = state.with(POWERED, false);
+				world.setBlockState(pos, blockState_3, 18);
+				this.updateNeighbors(world, pos, blockState_3);
 			}
-			
 		}
+		super.onBlockAdded(state, world, pos, state2, bool);
 	}
 	
 	@Override
-	public void onBlockRemoved(BlockState blockState_1, World world_1, BlockPos blockPos_1, BlockState blockState_2, boolean boolean_1) {
-		if (blockState_1.getBlock() != blockState_2.getBlock()) {
-			if (!world_1.isClient && blockState_1.get(POWERED) && world_1.getBlockTickScheduler().isScheduled(blockPos_1, this)) {
-				this.updateNeighbors(world_1, blockPos_1, blockState_1.with(POWERED, false));
+	public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
+		if (state.getBlock() != state2.getBlock()) {
+			if (!world.isClient && state.get(POWERED) && world.getBlockTickScheduler().isScheduled(pos, this)) {
+				this.updateNeighbors(world, pos, state.with(POWERED, false));
 			}
-			
 		}
+		super.onBlockRemoved(state, world, pos, state2, bool);
 	}
 	
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext itemPlacementContext_1) {
-		return this.getDefaultState().with(FACING, itemPlacementContext_1.getPlayerFacing().getOpposite().getOpposite());
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite().getOpposite());
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView blockView_1) {
+	public BlockEntity createBlockEntity(BlockView view) {
 		return new CheckerBlockEntity();
 	}
 	

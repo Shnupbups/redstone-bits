@@ -19,5 +19,6 @@ public class RedstoneBitsClient implements ClientModInitializer {
 		BlockEntityRendererRegistryImpl.INSTANCE.register(RedstoneBits.BREAKER, BreakerBlockEntityRenderer::new);
 		
 		BlockRenderLayerMapImpl.INSTANCE.putBlock(ModBlocks.COUNTER, RenderLayer.getCutout());
+		BlockRenderLayerMapImpl.INSTANCE.putBlock(ModBlocks.RESISTOR, RenderLayer.getCutout());
 	}
 }

@@ -20,17 +20,17 @@ import com.shnupbups.redstonebits.blockentity.PlacerBlockEntity;
 public class PlacerBlock extends DispenserBlock {
 	private static final DispenserBehavior BEHAVIOR = new BlockPlacementDispenserBehavior();
 	
-	public PlacerBlock(Block.Settings block$Settings_1) {
-		super(block$Settings_1);
+	public PlacerBlock(Settings settings) {
+		super(settings);
 	}
 	
 	@Override
-	protected DispenserBehavior getBehaviorForItem(ItemStack itemStack_1) {
+	protected DispenserBehavior getBehaviorForItem(ItemStack stack) {
 		return BEHAVIOR;
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView blockView_1) {
+	public BlockEntity createBlockEntity(BlockView view) {
 		return new PlacerBlockEntity();
 	}
 	

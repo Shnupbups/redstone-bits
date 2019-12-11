@@ -30,7 +30,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
-import com.shnupbups.redstonebits.ModProperties;
+import com.shnupbups.redstonebits.properties.ModProperties;
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 
@@ -47,18 +47,18 @@ public class BreakerBlock extends BlockWithEntity {
 		BREAKING = ModProperties.BREAKING;
 	}
 	
-	public BreakerBlock(Settings block$Settings_1) {
-		super(block$Settings_1);
+	public BreakerBlock(Settings settings) {
+		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false).with(BREAKING, false));
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView blockView_1) {
+	public BlockEntity createBlockEntity(BlockView view) {
 		return new BreakerBlockEntity();
 	}
 	
 	@Override
-	public int getTickRate(WorldView viewableWorld_1) {
+	public int getTickRate(WorldView view) {
 		return 4;
 	}
 	
@@ -74,17 +74,17 @@ public class BreakerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public void neighborUpdate(BlockState blockState_1, World world_1, BlockPos blockPos_1, Block block_1, BlockPos blockPos_2, boolean boolean_1) {
-		boolean boolean_2 = world_1.isReceivingRedstonePower(blockPos_1) || world_1.isReceivingRedstonePower(blockPos_1.up());
-		boolean boolean_3 = blockState_1.get(TRIGGERED);
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos pos2, boolean bool) {
+		boolean boolean_2 = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
+		boolean boolean_3 = state.get(TRIGGERED);
 		if (boolean_2 && !boolean_3) {
-			world_1.getBlockTickScheduler().schedule(blockPos_1, this, this.getTickRate(world_1));
-			world_1.setBlockState(blockPos_1, blockState_1.with(TRIGGERED, true), 4);
+			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+			world.setBlockState(pos, state.with(TRIGGERED, true), 4);
 		} else if (!boolean_2 && boolean_3) {
-			world_1.setBlockState(blockPos_1, blockState_1.with(TRIGGERED, false), 4);
+			world.setBlockState(pos, state.with(TRIGGERED, false), 4);
 		}
-		if (isBreaking(world_1, blockPos_1) && blockPos_2 == getBreakPos(world_1, blockPos_1)) {
-			cancelBreak(world_1, blockPos_1);
+		if (isBreaking(world, pos) && pos2 == getBreakPos(world, pos)) {
+			cancelBreak(world, pos);
 		}
 	}
 	
@@ -130,61 +130,60 @@ public class BreakerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext itemPlacementContext_1) {
-		return this.getDefaultState().with(FACING, itemPlacementContext_1.getPlayerFacing().getOpposite());
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite());
 	}
 	
 	@Override
-	public void onPlaced(World world_1, BlockPos blockPos_1, BlockState blockState_1, LivingEntity livingEntity_1, ItemStack itemStack_1) {
-		if (itemStack_1.hasCustomName()) {
-			BlockEntity blockEntity_1 = world_1.getBlockEntity(blockPos_1);
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+		if (stack.hasCustomName()) {
+			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
 			if (blockEntity_1 instanceof BreakerBlockEntity) {
-				((BreakerBlockEntity) blockEntity_1).setCustomName(itemStack_1.getName());
+				((BreakerBlockEntity) blockEntity_1).setCustomName(stack.getName());
 			}
 		}
 		
 	}
 	
 	@Override
-	public void onBlockRemoved(BlockState blockState_1, World world_1, BlockPos blockPos_1, BlockState blockState_2, boolean boolean_1) {
-		if (blockState_1.getBlock() != blockState_2.getBlock()) {
-			BlockEntity blockEntity_1 = world_1.getBlockEntity(blockPos_1);
+	public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
+		if (state.getBlock() != state2.getBlock()) {
+			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
 			if (blockEntity_1 instanceof BreakerBlockEntity) {
-				ItemScatterer.spawn(world_1, blockPos_1, ((BreakerBlockEntity) blockEntity_1));
-				world_1.updateHorizontalAdjacent(blockPos_1, this);
+				ItemScatterer.spawn(world, pos, ((BreakerBlockEntity) blockEntity_1));
+				world.updateHorizontalAdjacent(pos, this);
 			}
-			
-			super.onBlockRemoved(blockState_1, world_1, blockPos_1, blockState_2, boolean_1);
 		}
+		super.onBlockRemoved(state, world, pos, state2, bool);
 	}
 	
 	@Override
-	public boolean hasComparatorOutput(BlockState blockState_1) {
+	public boolean hasComparatorOutput(BlockState state) {
 		return true;
 	}
 	
 	@Override
-	public int getComparatorOutput(BlockState blockState_1, World world_1, BlockPos blockPos_1) {
-		return Container.calculateComparatorOutput(world_1.getBlockEntity(blockPos_1));
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		return Container.calculateComparatorOutput(world.getBlockEntity(pos));
 	}
 	
 	@Override
-	public BlockRenderType getRenderType(BlockState blockState_1) {
+	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 	
 	@Override
-	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
-		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
 	
 	@Override
-	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
-		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return state.rotate(mirror.getRotation(state.get(FACING)));
 	}
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> stateFactory$Builder_1) {
-		stateFactory$Builder_1.add(FACING, TRIGGERED, BREAKING);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING, TRIGGERED, BREAKING);
 	}
 }

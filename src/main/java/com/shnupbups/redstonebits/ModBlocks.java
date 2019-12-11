@@ -12,6 +12,7 @@ import com.shnupbups.redstonebits.block.BreakerBlock;
 import com.shnupbups.redstonebits.block.CheckerBlock;
 import com.shnupbups.redstonebits.block.CounterBlock;
 import com.shnupbups.redstonebits.block.PlacerBlock;
+import com.shnupbups.redstonebits.block.ResistorBlock;
 
 public class ModBlocks {
 	
@@ -19,6 +20,7 @@ public class ModBlocks {
 	public static final BreakerBlock BREAKER = new BreakerBlock(Block.Settings.copy(Blocks.DISPENSER));
 	public static final CheckerBlock CHECKER = new CheckerBlock(Block.Settings.copy(Blocks.OBSERVER));
 	public static final CounterBlock COUNTER = new CounterBlock(Block.Settings.copy(Blocks.REPEATER));
+	public static final ResistorBlock RESISTOR = new ResistorBlock(Block.Settings.copy(Blocks.REPEATER));
 	
 	public static void registerBlock(Block block, String name) {
 		Registry.register(Registry.BLOCK, RedstoneBits.id(name), block);
@@ -32,5 +34,6 @@ public class ModBlocks {
 		registerBlock(BREAKER, "breaker");
 		registerBlock(CHECKER, "checker");
 		registerBlock(COUNTER, "counter");
+		registerBlock(RESISTOR, "resistor");
 	}
 }
