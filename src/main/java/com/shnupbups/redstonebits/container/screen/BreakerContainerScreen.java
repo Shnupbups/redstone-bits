@@ -3,6 +3,7 @@ package com.shnupbups.redstonebits.container.screen;
 import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
 import net.minecraft.util.Identifier;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 import com.shnupbups.redstonebits.container.BreakerContainer;
@@ -34,7 +35,7 @@ public class BreakerContainerScreen extends AbstractContainerScreen<BreakerConta
 	
 	@Override
 	protected void drawBackground(float float_1, int int_1, int int_2) {
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bindTexture(TEXTURE);
 		int int_3 = (this.width - this.containerWidth) / 2;
 		int int_4 = (this.height - this.containerHeight) / 2;
