@@ -22,7 +22,7 @@ import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
-import com.shnupbups.redstonebits.FakeEntity;
+import com.shnupbups.redstonebits.FakePlayerEntity;
 import com.shnupbups.redstonebits.properties.ModProperties;
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.container.BreakerContainer;
@@ -136,8 +136,8 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		//System.out.println("break at "+getBreakPos().toString());
 		if (!world.isClient()) {
 			BlockEntity blockEntity = breakState.getBlock().hasBlockEntity() ? this.world.getBlockEntity(getBreakPos()) : null;
-			FakeEntity entity = new FakeEntity(world, getTool());
-			if (getTool().getItem().canMine(breakState, world, getBreakPos(), null) && isToolEffective()) {
+			FakePlayerEntity entity = new FakePlayerEntity(world, getTool());
+			if (getTool().getItem().canMine(breakState, world, getBreakPos(), entity) && isToolEffective()) {
 				Block.dropStacks(breakState, world, getBreakPos(), blockEntity, entity, getTool());
 			}
 			getTool().getItem().postMine(getTool(), world, breakState, getBreakPos(), entity);

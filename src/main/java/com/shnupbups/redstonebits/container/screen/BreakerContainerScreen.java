@@ -5,12 +5,13 @@ import net.minecraft.util.Identifier;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 import com.shnupbups.redstonebits.container.BreakerContainer;
 
 public class BreakerContainerScreen extends AbstractContainerScreen<BreakerContainer> {
 	
-	private static final Identifier TEXTURE = new Identifier("redstonebits", "textures/gui/container/breaker.png");
+	private static final Identifier TEXTURE = RedstoneBits.id("textures/gui/container/breaker.png");
 	
 	private BreakerContainer container;
 	
