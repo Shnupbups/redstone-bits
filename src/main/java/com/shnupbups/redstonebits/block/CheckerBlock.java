@@ -133,8 +133,8 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite().getOpposite());
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
 	}
 	
 	@Override
