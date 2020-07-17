@@ -2,28 +2,27 @@ package com.shnupbups.redstonebits.container;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.container.ArrayPropertyDelegate;
-import net.minecraft.container.Container;
-import net.minecraft.container.PropertyDelegate;
-import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.BasicInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ArrayPropertyDelegate;
+import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 
-public class BreakerContainer extends Container {
+public class BreakerContainer extends ScreenHandler {
 	public final PlayerInventory playerInventory;
 	public final Inventory inventory;
 	private final PropertyDelegate propertyDelegate;
 	
 	public BreakerContainer(int int_1, PlayerInventory playerInventory_1) {
-		this(int_1, playerInventory_1, new BasicInventory(1), new ArrayPropertyDelegate(2));
+		this(int_1, playerInventory_1, new SimpleInventory(1), new ArrayPropertyDelegate(2));
 	}
 	
 	public BreakerContainer(int int_1, PlayerInventory playerInventory_1, PropertyDelegate propertyDelegate) {
-		this(int_1, playerInventory_1, new BasicInventory(1), propertyDelegate);
+		this(int_1, playerInventory_1, new SimpleInventory(1), propertyDelegate);
 	}
 	
 	public BreakerContainer(int int_1, PlayerInventory playerInventory_1, Inventory inventory_1) {
@@ -32,10 +31,10 @@ public class BreakerContainer extends Container {
 	
 	public BreakerContainer(int int_1, PlayerInventory playerInventory_1, Inventory inventory_1, PropertyDelegate propertyDelegate) {
 		super(null, int_1);
-		checkContainerSize(inventory_1, 1);
+		checkSize(inventory_1, 1);
 		this.inventory = inventory_1;
 		this.playerInventory = playerInventory_1;
-		inventory_1.onInvOpen(playerInventory_1.player);
+		inventory_1.onOpen(playerInventory_1.player);
 		
 		this.addSlot(new Slot(inventory_1, 0, 80, 35));
 		
@@ -54,13 +53,13 @@ public class BreakerContainer extends Container {
 	
 	@Override
 	public boolean canUse(PlayerEntity playerEntity_1) {
-		return this.inventory.canPlayerUseInv(playerEntity_1);
+		return this.inventory.canPlayerUse(playerEntity_1);
 	}
 	
 	@Override
 	public ItemStack transferSlot(PlayerEntity playerEntity_1, int int_1) {
 		ItemStack itemStack_1 = ItemStack.EMPTY;
-		Slot slot_1 = this.slotList.get(int_1);
+		Slot slot_1 = this.slots.get(int_1);
 		if (slot_1 != null && slot_1.hasStack()) {
 			ItemStack itemStack_2 = slot_1.getStack();
 			itemStack_1 = itemStack_2.copy();
@@ -91,7 +90,7 @@ public class BreakerContainer extends Container {
 	@Override
 	public void close(PlayerEntity playerEntity_1) {
 		super.close(playerEntity_1);
-		this.inventory.onInvClose(playerEntity_1);
+		this.inventory.onClose(playerEntity_1);
 	}
 	
 	@Environment(EnvType.CLIENT)

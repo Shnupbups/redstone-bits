@@ -14,9 +14,9 @@ import com.shnupbups.redstonebits.blockentity.PlacerBlockEntity;
 
 public class RedstoneBits implements ModInitializer {
 	
-	public static final BlockEntityType<PlacerBlockEntity> PLACER = Registry.register(Registry.BLOCK_ENTITY, id("placer"), BlockEntityType.Builder.create(PlacerBlockEntity::new, ModBlocks.PLACER).build(null));
-	public static final BlockEntityType<BreakerBlockEntity> BREAKER = Registry.register(Registry.BLOCK_ENTITY, id("breaker"), BlockEntityType.Builder.create(BreakerBlockEntity::new, ModBlocks.BREAKER).build(null));
-	public static final BlockEntityType<CheckerBlockEntity> CHECKER = Registry.register(Registry.BLOCK_ENTITY, id("checker"), BlockEntityType.Builder.create(CheckerBlockEntity::new, ModBlocks.CHECKER).build(null));
+	public static final BlockEntityType<PlacerBlockEntity> PLACER = Registry.register(Registry.BLOCK_ENTITY_TYPE, id("placer"), BlockEntityType.Builder.create(PlacerBlockEntity::new, ModBlocks.PLACER).build(null));
+	public static final BlockEntityType<BreakerBlockEntity> BREAKER = Registry.register(Registry.BLOCK_ENTITY_TYPE, id("breaker"), BlockEntityType.Builder.create(BreakerBlockEntity::new, ModBlocks.BREAKER).build(null));
+	public static final BlockEntityType<CheckerBlockEntity> CHECKER = Registry.register(Registry.BLOCK_ENTITY_TYPE, id("checker"), BlockEntityType.Builder.create(CheckerBlockEntity::new, ModBlocks.CHECKER).build(null));
 	public static final Identifier BREAKER_CONTAINER = id("breaker_container");
 	
 	public static Identifier id(String name) {

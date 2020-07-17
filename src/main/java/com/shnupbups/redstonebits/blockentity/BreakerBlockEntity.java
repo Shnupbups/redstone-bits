@@ -6,8 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.container.Container;
-import net.minecraft.container.PropertyDelegate;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,11 +13,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
 import com.shnupbups.redstonebits.FakePlayerEntity;
@@ -72,7 +72,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	public int getBreakTime() {
 		if (this.breakState == null) return 0;
 		float baseTime = this.calcBlockBreakingTime();
-		float itemMultiplier = this.getTool().getMiningSpeed(breakState);
+		float itemMultiplier = this.getTool().getMiningSpeedMultiplier(breakState);
 		int level = EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, this.getTool());
 		if (level > 0) {
 			itemMultiplier += (level * level + 1);
@@ -83,8 +83,8 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	
 	public boolean isToolEffective() {
 		if (this.breakState == null) return false;
-		ItemStack item = this.getInvStack(0);
-		return this.breakState.getMaterial().canBreakByHand() || item.isEffectiveOn(breakState);
+		ItemStack item = this.getStack(0);
+		return !this.breakState.isToolRequired() || item.isEffectiveOn(this.breakState);
 	}
 	
 	public float calcBlockBreakingTime() {
@@ -151,7 +151,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	public ItemStack getTool() {
-		return this.getInvStack(0);
+		return this.getStack(0);
 	}
 	
 	@Override
@@ -182,17 +182,17 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	protected Container createContainer(int int_1, PlayerInventory playerInventory_1) {
+	protected ScreenHandler createScreenHandler(int int_1, PlayerInventory playerInventory_1) {
 		return new BreakerContainer(int_1, playerInventory_1, this, this.propertyDelegate);
 	}
 	
 	@Override
-	public int getInvSize() {
+	public int size() {
 		return 1;
 	}
 	
 	@Override
-	public boolean isInvEmpty() {
+	public boolean isEmpty() {
 		Iterator var1 = this.inventory.iterator();
 		
 		ItemStack itemStack_1;
@@ -208,9 +208,9 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public void fromTag(CompoundTag compoundTag_1) {
-		super.fromTag(compoundTag_1);
-		this.inventory = DefaultedList.ofSize(this.getInvSize(), ItemStack.EMPTY);
+	public void fromTag(BlockState state, CompoundTag compoundTag_1) {
+		super.fromTag(state, compoundTag_1);
+		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 		this.breakProgress = compoundTag_1.getInt("BreakProgress");
 		Inventories.fromTag(compoundTag_1, this.inventory);
 	}
@@ -222,15 +222,14 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		compoundTag_1.putInt("BreakProgress", breakProgress);
 		return compoundTag_1;
 	}
-	
+
 	@Override
 	public void fromClientTag(CompoundTag compoundTag_1) {
-		super.fromTag(compoundTag_1);
-		this.inventory = DefaultedList.ofSize(this.getInvSize(), ItemStack.EMPTY);
+		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 		this.breakProgress = compoundTag_1.getInt("BreakProgress");
 		Inventories.fromTag(compoundTag_1, this.inventory);
 	}
-	
+
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag_1) {
 		super.toTag(compoundTag_1);
@@ -240,12 +239,12 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public ItemStack getInvStack(int int_1) {
+	public ItemStack getStack(int int_1) {
 		return this.inventory.get(int_1);
 	}
 	
 	@Override
-	public ItemStack takeInvStack(int int_1, int int_2) {
+	public ItemStack removeStack(int int_1, int int_2) {
 		ItemStack itemStack_1 = Inventories.splitStack(this.inventory, int_1, int_2);
 		if (!itemStack_1.isEmpty()) {
 			this.markDirty();
@@ -255,22 +254,22 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public ItemStack removeInvStack(int int_1) {
+	public ItemStack removeStack(int int_1) {
 		return Inventories.removeStack(this.inventory, int_1);
 	}
 	
 	@Override
-	public void setInvStack(int int_1, ItemStack itemStack_1) {
+	public void setStack(int int_1, ItemStack itemStack_1) {
 		this.inventory.set(int_1, itemStack_1);
-		if (itemStack_1.getCount() > this.getInvMaxStackAmount()) {
-			itemStack_1.setCount(this.getInvMaxStackAmount());
+		if (itemStack_1.getCount() > this.getMaxCountPerStack()) {
+			itemStack_1.setCount(this.getMaxCountPerStack());
 		}
 		
 		this.markDirty();
 	}
 	
 	@Override
-	public boolean canPlayerUseInv(PlayerEntity playerEntity_1) {
+	public boolean canPlayerUse(PlayerEntity playerEntity_1) {
 		if (this.world.getBlockEntity(this.pos) != this) {
 			return false;
 		} else {
@@ -289,9 +288,9 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public Container createMenu(int int_1, PlayerInventory playerInventory_1, PlayerEntity playerEntity_1) {
+	public ScreenHandler createMenu(int int_1, PlayerInventory playerInventory_1, PlayerEntity playerEntity_1) {
 		if (this.checkUnlocked(playerEntity_1)) {
-			return this.createContainer(int_1, playerInventory_1);
+			return this.createScreenHandler(int_1, playerInventory_1);
 		} else {
 			return null;
 		}
