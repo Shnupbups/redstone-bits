@@ -39,7 +39,7 @@ public class PlacerBlock extends DispenserBlock {
 		if (!world.isClient) {
 			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
 			if (blockEntity_1 instanceof PlacerBlockEntity) {
-				player.openContainer((PlacerBlockEntity) blockEntity_1);
+				player.openHandledScreen((PlacerBlockEntity) blockEntity_1);
 			}
 		}
 		return ActionResult.SUCCESS;

@@ -20,9 +20,8 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-
+import net.minecraft.world.WorldAccess;
 import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
 
 import java.util.Random;
@@ -74,7 +73,7 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState state2, IWorld iworld, BlockPos pos, BlockPos pos2) {
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState state2, WorldAccess iworld, BlockPos pos, BlockPos pos2) {
 		if (state.get(FACING) == direction && !state.get(POWERED)) {
 			this.scheduleTick(iworld, pos);
 		}
@@ -82,7 +81,7 @@ public class CheckerBlock extends BlockWithEntity {
 		return super.getStateForNeighborUpdate(state, direction, state2, iworld, pos, pos2);
 	}
 	
-	private void scheduleTick(IWorld iworld, BlockPos pos) {
+	private void scheduleTick(WorldAccess iworld, BlockPos pos) {
 		if (!iworld.isClient() && !iworld.getBlockTickScheduler().isScheduled(pos, this)) {
 			iworld.getBlockTickScheduler().schedule(pos, this, 2);
 		}
@@ -123,13 +122,13 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
 		if (state.getBlock() != state2.getBlock()) {
 			if (!world.isClient && state.get(POWERED) && world.getBlockTickScheduler().isScheduled(pos, this)) {
 				this.updateNeighbors(world, pos, state.with(POWERED, false));
 			}
 		}
-		super.onBlockRemoved(state, world, pos, state2, bool);
+		super.onStateReplaced(state, world, pos, state2, bool);
 	}
 	
 	@Override
@@ -147,7 +146,7 @@ public class CheckerBlock extends BlockWithEntity {
 		if (!world.isClient) {
 			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
 			if (blockEntity_1 instanceof CheckerBlockEntity) {
-				player.openContainer((CheckerBlockEntity) blockEntity_1);
+				player.openHandledScreen((CheckerBlockEntity) blockEntity_1);
 			}
 		}
 		return ActionResult.SUCCESS;

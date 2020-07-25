@@ -4,6 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import net.minecraft.util.math.BlockPos;
 import com.mojang.authlib.GameProfile;
 
 import java.util.UUID;
@@ -14,7 +15,7 @@ public class FakePlayerEntity extends PlayerEntity {
 	public static final GameProfile profile = new GameProfile(uuid, name);
 	
 	public FakePlayerEntity(World world, ItemStack heldStack) {
-		super(world, profile);
+		super(world, new BlockPos(0, 0, 0), profile);
 		this.setStackInHand(Hand.MAIN_HAND, heldStack);
 	}
 	
