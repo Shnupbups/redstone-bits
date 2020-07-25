@@ -14,13 +14,14 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.properties.ModProperties;
 import com.shnupbups.redstonebits.properties.ResistorMode;
 
-public class ResistorBlock extends AbstractRedstoneGateBlock {
+public class ResistorBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector {
 	public static final EnumProperty<ResistorMode> MODE = ModProperties.RESISTOR_MODE;
 	
 	public ResistorBlock(Settings settings) {
@@ -57,5 +58,14 @@ public class ResistorBlock extends AbstractRedstoneGateBlock {
 			world.setBlockState(pos, state, 2);
 			return ActionResult.SUCCESS;
 		}
+	}
+	
+	@Override
+	public boolean connectsToRedstoneInDirection(BlockState state, Direction direction) {
+		if(direction != null) {
+			Direction facing = state.get(FACING);
+			return direction == facing || direction.getOpposite() == facing;
+		}
+		return true;
 	}
 }

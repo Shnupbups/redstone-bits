@@ -23,7 +23,7 @@ import com.shnupbups.redstonebits.properties.ModProperties;
 
 import java.util.Random;
 
-public class CounterBlock extends AbstractRedstoneGateBlock {
+public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector {
 	public static final IntProperty COUNT = ModProperties.COUNT;
 	public static final BooleanProperty BACKWARDS = ModProperties.BACKWARDS;
 	
@@ -82,5 +82,14 @@ public class CounterBlock extends AbstractRedstoneGateBlock {
 			world.setBlockState(pos, state.with(BACKWARDS, !backwards), 2);
 			return ActionResult.SUCCESS;
 		}
+	}
+	
+	@Override
+	public boolean connectsToRedstoneInDirection(BlockState state, Direction direction) {
+		if(direction != null) {
+			Direction facing = state.get(FACING);
+			return direction == facing || direction.getOpposite() == facing;
+		}
+		return true;
 	}
 }

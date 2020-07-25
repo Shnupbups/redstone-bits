@@ -26,7 +26,7 @@ import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
 
 import java.util.Random;
 
-public class CheckerBlock extends BlockWithEntity {
+public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneConnector {
 	public static final DirectionProperty FACING;
 	public static final BooleanProperty POWERED;
 	
@@ -150,5 +150,14 @@ public class CheckerBlock extends BlockWithEntity {
 			}
 		}
 		return ActionResult.SUCCESS;
+	}
+	
+	@Override
+	public boolean connectsToRedstoneInDirection(BlockState state, Direction direction) {
+		if(direction != null) {
+			Direction facing = state.get(FACING);
+			return direction == facing;
+		}
+		return true;
 	}
 }

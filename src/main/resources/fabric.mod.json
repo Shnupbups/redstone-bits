@@ -30,6 +30,7 @@
     ]
   },
   "mixins": [
+    "redstonebits.mixins.json"
   ],
 
   "depends": {
