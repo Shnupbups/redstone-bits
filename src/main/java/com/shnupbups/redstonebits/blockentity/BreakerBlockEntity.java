@@ -25,7 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import com.shnupbups.redstonebits.FakePlayerEntity;
 import com.shnupbups.redstonebits.properties.ModProperties;
 import com.shnupbups.redstonebits.RedstoneBits;
-import com.shnupbups.redstonebits.container.BreakerContainer;
+import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 
 import java.util.Iterator;
 
@@ -41,8 +41,8 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
 		this.propertyDelegate = new PropertyDelegate() {
 			@Override
-			public int get(int int_1) {
-				switch (int_1) {
+			public int get(int index) {
+				switch (index) {
 					case 0:
 						return BreakerBlockEntity.this.breakProgress;
 					case 1:
@@ -53,11 +53,9 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 			}
 			
 			@Override
-			public void set(int int_1, int int_2) {
-				switch (int_1) {
-					case 0:
-						BreakerBlockEntity.this.breakProgress = int_2;
-						break;
+			public void set(int index, int value) {
+				if (index == 0) {
+					BreakerBlockEntity.this.breakProgress = value;
 				}
 				
 			}
@@ -88,12 +86,12 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	public float calcBlockBreakingTime() {
-		float float_1 = this.breakState.getHardness(this.getWorld(), this.getBreakPos());
-		if (float_1 == -1.0F) {
+		float hardness = this.breakState.getHardness(this.getWorld(), this.getBreakPos());
+		if (hardness == -1.0F) {
 			return 0.0F;
 		} else {
-			int int_1 = isToolEffective() ? 30 : 100;
-			return float_1 * (float) int_1;
+			int multiplier = isToolEffective() ? 30 : 100;
+			return hardness * (float) multiplier;
 		}
 	}
 	
@@ -182,8 +180,8 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	protected ScreenHandler createScreenHandler(int int_1, PlayerInventory playerInventory_1) {
-		return new BreakerContainer(int_1, playerInventory_1, this, this.propertyDelegate);
+	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
+		return new BreakerScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
 	}
 	
 	@Override
@@ -195,85 +193,85 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	public boolean isEmpty() {
 		Iterator var1 = this.inventory.iterator();
 		
-		ItemStack itemStack_1;
+		ItemStack stack;
 		do {
 			if (!var1.hasNext()) {
 				return true;
 			}
 			
-			itemStack_1 = (ItemStack) var1.next();
-		} while (itemStack_1.isEmpty());
+			stack = (ItemStack) var1.next();
+		} while (stack.isEmpty());
 		
 		return false;
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag compoundTag_1) {
-		super.fromTag(state, compoundTag_1);
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		this.breakProgress = compoundTag_1.getInt("BreakProgress");
-		Inventories.fromTag(compoundTag_1, this.inventory);
+		this.breakProgress = tag.getInt("BreakProgress");
+		Inventories.fromTag(tag, this.inventory);
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag compoundTag_1) {
-		super.toTag(compoundTag_1);
-		Inventories.toTag(compoundTag_1, this.inventory);
-		compoundTag_1.putInt("BreakProgress", breakProgress);
-		return compoundTag_1;
+	public CompoundTag toTag(CompoundTag tag) {
+		super.toTag(tag);
+		Inventories.toTag(tag, this.inventory);
+		tag.putInt("BreakProgress", breakProgress);
+		return tag;
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag compoundTag_1) {
+	public void fromClientTag(CompoundTag tag) {
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		this.breakProgress = compoundTag_1.getInt("BreakProgress");
-		Inventories.fromTag(compoundTag_1, this.inventory);
+		this.breakProgress = tag.getInt("BreakProgress");
+		Inventories.fromTag(tag, this.inventory);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag_1) {
-		super.toTag(compoundTag_1);
-		Inventories.toTag(compoundTag_1, this.inventory);
-		compoundTag_1.putInt("BreakProgress", breakProgress);
-		return compoundTag_1;
+	public CompoundTag toClientTag(CompoundTag tag) {
+		super.toTag(tag);
+		Inventories.toTag(tag, this.inventory);
+		tag.putInt("BreakProgress", breakProgress);
+		return tag;
 	}
 	
 	@Override
-	public ItemStack getStack(int int_1) {
-		return this.inventory.get(int_1);
+	public ItemStack getStack(int slot) {
+		return this.inventory.get(slot);
 	}
 	
 	@Override
-	public ItemStack removeStack(int int_1, int int_2) {
-		ItemStack itemStack_1 = Inventories.splitStack(this.inventory, int_1, int_2);
-		if (!itemStack_1.isEmpty()) {
+	public ItemStack removeStack(int slot, int amount) {
+		ItemStack stack = Inventories.splitStack(this.inventory, slot, amount);
+		if (!stack.isEmpty()) {
 			this.markDirty();
 		}
 		
-		return itemStack_1;
+		return stack;
 	}
 	
 	@Override
-	public ItemStack removeStack(int int_1) {
-		return Inventories.removeStack(this.inventory, int_1);
+	public ItemStack removeStack(int slot) {
+		return Inventories.removeStack(this.inventory, slot);
 	}
 	
 	@Override
-	public void setStack(int int_1, ItemStack itemStack_1) {
-		this.inventory.set(int_1, itemStack_1);
-		if (itemStack_1.getCount() > this.getMaxCountPerStack()) {
-			itemStack_1.setCount(this.getMaxCountPerStack());
+	public void setStack(int slot, ItemStack stack) {
+		this.inventory.set(slot, stack);
+		if (stack.getCount() > this.getMaxCountPerStack()) {
+			stack.setCount(this.getMaxCountPerStack());
 		}
 		
 		this.markDirty();
 	}
 	
 	@Override
-	public boolean canPlayerUse(PlayerEntity playerEntity_1) {
+	public boolean canPlayerUse(PlayerEntity player) {
 		if (this.world.getBlockEntity(this.pos) != this) {
 			return false;
 		} else {
-			return playerEntity_1.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+			return player.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
 		}
 	}
 	
@@ -283,14 +281,14 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public boolean checkUnlocked(PlayerEntity playerEntity_1) {
-		return super.checkUnlocked(playerEntity_1) && !playerEntity_1.isSpectator();
+	public boolean checkUnlocked(PlayerEntity player) {
+		return super.checkUnlocked(player) && !player.isSpectator();
 	}
 	
 	@Override
-	public ScreenHandler createMenu(int int_1, PlayerInventory playerInventory_1, PlayerEntity playerEntity_1) {
-		if (this.checkUnlocked(playerEntity_1)) {
-			return this.createScreenHandler(int_1, playerInventory_1);
+	public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		if (this.checkUnlocked(player)) {
+			return this.createScreenHandler(syncId, playerInventory);
 		} else {
 			return null;
 		}

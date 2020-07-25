@@ -37,9 +37,9 @@ public class PlacerBlock extends DispenserBlock {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient) {
-			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
-			if (blockEntity_1 instanceof PlacerBlockEntity) {
-				player.openHandledScreen((PlacerBlockEntity) blockEntity_1);
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof PlacerBlockEntity) {
+				player.openHandledScreen((PlacerBlockEntity) blockEntity);
 			}
 		}
 		return ActionResult.SUCCESS;

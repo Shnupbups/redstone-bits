@@ -19,7 +19,7 @@ public class BreakerBlockEntityRenderer extends BlockEntityRenderer<BreakerBlock
 	}
 	
 	@Override
-	public void render(BreakerBlockEntity blockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+	public void render(BreakerBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		MinecraftClient.getInstance().worldRenderer.setBlockBreakingInfo(-1, blockEntity.getBreakPos(), blockEntity.getBreakPercentage() > 0 ? blockEntity.getBreakPercentage() / 10 : -1);
 	}
 }

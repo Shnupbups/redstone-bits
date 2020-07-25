@@ -44,8 +44,8 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 		BlockState state = this.getWorld().getBlockState(this.getCheckPos());
 		
 		for (int i = 0; i < this.size(); i++) {
-			ItemStack itemStack_1 = this.getStack(i);
-			if (!itemStack_1.isEmpty() && itemStack_1.getItem().equals(state.getBlock().asItem())) {
+			ItemStack stack = this.getStack(i);
+			if (!stack.isEmpty() && stack.getItem().equals(state.getBlock().asItem())) {
 				return true;
 			}
 		}
@@ -66,8 +66,8 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	protected ScreenHandler createScreenHandler(int int_1, PlayerInventory playerInventory_1) {
-		return new Generic3x3ContainerScreenHandler(int_1, playerInventory_1, this);
+	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
+		return new Generic3x3ContainerScreenHandler(syncId, playerInventory, this);
 	}
 	
 	@Override
@@ -79,68 +79,68 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 	public boolean isEmpty() {
 		Iterator var1 = this.inventory.iterator();
 		
-		ItemStack itemStack_1;
+		ItemStack stack;
 		do {
 			if (!var1.hasNext()) {
 				return true;
 			}
-			
-			itemStack_1 = (ItemStack) var1.next();
-		} while (itemStack_1.isEmpty());
+
+			stack = (ItemStack) var1.next();
+		} while (stack.isEmpty());
 		
 		return false;
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag compoundTag_1) {
-		super.fromTag(state, compoundTag_1);
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		Inventories.fromTag(compoundTag_1, this.inventory);
+		Inventories.fromTag(tag, this.inventory);
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag compoundTag_1) {
-		super.toTag(compoundTag_1);
-		Inventories.toTag(compoundTag_1, this.inventory);
-		return compoundTag_1;
+	public CompoundTag toTag(CompoundTag tag) {
+		super.toTag(tag);
+		Inventories.toTag(tag, this.inventory);
+		return tag;
 	}
 	
 	@Override
-	public ItemStack getStack(int int_1) {
-		return this.inventory.get(int_1);
+	public ItemStack getStack(int slot) {
+		return this.inventory.get(slot);
 	}
 	
 	@Override
-	public ItemStack removeStack(int int_1, int int_2) {
-		ItemStack itemStack_1 = Inventories.splitStack(this.inventory, int_1, int_2);
-		if (!itemStack_1.isEmpty()) {
+	public ItemStack removeStack(int slot, int amount) {
+		ItemStack stack = Inventories.splitStack(this.inventory, slot, amount);
+		if (!stack.isEmpty()) {
 			this.markDirty();
 		}
 		
-		return itemStack_1;
+		return stack;
 	}
 	
 	@Override
-	public ItemStack removeStack(int int_1) {
-		return Inventories.removeStack(this.inventory, int_1);
+	public ItemStack removeStack(int slot) {
+		return Inventories.removeStack(this.inventory, slot);
 	}
 	
 	@Override
-	public void setStack(int int_1, ItemStack itemStack_1) {
-		this.inventory.set(int_1, itemStack_1);
-		if (itemStack_1.getCount() > this.getMaxCountPerStack()) {
-			itemStack_1.setCount(this.getMaxCountPerStack());
+	public void setStack(int slot, ItemStack stack) {
+		this.inventory.set(slot, stack);
+		if (stack.getCount() > this.getMaxCountPerStack()) {
+			stack.setCount(this.getMaxCountPerStack());
 		}
 		
 		this.markDirty();
 	}
 	
 	@Override
-	public boolean canPlayerUse(PlayerEntity playerEntity_1) {
+	public boolean canPlayerUse(PlayerEntity player) {
 		if (this.world.getBlockEntity(this.pos) != this) {
 			return false;
 		} else {
-			return playerEntity_1.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+			return player.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
 		}
 	}
 	
@@ -150,14 +150,14 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public boolean checkUnlocked(PlayerEntity playerEntity_1) {
-		return super.checkUnlocked(playerEntity_1) && !playerEntity_1.isSpectator();
+	public boolean checkUnlocked(PlayerEntity player) {
+		return super.checkUnlocked(player) && !player.isSpectator();
 	}
 	
 	@Override
-	public ScreenHandler createMenu(int int_1, PlayerInventory playerInventory_1, PlayerEntity playerEntity_1) {
-		if (this.checkUnlocked(playerEntity_1)) {
-			return this.createScreenHandler(int_1, playerInventory_1);
+	public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		if (this.checkUnlocked(player)) {
+			return this.createScreenHandler(syncId, playerInventory);
 		} else {
 			return null;
 		}

@@ -9,8 +9,10 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
@@ -57,10 +59,6 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public BlockEntity createBlockEntity(BlockView view) {
 		return new BreakerBlockEntity();
 	}
-	
-	protected int getTickRate(World world) {
-		return 4;
-	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
@@ -72,15 +70,15 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		}
 		return ActionResult.SUCCESS;
 	}
-	
+
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos pos2, boolean bool) {
-		boolean boolean_2 = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
-		boolean boolean_3 = state.get(TRIGGERED);
-		if (boolean_2 && !boolean_3) {
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos pos2, boolean notify) {
+		boolean bl = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
+		boolean bl2 = state.get(TRIGGERED);
+		if (bl && !bl2) {
+			world.getBlockTickScheduler().schedule(pos, this, 4);
 			world.setBlockState(pos, state.with(TRIGGERED, true), 4);
-		} else if (!boolean_2 && boolean_3) {
+		} else if (!bl && bl2) {
 			world.setBlockState(pos, state.with(TRIGGERED, false), 4);
 		}
 		if (isBreaking(world, pos) && pos2 == getBreakPos(world, pos)) {
@@ -133,28 +131,29 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
 	}
-	
+
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
-		if (stack.hasCustomName()) {
-			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
-			if (blockEntity_1 instanceof BreakerBlockEntity) {
-				((BreakerBlockEntity) blockEntity_1).setCustomName(stack.getName());
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+		if (itemStack.hasCustomName()) {
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof BreakerBlockEntity) {
+				((BreakerBlockEntity)blockEntity).setCustomName(itemStack.getName());
 			}
 		}
-		
+
 	}
-	
+
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
-		if (state.getBlock() != state2.getBlock()) {
-			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
-			if (blockEntity_1 instanceof BreakerBlockEntity) {
-				ItemScatterer.spawn(world, pos, ((BreakerBlockEntity) blockEntity_1));
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (!state.isOf(newState.getBlock())) {
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof BreakerBlockEntity) {
+				ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
 				world.updateComparators(pos, this);
 			}
+
+			super.onStateReplaced(state, world, pos, newState, moved);
 		}
-		super.onStateReplaced(state, world, pos, state2, bool);
 	}
 	
 	@Override

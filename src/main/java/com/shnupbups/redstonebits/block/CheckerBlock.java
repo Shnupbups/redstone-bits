@@ -51,13 +51,13 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public BlockState rotate(BlockState state, BlockRotation blockRotation_1) {
-		return state.with(FACING, blockRotation_1.rotate(state.get(FACING)));
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
 	
 	@Override
-	public BlockState mirror(BlockState state, BlockMirror blockMirror_1) {
-		return state.rotate(blockMirror_1.getRotation(state.get(FACING)));
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return state.rotate(mirror.getRotation(state.get(FACING)));
 	}
 	
 	@Override
@@ -73,17 +73,17 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState state2, WorldAccess iworld, BlockPos pos, BlockPos pos2) {
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos pos2) {
 		if (state.get(FACING) == direction && !state.get(POWERED)) {
-			this.scheduleTick(iworld, pos);
+			this.scheduleTick(world, pos);
 		}
 		
-		return super.getStateForNeighborUpdate(state, direction, state2, iworld, pos, pos2);
+		return super.getStateForNeighborUpdate(state, direction, newState, world, pos, pos2);
 	}
 	
-	private void scheduleTick(WorldAccess iworld, BlockPos pos) {
-		if (!iworld.isClient() && !iworld.getBlockTickScheduler().isScheduled(pos, this)) {
-			iworld.getBlockTickScheduler().schedule(pos, this, 2);
+	private void scheduleTick(WorldAccess world, BlockPos pos) {
+		if (!world.isClient() && !world.getBlockTickScheduler().isScheduled(pos, this)) {
+			world.getBlockTickScheduler().schedule(pos, this, 2);
 		}
 	}
 	
@@ -110,25 +110,25 @@ public class CheckerBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
-		if (state.getBlock() != state2.getBlock()) {
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		if (!state.isOf(oldState.getBlock())) {
 			if (!world.isClient() && state.get(POWERED) && !world.getBlockTickScheduler().isScheduled(pos, this)) {
-				BlockState blockState_3 = state.with(POWERED, false);
-				world.setBlockState(pos, blockState_3, 18);
-				this.updateNeighbors(world, pos, blockState_3);
+				BlockState newState = state.with(POWERED, false);
+				world.setBlockState(pos, newState, 18);
+				this.updateNeighbors(world, pos, newState);
 			}
 		}
-		super.onBlockAdded(state, world, pos, state2, bool);
+		super.onBlockAdded(state, world, pos, oldState, notify);
 	}
 	
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
-		if (state.getBlock() != state2.getBlock()) {
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		if (!state.isOf(oldState.getBlock())) {
 			if (!world.isClient && state.get(POWERED) && world.getBlockTickScheduler().isScheduled(pos, this)) {
 				this.updateNeighbors(world, pos, state.with(POWERED, false));
 			}
 		}
-		super.onStateReplaced(state, world, pos, state2, bool);
+		super.onStateReplaced(state, world, pos, oldState, notify);
 	}
 	
 	@Override
@@ -144,9 +144,9 @@ public class CheckerBlock extends BlockWithEntity {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient) {
-			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
-			if (blockEntity_1 instanceof CheckerBlockEntity) {
-				player.openHandledScreen((CheckerBlockEntity) blockEntity_1);
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof CheckerBlockEntity) {
+				player.openHandledScreen((CheckerBlockEntity) blockEntity);
 			}
 		}
 		return ActionResult.SUCCESS;
