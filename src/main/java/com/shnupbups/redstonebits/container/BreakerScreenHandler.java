@@ -12,25 +12,23 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
+import com.shnupbups.redstonebits.ModScreenHandlers;
+
 public class BreakerScreenHandler extends ScreenHandler {
 	public final PlayerInventory playerInventory;
 	public final Inventory inventory;
 	private final PropertyDelegate propertyDelegate;
-	
+
 	public BreakerScreenHandler(int syncId, PlayerInventory playerInventory) {
 		this(syncId, playerInventory, new SimpleInventory(1), new ArrayPropertyDelegate(2));
 	}
-	
-	public BreakerScreenHandler(int syncId, PlayerInventory playerInventory, PropertyDelegate propertyDelegate) {
-		this(syncId, playerInventory, new SimpleInventory(1), propertyDelegate);
-	}
-	
+
 	public BreakerScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
 		this(syncId, playerInventory, inventory, new ArrayPropertyDelegate(2));
 	}
 	
 	public BreakerScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
-		super(null, syncId);
+		super(ModScreenHandlers.BREAKER, syncId);
 		checkSize(inventory, 1);
 		this.inventory = inventory;
 		this.playerInventory = playerInventory;
@@ -50,7 +48,7 @@ public class BreakerScreenHandler extends ScreenHandler {
 		this.propertyDelegate = propertyDelegate;
 		this.addProperties(propertyDelegate);
 	}
-	
+
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return this.inventory.canPlayerUse(player);

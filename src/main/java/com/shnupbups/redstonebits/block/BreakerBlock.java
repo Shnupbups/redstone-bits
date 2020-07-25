@@ -1,6 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
-import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -9,18 +9,23 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -31,10 +36,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
 
+import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 import com.shnupbups.redstonebits.properties.ModProperties;
-import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 
 import java.util.Random;
@@ -63,12 +67,32 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient) {
-			BlockEntity blockEntity_1 = world.getBlockEntity(pos);
-			if (blockEntity_1 instanceof BreakerBlockEntity) {
-				ContainerProviderRegistry.INSTANCE.openContainer(RedstoneBits.BREAKER_CONTAINER, player, buf -> buf.writeBlockPos(pos));
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof BreakerBlockEntity) {
+				player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
 			}
 		}
 		return ActionResult.SUCCESS;
+	}
+
+	@Override
+	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
+		return new ExtendedScreenHandlerFactory() {
+			@Override
+			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+				buf.writeBlockPos(pos);
+			}
+
+			@Override
+			public Text getDisplayName() {
+				return new TranslatableText(getTranslationKey());
+			}
+
+			@Override
+			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+				return new BreakerScreenHandler(syncId, playerInventory, (Inventory) world.getBlockEntity(pos));
+			}
+		};
 	}
 
 	@Override

@@ -2,6 +2,9 @@ package com.shnupbups.redstonebits.container.screen;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -13,11 +16,11 @@ public class BreakerHandledScreen extends HandledScreen<BreakerScreenHandler> {
 	
 	private static final Identifier TEXTURE = RedstoneBits.id("textures/gui/container/breaker.png");
 	
-	private BreakerScreenHandler screenHandler;
+	private final BreakerScreenHandler handler;
 	
-	public BreakerHandledScreen(BreakerScreenHandler screenHandler) {
-		super(screenHandler, screenHandler.playerInventory, ((BreakerBlockEntity) screenHandler.inventory).getContainerName());
-		this.screenHandler = screenHandler;
+	public BreakerHandledScreen(BreakerScreenHandler handler, PlayerInventory playerInventory, Text name) {
+		super(handler, playerInventory, name);
+		this.handler = handler;
 	}
 	
 	@Override
@@ -41,10 +44,10 @@ public class BreakerHandledScreen extends HandledScreen<BreakerScreenHandler> {
 		int int_3 = (this.width - this.backgroundWidth) / 2;
 		int int_4 = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, int_3, int_4, 0, 0, this.backgroundWidth, this.backgroundHeight);
-		if (!screenHandler.getSlot(0).hasStack()) {
+		if (!handler.getSlot(0).hasStack()) {
 			this.drawTexture(matrices, int_3 + 80, int_4 + 35, this.backgroundWidth, 0, 16, 16);
 		}
-		if (screenHandler.getBreakPercentage() > 0)
-			this.drawTexture(matrices, int_3 + 80, int_4 + 53, this.backgroundWidth, 16 + ((int) Math.floor(screenHandler.getBreakPercentage() / 10) * 16), 16, 16);
+		if (handler.getBreakPercentage() > 0)
+			this.drawTexture(matrices, int_3 + 80, int_4 + 53, this.backgroundWidth, 16 + ((int) Math.floor(handler.getBreakPercentage() / 10.0) * 16), 16, 16);
 	}
 }

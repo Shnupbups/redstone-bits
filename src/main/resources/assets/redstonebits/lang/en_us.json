@@ -6,5 +6,6 @@
   "block.redstonebits.checker": "Checker",
   "container.redstonebits.checker": "Checker",
   "block.redstonebits.counter": "Redstone Counter",
-  "block.redstonebits.resistor": "Redstone Resistor"
+  "block.redstonebits.resistor": "Redstone Resistor",
+  "block.redstonebits.analog_redstone_lamp": "Analog Redstone Lamp"
 }

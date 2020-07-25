@@ -10,6 +10,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -24,12 +25,12 @@ import com.shnupbups.redstonebits.properties.ModProperties;
 import java.util.Random;
 
 public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector {
-	public static final IntProperty COUNT = ModProperties.COUNT;
+	public static final IntProperty POWER = Properties.POWER;
 	public static final BooleanProperty BACKWARDS = ModProperties.BACKWARDS;
 	
 	public CounterBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(BACKWARDS, false).with(COUNT, 0));
+		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(BACKWARDS, false).with(POWER, 0));
 	}
 	
 	@Override
@@ -44,12 +45,12 @@ public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedR
 	
 	@Override
 	protected int getOutputLevel(BlockView view, BlockPos pos, BlockState state) {
-		return state.get(COUNT);
+		return state.get(POWER);
 	}
 	
 	@Override
 	public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, COUNT, POWERED, BACKWARDS);
+		builder.add(FACING, POWER, POWERED, BACKWARDS);
 	}
 	
 	@Override
@@ -57,13 +58,13 @@ public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedR
 		if (!this.isLocked(world, pos, state)) {
 			boolean bl = state.get(POWERED);
 			boolean backwards = state.get(BACKWARDS);
-			int c = state.get(COUNT);
+			int c = state.get(POWER);
 			boolean bl2 = this.hasPower(world, pos, state);
 			if (bl && !bl2) {
 				world.setBlockState(pos, state.with(POWERED, false), 2);
 			} else if (!bl) {
 				int nc = backwards ? c-1<0?15:c-1 : c+1>15?0:c+1;
-				world.setBlockState(pos, state.with(POWERED, true).with(COUNT, nc), 2);
+				world.setBlockState(pos, state.with(POWERED, true).with(POWER, nc), 2);
 				if (!bl2) {
 					world.getBlockTickScheduler().schedule(pos, this, this.getUpdateDelayInternal(state), TickPriority.HIGH);
 				}
