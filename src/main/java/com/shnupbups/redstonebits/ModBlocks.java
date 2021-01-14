@@ -22,7 +22,7 @@ public class ModBlocks {
 	public static final Block CHECKER = register("checker", new CheckerBlock(Block.Settings.copy(Blocks.OBSERVER)));
 	public static final Block COUNTER = register("counter", new CounterBlock(Block.Settings.copy(Blocks.REPEATER)));
 	public static final Block RESISTOR = register("resistor", new ResistorBlock(Block.Settings.copy(Blocks.REPEATER)));
-	public static final Block ANALOG_REDSTONE_LAMP = register("analog_redstone_lamp", new AnalogRedstoneLampBlock(Block.Settings.copy(Blocks.REDSTONE_LAMP).lightLevel((state) -> state.get(AnalogRedstoneLampBlock.POWER))));
+	public static final Block ANALOG_REDSTONE_LAMP = register("analog_redstone_lamp", new AnalogRedstoneLampBlock(Block.Settings.copy(Blocks.REDSTONE_LAMP).luminance((state) -> state.get(AnalogRedstoneLampBlock.POWER))));
 	
 	public static <T extends Block> T register(String name, T block) {
 		T b = Registry.register(Registry.BLOCK, RedstoneBits.id(name), block);

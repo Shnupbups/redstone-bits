@@ -15,7 +15,7 @@ public class FakePlayerEntity extends PlayerEntity {
 	public static final GameProfile profile = new GameProfile(uuid, name);
 	
 	public FakePlayerEntity(World world, ItemStack heldStack) {
-		super(world, new BlockPos(0, 0, 0), profile);
+		super(world, new BlockPos(0, 0, 0), 0.0f,  profile);
 		this.setStackInHand(Hand.MAIN_HAND, heldStack);
 	}
 	
