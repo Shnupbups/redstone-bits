@@ -52,6 +52,7 @@ public class ModBlocks {
 		register("breaker", BREAKER);
 		register("checker", CHECKER);
 		register("counter", COUNTER);
+		register("resistor", RESISTOR);
 		register("analog_redstone_lamp", ANALOG_REDSTONE_LAMP);
 		register("copper_button", COPPER_BUTTON);
 		register("exposed_copper_button", EXPOSED_COPPER_BUTTON);
