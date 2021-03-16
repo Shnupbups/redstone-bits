@@ -26,18 +26,18 @@ import com.shnupbups.redstonebits.block.ResistorBlock;
 public class ModBlocks {
 	
 	public static final Block PLACER = new PlacerBlock(Block.Settings.copy(Blocks.DISPENSER));
-	public static final Block BREAKER = register("breaker", new BreakerBlock(Block.Settings.copy(Blocks.DISPENSER)));
-	public static final Block CHECKER = register("checker", new CheckerBlock(Block.Settings.copy(Blocks.OBSERVER)));
-	public static final Block COUNTER = register("counter", new CounterBlock(Block.Settings.copy(Blocks.REPEATER)));
-	public static final Block RESISTOR = register("resistor", new ResistorBlock(Block.Settings.copy(Blocks.REPEATER)));
-	public static final Block ANALOG_REDSTONE_LAMP = register("analog_redstone_lamp", new AnalogRedstoneLampBlock(Block.Settings.copy(Blocks.REDSTONE_LAMP).luminance((state) -> state.get(AnalogRedstoneLampBlock.POWER))));
-	public static final Block OXIDIZED_COPPER_BUTTON = register("oxidized_copper_button", new CopperButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.TEAL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), 35));
-	public static final Block WEATHERED_COPPER_BUTTON = register("weathered_copper_button", new CopperButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.DARK_AQUA).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), Oxidizable.OxidizationLevel.WEATHERED, OXIDIZED_COPPER_BUTTON, 25));
-	public static final Block EXPOSED_COPPER_BUTTON = register("exposed_copper_button", new CopperButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.TERRACOTTA_LIGHT_GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), Oxidizable.OxidizationLevel.EXPOSED, WEATHERED_COPPER_BUTTON, 15));
-	public static final Block COPPER_BUTTON = register("copper_button", new CopperButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), Oxidizable.OxidizationLevel.UNAFFECTED, EXPOSED_COPPER_BUTTON, 5));
-	public static final Block WAXED_WEATHERED_COPPER_BUTTON = register("waxed_weathered_copper_button", new ModButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.DARK_AQUA).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), 25));
-	public static final Block WAXED_EXPOSED_COPPER_BUTTON = register("waxed_exposed_copper_button", new ModButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.TERRACOTTA_LIGHT_GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), 15));
-	public static final Block WAXED_COPPER_BUTTON = register("waxed_copper_button", new ModButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), 5));
+	public static final Block BREAKER = new BreakerBlock(Block.Settings.copy(Blocks.DISPENSER));
+	public static final Block CHECKER = new CheckerBlock(Block.Settings.copy(Blocks.OBSERVER));
+	public static final Block COUNTER = new CounterBlock(Block.Settings.copy(Blocks.REPEATER));
+	public static final Block RESISTOR = new ResistorBlock(Block.Settings.copy(Blocks.REPEATER));
+	public static final Block ANALOG_REDSTONE_LAMP = new AnalogRedstoneLampBlock(Block.Settings.copy(Blocks.REDSTONE_LAMP).luminance((state) -> state.get(AnalogRedstoneLampBlock.POWER)));
+	public static final Block OXIDIZED_COPPER_BUTTON = new CopperButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.TEAL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), 35);
+	public static final Block WEATHERED_COPPER_BUTTON = new CopperButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.DARK_AQUA).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), Oxidizable.OxidizationLevel.WEATHERED, OXIDIZED_COPPER_BUTTON, 25);
+	public static final Block EXPOSED_COPPER_BUTTON = new CopperButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.TERRACOTTA_LIGHT_GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), Oxidizable.OxidizationLevel.EXPOSED, WEATHERED_COPPER_BUTTON, 15);
+	public static final Block COPPER_BUTTON = new CopperButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), Oxidizable.OxidizationLevel.UNAFFECTED, EXPOSED_COPPER_BUTTON, 5);
+	public static final Block WAXED_WEATHERED_COPPER_BUTTON = new ModButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.DARK_AQUA).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), 25);
+	public static final Block WAXED_EXPOSED_COPPER_BUTTON = new ModButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.TERRACOTTA_LIGHT_GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), 15);
+	public static final Block WAXED_COPPER_BUTTON = new ModButtonBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER), 5);
 
 	public static <T extends Block> T register(String name, T block) {
 		T b = Registry.register(Registry.BLOCK, RedstoneBits.id(name), block);
