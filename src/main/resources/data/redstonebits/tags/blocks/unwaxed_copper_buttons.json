@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "redstonebits:copper_button",
+    "redstonebits:exposed_copper_button",
+    "redstonebits:weathered_copper_button",
+    "redstonebits:oxidized_copper_button"
+  ]
+}
