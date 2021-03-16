@@ -1,0 +1,26 @@
+{
+  "block.copper_button.click_on": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.button.click"
+  },
+  "block.copper_button.click_off": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.button.click"
+  },
+  "block.counter.click": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.counter.click"
+  },
+  "block.resistor.click": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.resistor.click"
+  }
+}

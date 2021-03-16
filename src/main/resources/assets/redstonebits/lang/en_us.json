@@ -14,5 +14,7 @@
   "block.redstonebits.oxidized_copper_button": "Oxidized Copper Button",
   "block.redstonebits.waxed_copper_button": "Waxed Copper Button",
   "block.redstonebits.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
-  "block.redstonebits.waxed_weathered_copper_button": "Waxed Weathered Copper Button"
+  "block.redstonebits.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
+  "subtitles.block.counter.click": "Counter clicks",
+  "subtitles.block.resistor.click": "Resistor clicks"
 }
