@@ -1,14 +1,17 @@
 package com.shnupbups.redstonebits.blockentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 
+import com.shnupbups.redstonebits.ModBlockEntities;
 import com.shnupbups.redstonebits.RedstoneBits;
 
 public class PlacerBlockEntity extends DispenserBlockEntity {
-	public PlacerBlockEntity() {
-		super(RedstoneBits.PLACER);
+	public PlacerBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.PLACER, pos, state);
 	}
 	
 	@Override

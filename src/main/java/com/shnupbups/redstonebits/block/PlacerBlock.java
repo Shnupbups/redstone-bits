@@ -30,8 +30,8 @@ public class PlacerBlock extends DispenserBlock {
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView view) {
-		return new PlacerBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new PlacerBlockEntity(pos, state);
 	}
 	
 	@Override

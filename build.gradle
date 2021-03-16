@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.4-SNAPSHOT'
+	id 'fabric-loom' version '0.6-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -7,37 +7,47 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
-group = project.mod_group
+version = project.mod_version
+group = project.maven_group
 
 minecraft {
 }
 
+loom {
+    accessWidener = file("src/main/resources/redstonebits.accesswidener")
+}
+
+repositories {
+    maven { url "http://maven.terraformersmc.com/"}
+	maven { url "https://maven.shedaniel.me/" }
+}
+
 dependencies {
 	// Minecraft
-    minecraft "com.mojang:minecraft:${minecraft_version}"
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
     // Yarn
-    mappings "net.fabricmc:yarn:${yarn_mappings}:${tiny_version}"
+    mappings "net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v${project.tiny_version}"
 
     // Fabric Loader
-    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Fabric API
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${api_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.api_version}"
 	
 	// ModMenu
-    modImplementation "io.github.prospector:modmenu:${modmenu_version}"
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 	
 	// RoughlyEnoughItems
-    modImplementation "me.shedaniel:RoughlyEnoughItems:${rei_version}"
+    //modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
 }
 
 processResources {
-	inputs.property "version", "${mod_version}"
+	inputs.property "version", project.version
 
 	from(sourceSets.main.resources.srcDirs) {
 		include "fabric.mod.json"
-		expand "version": "${mod_version}"
+		expand "version": project.version
 	}
 
 	from(sourceSets.main.resources.srcDirs) {
@@ -59,11 +69,11 @@ jar {
     manifest {
         attributes([
                 "Specification-Title"     : "${mod_name}",
-                "Specification-Vendor"    : "${mod_group}",
+                "Specification-Vendor"    : "${maven_group}",
                 "Specification-Version"   : "${mod_version}",
                 "Implementation-Title"    : "${mod_name}",
                 "Implementation-Version"  : "${mod_version}",
-                "Implementation-Vendor"   : "${mod_group}",
+                "Implementation-Vendor"   : "${maven_group}",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs"            : "${mod_name}.mixins.json"
         ])

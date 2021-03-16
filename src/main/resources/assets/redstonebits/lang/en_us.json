@@ -7,5 +7,12 @@
   "container.redstonebits.checker": "Checker",
   "block.redstonebits.counter": "Redstone Counter",
   "block.redstonebits.resistor": "Redstone Resistor",
-  "block.redstonebits.analog_redstone_lamp": "Analog Redstone Lamp"
+  "block.redstonebits.analog_redstone_lamp": "Analog Redstone Lamp",
+  "block.redstonebits.copper_button": "Copper Button",
+  "block.redstonebits.exposed_copper_button": "Exposed Copper Button",
+  "block.redstonebits.weathered_copper_button": "Weathered Copper Button",
+  "block.redstonebits.oxidized_copper_button": "Oxidized Copper Button",
+  "block.redstonebits.waxed_copper_button": "Waxed Copper Button",
+  "block.redstonebits.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
+  "block.redstonebits.waxed_weathered_copper_button": "Waxed Weathered Copper Button"
 }

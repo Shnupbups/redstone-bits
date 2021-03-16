@@ -49,7 +49,7 @@ public class ResistorBlock extends AbstractRedstoneGateBlock implements Advanced
 	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!player.abilities.allowModifyWorld) {
+		if (!player.getAbilities().allowModifyWorld) {
 			return ActionResult.PASS;
 		} else {
 			state = state.cycle(MODE);

@@ -29,6 +29,7 @@
       "com.shnupbups.redstonebits.RedstoneBitsClient"
     ]
   },
+  "accessWidener": "redstonebits.accesswidener",
   "mixins": [
     "redstonebits.mixins.json"
   ],

@@ -1,6 +1,7 @@
 package com.shnupbups.redstonebits.container.screen;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -34,13 +35,14 @@ public class BreakerHandledScreen extends HandledScreen<BreakerScreenHandler> {
 	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
 		String string_1 = this.title.getString();
 		this.textRenderer.draw(matrices, string_1, (float) (this.backgroundWidth / 2 - this.textRenderer.getWidth(string_1) / 2), 6.0F, 4210752);
-		this.textRenderer.draw(matrices, this.playerInventory.getDisplayName().getString(), 8.0F, (float) (this.backgroundHeight - 96 + 2), 4210752);
+		this.textRenderer.draw(matrices, this.field_29347, 8.0F, (float) (this.backgroundHeight - 96 + 2), 4210752);
 	}
 	
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(TEXTURE);
+		RenderSystem.setShader(GameRenderer::method_34542);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderTexture(0, TEXTURE);
 		int int_3 = (this.width - this.backgroundWidth) / 2;
 		int int_4 = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, int_3, int_4, 0, 0, this.backgroundWidth, this.backgroundHeight);

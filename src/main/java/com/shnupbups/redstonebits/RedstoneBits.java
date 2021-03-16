@@ -16,10 +16,6 @@ import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 
 public class RedstoneBits implements ModInitializer {
 	
-	public static final BlockEntityType<PlacerBlockEntity> PLACER = Registry.register(Registry.BLOCK_ENTITY_TYPE, id("placer"), BlockEntityType.Builder.create(PlacerBlockEntity::new, ModBlocks.PLACER).build(null));
-	public static final BlockEntityType<BreakerBlockEntity> BREAKER = Registry.register(Registry.BLOCK_ENTITY_TYPE, id("breaker"), BlockEntityType.Builder.create(BreakerBlockEntity::new, ModBlocks.BREAKER).build(null));
-	public static final BlockEntityType<CheckerBlockEntity> CHECKER = Registry.register(Registry.BLOCK_ENTITY_TYPE, id("checker"), BlockEntityType.Builder.create(CheckerBlockEntity::new, ModBlocks.CHECKER).build(null));
-	
 	public static Identifier id(String name) {
 		return new Identifier("redstonebits", name);
 	}
@@ -27,6 +23,7 @@ public class RedstoneBits implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModBlocks.init();
+		ModBlockEntities.init();
 		ModScreenHandlers.init();
 	}
 }

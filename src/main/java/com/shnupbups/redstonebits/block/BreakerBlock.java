@@ -8,7 +8,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.FacingBlock;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.block.entity.BellBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -37,31 +41,33 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import com.shnupbups.redstonebits.ModBlockEntities;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 import com.shnupbups.redstonebits.properties.ModProperties;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
 public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider {
-	public static final DirectionProperty FACING;
-	public static final BooleanProperty TRIGGERED;
-	public static final BooleanProperty BREAKING;
-	
-	static {
-		FACING = FacingBlock.FACING;
-		TRIGGERED = Properties.TRIGGERED;
-		BREAKING = ModProperties.BREAKING;
-	}
+	public static final DirectionProperty FACING = FacingBlock.FACING;
+	public static final BooleanProperty TRIGGERED = Properties.TRIGGERED;
+	public static final BooleanProperty BREAKING = ModProperties.BREAKING;
 	
 	public BreakerBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false).with(BREAKING, false));
 	}
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return checkType(type, ModBlockEntities.BREAKER, world.isClient ? BreakerBlockEntity::clientTick : BreakerBlockEntity::serverTick);
+	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView view) {
-		return new BreakerBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new BreakerBlockEntity(pos, state);
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class BreakerScreenHandler extends ScreenHandler {
 	public ItemStack transferSlot(PlayerEntity player, int index) {
 		ItemStack stack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(index);
-		if (slot != null && slot.hasStack()) {
+		if (slot.hasStack()) {
 			ItemStack stack2 = slot.getStack();
 			stack = stack2.copy();
 			if (index < 1) {

@@ -10,13 +10,12 @@ import com.mojang.authlib.GameProfile;
 import java.util.UUID;
 
 public class FakePlayerEntity extends PlayerEntity {
-	public static final UUID uuid = UUID.randomUUID();
+	public static final UUID uuid = UUID.fromString("1e795529-c5b7-4b85-8633-7cd4bf3093ee");
 	public static final String name = "RedstoneBitsFakePlayer";
 	public static final GameProfile profile = new GameProfile(uuid, name);
 	
-	public FakePlayerEntity(World world, ItemStack heldStack) {
-		super(world, new BlockPos(0, 0, 0), profile);
-		this.setStackInHand(Hand.MAIN_HAND, heldStack);
+	public FakePlayerEntity(World world) {
+		super(world, BlockPos.ORIGIN, 0.0f, profile);
 	}
 	
 	@Override

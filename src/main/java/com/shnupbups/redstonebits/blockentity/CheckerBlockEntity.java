@@ -1,6 +1,7 @@
 package com.shnupbups.redstonebits.blockentity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BrewingStandBlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -12,30 +13,30 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
+import com.shnupbups.redstonebits.ModBlockEntities;
 import com.shnupbups.redstonebits.RedstoneBits;
 
 import java.util.Iterator;
 
-public class CheckerBlockEntity extends LockableContainerBlockEntity implements Tickable {
+public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	private DefaultedList<ItemStack> inventory;
 	
-	public CheckerBlockEntity() {
-		super(RedstoneBits.CHECKER);
+	public CheckerBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.CHECKER, pos, state);
 		this.inventory = DefaultedList.ofSize(9, ItemStack.EMPTY);
 	}
-	
-	@Override
-	public void tick() {
+
+	public static void serverTick(World world, BlockPos pos, BlockState state, CheckerBlockEntity blockEntity) {
 		if (!world.isClient()) {
 			try {
-				if (matches() != this.world.getBlockState(this.getPos()).get(Properties.POWERED)) {
-					this.world.setBlockState(this.getPos(), world.getBlockState(this.getPos()).with(Properties.POWERED, matches()));
+				if (blockEntity.matches() != world.getBlockState(pos).get(Properties.POWERED)) {
+					world.setBlockState(pos, world.getBlockState(pos).with(Properties.POWERED, blockEntity.matches()));
 				}
-			} catch (Exception e) {
+			} catch (Exception ignored) {
 			}
 		}
 	}
@@ -92,16 +93,16 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void readNbt(CompoundTag tag) {
+		super.readNbt(tag);
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		Inventories.fromTag(tag, this.inventory);
+		Inventories.readNbt(tag, this.inventory);
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
-		Inventories.toTag(tag, this.inventory);
+	public CompoundTag writeNbt(CompoundTag tag) {
+		super.writeNbt(tag);
+		Inventories.writeNbt(tag, this.inventory);
 		return tag;
 	}
 	

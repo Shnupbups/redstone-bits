@@ -5,6 +5,8 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
@@ -22,7 +24,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+
+import com.shnupbups.redstonebits.ModBlockEntities;
+import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -39,7 +45,13 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.SOUTH).with(POWERED, false));
 	}
-	
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return checkType(type, ModBlockEntities.CHECKER, world.isClient ? null : CheckerBlockEntity::serverTick);
+	}
+
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED);
@@ -137,8 +149,8 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 	}
 	
 	@Override
-	public BlockEntity createBlockEntity(BlockView view) {
-		return new CheckerBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new CheckerBlockEntity(pos, state);
 	}
 	
 	@Override
