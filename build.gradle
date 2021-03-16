@@ -6,8 +6,8 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
-version = project.mod_version
+archivesBaseName = project.mod_name
+version = project.mod_version + "+" + project.version_meta
 group = project.maven_group
 
 minecraft {
@@ -18,7 +18,7 @@ loom {
 }
 
 repositories {
-    maven { url "http://maven.terraformersmc.com/"}
+	maven { url "http://maven.terraformersmc.com/"}
 	maven { url "https://maven.shedaniel.me/" }
 }
 
@@ -43,11 +43,11 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version
+	inputs.property "version", project.mod_version
 
 	from(sourceSets.main.resources.srcDirs) {
 		include "fabric.mod.json"
-		expand "version": project.version
+		expand "version": project.mod_version
 	}
 
 	from(sourceSets.main.resources.srcDirs) {
