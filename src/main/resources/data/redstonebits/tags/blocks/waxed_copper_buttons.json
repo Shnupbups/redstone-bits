@@ -3,6 +3,7 @@
   "values": [
     "redstonebits:waxed_copper_button",
     "redstonebits:waxed_exposed_copper_button",
-    "redstonebits:waxed_weathered_copper_button"
+    "redstonebits:waxed_weathered_copper_button",
+    "redstonebits:waxed_oxidized_copper_button"
   ]
 }

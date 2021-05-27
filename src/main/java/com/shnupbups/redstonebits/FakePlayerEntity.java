@@ -1,10 +1,8 @@
 package com.shnupbups.redstonebits;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import com.mojang.authlib.GameProfile;
 
 import java.util.UUID;

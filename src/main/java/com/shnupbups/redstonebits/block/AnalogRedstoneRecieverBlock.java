@@ -12,10 +12,10 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class AnalogRedstoneLampBlock extends Block {
+public class AnalogRedstoneRecieverBlock extends Block {
     public static final IntProperty POWER = Properties.POWER;
 
-    public AnalogRedstoneLampBlock(Settings settings) {
+    public AnalogRedstoneRecieverBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.getDefaultState().with(POWER, 0));
     }

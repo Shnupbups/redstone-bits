@@ -20,6 +20,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.TickPriority;
 import net.minecraft.world.World;
 
+import com.shnupbups.redstonebits.ModSoundEvents;
 import com.shnupbups.redstonebits.properties.ModProperties;
 
 import java.util.Random;
@@ -79,7 +80,7 @@ public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedR
 		} else {
 			boolean backwards = state.get(BACKWARDS);
 			float f = backwards ? 0.55F : 0.5F;
-			world.playSound(player, pos, SoundEvents.BLOCK_COMPARATOR_CLICK, SoundCategory.BLOCKS, 0.3F, f);
+			world.playSound(player, pos, ModSoundEvents.BLOCK_COUNTER_CLICK, SoundCategory.BLOCKS, 0.3F, f);
 			world.setBlockState(pos, state.with(BACKWARDS, !backwards), 2);
 			return ActionResult.SUCCESS;
 		}

@@ -15,7 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
@@ -28,9 +28,8 @@ import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.FakePlayerEntity;
 import com.shnupbups.redstonebits.ModBlockEntities;
-import com.shnupbups.redstonebits.properties.ModProperties;
-import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
+import com.shnupbups.redstonebits.properties.ModProperties;
 
 import java.util.Iterator;
 
@@ -221,7 +220,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public void readNbt(CompoundTag tag) {
+	public void readNbt(NbtCompound tag) {
 		super.readNbt(tag);
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 		this.breakProgress = tag.getInt("BreakProgress");
@@ -229,7 +228,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 	
 	@Override
-	public CompoundTag writeNbt(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		super.writeNbt(tag);
 		Inventories.writeNbt(tag, this.inventory);
 		tag.putInt("BreakProgress", breakProgress);
@@ -237,14 +236,14 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag tag) {
+	public void fromClientTag(NbtCompound tag) {
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 		this.breakProgress = tag.getInt("BreakProgress");
 		Inventories.readNbt(tag, this.inventory);
 	}
 
 	@Override
-	public CompoundTag toClientTag(CompoundTag tag) {
+	public NbtCompound toClientTag(NbtCompound tag) {
 		super.writeNbt(tag);
 		Inventories.writeNbt(tag, this.inventory);
 		tag.putInt("BreakProgress", breakProgress);

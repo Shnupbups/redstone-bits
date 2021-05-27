@@ -1,13 +1,12 @@
 package com.shnupbups.redstonebits.blockentity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BrewingStandBlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.Generic3x3ContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
@@ -18,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.ModBlockEntities;
-import com.shnupbups.redstonebits.RedstoneBits;
 
 import java.util.Iterator;
 
@@ -93,14 +91,14 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	}
 	
 	@Override
-	public void readNbt(CompoundTag tag) {
+	public void readNbt(NbtCompound tag) {
 		super.readNbt(tag);
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 		Inventories.readNbt(tag, this.inventory);
 	}
 	
 	@Override
-	public CompoundTag writeNbt(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		super.writeNbt(tag);
 		Inventories.writeNbt(tag, this.inventory);
 		return tag;

@@ -2,7 +2,6 @@ package com.shnupbups.redstonebits.properties;
 
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntProperty;
 
 public class ModProperties {
 	public static final BooleanProperty BREAKING = BooleanProperty.of("breaking");

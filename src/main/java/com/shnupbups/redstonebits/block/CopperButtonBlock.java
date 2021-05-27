@@ -1,33 +1,27 @@
 package com.shnupbups.redstonebits.block;
 
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+
 import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.AbstractButtonBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-
-import com.shnupbups.redstonebits.ModSoundEvents;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
 public class CopperButtonBlock extends ModButtonBlock implements Oxidizable {
 	private final Oxidizable.OxidizationLevel oxidizationLevel;
-	private final Block nextStage;
 
-	public CopperButtonBlock(AbstractBlock.Settings settings, int pressTicks) {
-		super(settings, pressTicks);
-		this.oxidizationLevel = Oxidizable.OxidizationLevel.values()[Oxidizable.OxidizationLevel.values().length - 1];
-		this.nextStage = this;
-	}
-
-	public CopperButtonBlock(AbstractBlock.Settings settings, Oxidizable.OxidizationLevel oxidizationLevel, Block nextStage, int pressTicks) {
-		super(settings, pressTicks);
+	public CopperButtonBlock(Oxidizable.OxidizationLevel oxidizationLevel, int pressTicks, AbstractBlock.Settings settings) {
+		super(pressTicks, settings);
 		this.oxidizationLevel = oxidizationLevel;
-		this.nextStage = nextStage;
 	}
 
 	@Override
@@ -37,16 +31,17 @@ public class CopperButtonBlock extends ModButtonBlock implements Oxidizable {
 
 	@Override
 	public boolean hasRandomTicks(BlockState state) {
-		return this.nextStage != this;
+		return Oxidizable.getIncreasedOxidationBlock(state.getBlock()).isPresent();
 	}
 
 	@Override
-	public Oxidizable.OxidizationLevel getDegradationLevel() {
+	public OxidizationLevel getDegradationLevel() {
 		return this.oxidizationLevel;
 	}
 
 	@Override
-	public BlockState getDegradationResult(BlockState state) {
-		return this.nextStage.getDefaultState();
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if((player.getStackInHand(hand).isOf(Items.HONEYCOMB) || player.getStackInHand(hand).isIn(FabricToolTags.AXES)) && state.get(POWERED)) return ActionResult.CONSUME;
+		return super.onUse(state, world, pos, player, hand, hit);
 	}
 }

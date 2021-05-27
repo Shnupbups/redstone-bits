@@ -1,20 +1,20 @@
 {
     "variants": {
         "power=0":  { "model": "redstonebits:block/analog_redstone_lamp" },
-        "power=1": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
-        "power=2": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
+        "power=1":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
+        "power=2":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
         "power=3":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
         "power=4":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
-        "power=5": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
-        "power=6": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
+        "power=5":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
+        "power=6":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
         "power=7":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
         "power=8":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
-        "power=9": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
+        "power=9":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
         "power=10": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
-        "power=11":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
-        "power=12":  { "model": "redstonebits:block/analog_redstone_lamp_medium" },
+        "power=11": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
+        "power=12": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
         "power=13": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
         "power=14": { "model": "redstonebits:block/analog_redstone_lamp_medium" },
-        "power=15":    { "model": "redstonebits:block/analog_redstone_lamp_on" }
+        "power=15": { "model": "redstonebits:block/analog_redstone_lamp_on" }
     }
 }

@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 import com.shnupbups.redstonebits.ModBlockEntities;
-import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
 import org.jetbrains.annotations.Nullable;
 

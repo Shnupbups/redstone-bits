@@ -20,7 +20,7 @@ public enum ResistorMode implements StringIdentifiable {
 	public int resistPower(int power) {
 		float f = (float)power;
 		float f2 = f/divisor;
-		return (int)f2;
+		return Math.round(f2);
 	}
 	
 	@Override
