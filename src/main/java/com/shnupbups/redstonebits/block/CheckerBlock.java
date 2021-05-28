@@ -32,13 +32,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 
 public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneConnector {
-	public static final DirectionProperty FACING;
-	public static final BooleanProperty POWERED;
-	
-	static {
-		FACING = Properties.FACING;
-		POWERED = Properties.POWERED;
-	}
+	public static final DirectionProperty FACING = Properties.FACING;
+	public static final BooleanProperty POWERED = Properties.POWERED;
 	
 	public CheckerBlock(Settings settings) {
 		super(settings);

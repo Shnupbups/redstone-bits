@@ -3,7 +3,7 @@ package com.shnupbups.redstonebits.properties;
 import net.minecraft.util.StringIdentifiable;
 
 public enum ResistorMode implements StringIdentifiable {
-	ONEPOINTFIVE(1.5f),
+	ONE_POINT_FIVE(1.5f),
 	HALVE(2),
 	THIRD(3);
 	
