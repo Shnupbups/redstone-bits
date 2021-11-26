@@ -17,21 +17,21 @@ import com.shnupbups.redstonebits.blockentity.PlacerBlockEntity;
 
 public class PlacerBlock extends DispenserBlock {
 	private static final DispenserBehavior BEHAVIOR = new BlockPlacementDispenserBehavior();
-	
+
 	public PlacerBlock(Settings settings) {
 		super(settings);
 	}
-	
+
 	@Override
 	protected DispenserBehavior getBehaviorForItem(ItemStack stack) {
 		return BEHAVIOR;
 	}
-	
+
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new PlacerBlockEntity(pos, state);
 	}
-	
+
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient) {

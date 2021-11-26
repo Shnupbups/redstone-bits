@@ -32,7 +32,7 @@ public class ModButtonBlock extends AbstractButtonBlock {
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		super.onStateReplaced(state, world, pos, newState, moved);
 		if (!moved && !state.isOf(newState.getBlock())) {
-			if(newState.isIn(BlockTags.BUTTONS) && state.get(POWERED) && newState.get(POWERED)) {
+			if (newState.isIn(BlockTags.BUTTONS) && state.get(POWERED) && newState.get(POWERED)) {
 				world.setBlockState(pos, newState.with(POWERED, false));
 			}
 		}

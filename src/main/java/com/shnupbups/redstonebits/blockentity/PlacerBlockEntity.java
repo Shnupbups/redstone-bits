@@ -12,7 +12,7 @@ public class PlacerBlockEntity extends DispenserBlockEntity {
 	public PlacerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.PLACER, pos, state);
 	}
-	
+
 	@Override
 	protected Text getContainerName() {
 		return new TranslatableText("container.redstonebits.placer");

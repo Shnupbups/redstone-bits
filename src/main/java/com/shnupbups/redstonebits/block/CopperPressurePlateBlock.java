@@ -1,18 +1,18 @@
 package com.shnupbups.redstonebits.block;
 
+import java.util.Random;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Random;
-
 public class CopperPressurePlateBlock extends ModWeightedPressurePlateBlock implements Oxidizable {
-	private final Oxidizable.OxidizationLevel oxidizationLevel;
+	private final Oxidizable.OxidationLevel oxidationLevel;
 
-	public CopperPressurePlateBlock(Oxidizable.OxidizationLevel oxidizationLevel, int weight, Settings settings) {
+	public CopperPressurePlateBlock(Oxidizable.OxidationLevel oxidationLevel, int weight, Settings settings) {
 		super(weight, settings);
-		this.oxidizationLevel = oxidizationLevel;
+		this.oxidationLevel = oxidationLevel;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class CopperPressurePlateBlock extends ModWeightedPressurePlateBlock impl
 	}
 
 	@Override
-	public OxidizationLevel getDegradationLevel() {
-		return this.oxidizationLevel;
+	public OxidationLevel getDegradationLevel() {
+		return this.oxidationLevel;
 	}
 }

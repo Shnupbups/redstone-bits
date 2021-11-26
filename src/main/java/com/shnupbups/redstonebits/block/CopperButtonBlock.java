@@ -1,6 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import java.util.Random;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
@@ -14,14 +14,14 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.Random;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 
 public class CopperButtonBlock extends ModButtonBlock implements Oxidizable {
-	private final Oxidizable.OxidizationLevel oxidizationLevel;
+	private final Oxidizable.OxidationLevel oxidationLevel;
 
-	public CopperButtonBlock(Oxidizable.OxidizationLevel oxidizationLevel, int pressTicks, AbstractBlock.Settings settings) {
+	public CopperButtonBlock(Oxidizable.OxidationLevel oxidationLevel, int pressTicks, AbstractBlock.Settings settings) {
 		super(pressTicks, settings);
-		this.oxidizationLevel = oxidizationLevel;
+		this.oxidationLevel = oxidationLevel;
 	}
 
 	@Override
@@ -35,13 +35,14 @@ public class CopperButtonBlock extends ModButtonBlock implements Oxidizable {
 	}
 
 	@Override
-	public OxidizationLevel getDegradationLevel() {
-		return this.oxidizationLevel;
+	public OxidationLevel getDegradationLevel() {
+		return this.oxidationLevel;
 	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if((player.getStackInHand(hand).isOf(Items.HONEYCOMB) || player.getStackInHand(hand).isIn(FabricToolTags.AXES)) && state.get(POWERED)) return ActionResult.CONSUME;
+		if ((player.getStackInHand(hand).isOf(Items.HONEYCOMB) || player.getStackInHand(hand).isIn(FabricToolTags.AXES)) && !state.get(POWERED))
+			return ActionResult.PASS;
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
 }

@@ -1,15 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "RBR",
+    "#QR",
     "SSS"
   ],
   "key": {
+    "#": {
+      "item": "minecraft:redstone_torch"
+    },
     "R": {
       "item": "minecraft:redstone"
     },
-    "B": {
-      "item": "minecraft:redstone_block"
+    "Q": {
+      "item": "minecraft:quartz"
     },
     "S": {
       "item": "minecraft:stone"

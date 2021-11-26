@@ -1,0 +1,6 @@
+{
+    "parent": "redstonebits:block/adder_0",
+    "textures": {
+        "top": "redstonebits:block/adder_15"
+    }
+}

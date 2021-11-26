@@ -1,6 +1,8 @@
 package com.shnupbups.redstonebits.block;
 
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import java.util.Random;
+
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -38,19 +40,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+
 import com.shnupbups.redstonebits.ModBlockEntities;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 import com.shnupbups.redstonebits.properties.ModProperties;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 
 public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider {
 	public static final DirectionProperty FACING = FacingBlock.FACING;
 	public static final BooleanProperty TRIGGERED = Properties.TRIGGERED;
 	public static final BooleanProperty BREAKING = ModProperties.BREAKING;
-	
+
 	public BreakerBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false).with(BREAKING, false));
@@ -61,7 +62,7 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return checkType(type, ModBlockEntities.BREAKER, world.isClient ? BreakerBlockEntity::clientTick : BreakerBlockEntity::serverTick);
 	}
-	
+
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new BreakerBlockEntity(pos, state);
@@ -93,7 +94,9 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 
 			@Override
 			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-				return new BreakerScreenHandler(syncId, playerInventory, (Inventory) world.getBlockEntity(pos));
+				if (world.getBlockEntity(pos) instanceof BreakerBlockEntity blockEntity) {
+					return new BreakerScreenHandler(syncId, playerInventory, blockEntity);
+				} else return new BreakerScreenHandler(syncId, playerInventory);
 			}
 		};
 	}
@@ -103,16 +106,16 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		boolean bl = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 		boolean bl2 = state.get(TRIGGERED);
 		if (bl && !bl2) {
-			world.getBlockTickScheduler().schedule(pos, this, 4);
-			world.setBlockState(pos, state.with(TRIGGERED, true), 4);
+			world.createAndScheduleBlockTick(pos, this, 4);
+			world.setBlockState(pos, state.with(TRIGGERED, true), Block.NO_REDRAW);
 		} else if (!bl && bl2) {
-			world.setBlockState(pos, state.with(TRIGGERED, false), 4);
+			world.setBlockState(pos, state.with(TRIGGERED, false), Block.NO_REDRAW);
 		}
 		if (isBreaking(world, pos) && pos2 == getBreakPos(world, pos)) {
 			cancelBreak(world, pos);
 		}
 	}
-	
+
 	public boolean startBreak(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
 		BlockState state = world.getBlockState(pos);
@@ -123,14 +126,14 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		}
 		return isBreakable;
 	}
-	
+
 	public void cancelBreak(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof BreakerBlockEntity) {
 			((BreakerBlockEntity) be).cancelBreak();
 		}
 	}
-	
+
 	public boolean isBreaking(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof BreakerBlockEntity) {
@@ -138,11 +141,11 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		}
 		return false;
 	}
-	
+
 	public BlockPos getBreakPos(World world, BlockPos pos) {
 		return pos.add(world.getBlockState(pos).get(Properties.FACING).getVector());
 	}
-	
+
 	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (this.isBreaking(world, pos)) this.cancelBreak(world, pos);
@@ -150,10 +153,10 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		boolean boolean_2 = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 		boolean boolean_3 = state.get(TRIGGERED);
 		if (!boolean_2 && boolean_3) {
-			world.setBlockState(pos, state.with(TRIGGERED, false), 4);
+			world.setBlockState(pos, state.with(TRIGGERED, false), Block.NO_REDRAW);
 		}
 	}
-	
+
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
@@ -164,7 +167,7 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		if (itemStack.hasCustomName()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof BreakerBlockEntity) {
-				((BreakerBlockEntity)blockEntity).setCustomName(itemStack.getName());
+				((BreakerBlockEntity) blockEntity).setCustomName(itemStack.getName());
 			}
 		}
 
@@ -182,32 +185,32 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 			super.onStateReplaced(state, world, pos, newState, moved);
 		}
 	}
-	
+
 	@Override
 	public boolean hasComparatorOutput(BlockState state) {
 		return true;
 	}
-	
+
 	@Override
 	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
 		return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
 	}
-	
+
 	@Override
 	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
-	
+
 	@Override
 	public BlockState rotate(BlockState state, BlockRotation rotation) {
 		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
-	
+
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
 		return state.rotate(mirror.getRotation(state.get(FACING)));
 	}
-	
+
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(FACING, TRIGGERED, BREAKING);

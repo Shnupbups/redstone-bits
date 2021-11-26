@@ -1,0 +1,7 @@
+{
+    "parent": "redstonebits:block/inverter",
+    "textures": {
+        "top": "redstonebits:block/inverter_on",
+        "torch": "block/redstone_torch_off"
+    }
+}

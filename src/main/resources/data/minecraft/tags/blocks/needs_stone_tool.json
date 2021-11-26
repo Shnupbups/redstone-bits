@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#redstonebits:copper_buttons",
+    "#redstonebits:copper_pressure_plates"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "redstonebits:block/counter_locked_0",
+    "textures": {
+        "top": "redstonebits:block/counter_11"
+    }
+}

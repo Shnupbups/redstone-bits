@@ -22,5 +22,11 @@
       "random/click"
     ],
     "subtitle": "subtitles.block.resistor.click"
+  },
+  "block.adder.click": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.adder.click"
   }
 }

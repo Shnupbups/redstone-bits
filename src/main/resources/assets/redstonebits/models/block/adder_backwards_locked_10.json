@@ -1,0 +1,7 @@
+{
+    "parent": "redstonebits:block/adder_locked_0",
+    "textures": {
+        "top": "redstonebits:block/adder_10",
+        "torch": "block/redstone_torch"
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=south,powered=false,locked=false": { "model": "redstonebits:block/inverter" },
+        "facing=west,powered=false,locked=false": { "model": "redstonebits:block/inverter", "y": 90 },
+        "facing=north,powered=false,locked=false": { "model": "redstonebits:block/inverter", "y": 180 },
+        "facing=east,powered=false,locked=false": { "model": "redstonebits:block/inverter", "y": 270 },
+        "facing=south,powered=true,locked=false": { "model": "redstonebits:block/inverter_on" },
+        "facing=west,powered=true,locked=false": { "model": "redstonebits:block/inverter_on", "y": 90 },
+        "facing=north,powered=true,locked=false": { "model": "redstonebits:block/inverter_on", "y": 180 },
+        "facing=east,powered=true,locked=false": { "model": "redstonebits:block/inverter_on", "y": 270 },
+        "facing=south,powered=false,locked=true": { "model": "redstonebits:block/inverter_locked" },
+        "facing=west,powered=false,locked=true": { "model": "redstonebits:block/inverter_locked", "y": 90 },
+        "facing=north,powered=false,locked=true": { "model": "redstonebits:block/inverter_locked", "y": 180 },
+        "facing=east,powered=false,locked=true": { "model": "redstonebits:block/inverter_locked", "y": 270 },
+        "facing=south,powered=true,locked=true": { "model": "redstonebits:block/inverter_locked_on" },
+        "facing=west,powered=true,locked=true": { "model": "redstonebits:block/inverter_locked_on", "y": 90 },
+        "facing=north,powered=true,locked=true": { "model": "redstonebits:block/inverter_locked_on", "y": 180 },
+        "facing=east,powered=true,locked=true": { "model": "redstonebits:block/inverter_locked_on", "y": 270 }
+    }
+}

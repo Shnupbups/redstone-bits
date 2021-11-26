@@ -6,7 +6,9 @@
   "block.redstonebits.checker": "Checker",
   "container.redstonebits.checker": "Checker",
   "block.redstonebits.counter": "Redstone Counter",
+  "block.redstonebits.adder": "Redstone Adder",
   "block.redstonebits.resistor": "Redstone Resistor",
+  "block.redstonebits.inverter": "Redstone Inverter",
   "block.redstonebits.analog_redstone_lamp": "Analog Redstone Lamp",
   "block.redstonebits.redstone_display": "Redstone Display",
   "block.redstonebits.copper_button": "Copper Button",
@@ -26,5 +28,6 @@
   "block.redstonebits.waxed_weathered_medium_weighted_pressure_plate": "Waxed Weathered Medium Weighted Pressure Plate",
   "block.redstonebits.waxed_oxidized_medium_weighted_pressure_plate": "Waxed Oxidized Medium Weighted Pressure Plate",
   "subtitles.block.counter.click": "Counter clicks",
+  "subtitles.block.adder.click": "Adder clicks",
   "subtitles.block.resistor.click": "Resistor clicks"
 }

@@ -1,14 +1,11 @@
 package com.shnupbups.redstonebits.blockentity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import java.util.Iterator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,82 +13,150 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import com.shnupbups.redstonebits.FakePlayerEntity;
 import com.shnupbups.redstonebits.ModBlockEntities;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 import com.shnupbups.redstonebits.properties.ModProperties;
 
-import java.util.Iterator;
-
-public class BreakerBlockEntity extends LockableContainerBlockEntity implements BlockEntityClientSerializable {
-	protected final PropertyDelegate propertyDelegate;
-	public BlockState breakState;
-	public ItemStack breakStack = ItemStack.EMPTY;
-	public int breakProgress = 0;
-	private DefaultedList<ItemStack> inventory;
+public class BreakerBlockEntity extends LockableContainerBlockEntity {
+	private final PropertyDelegate propertyDelegate = new BreakerPropertyDelegate();
+	private final DefaultedList<ItemStack> inventory;
+	private BlockState breakState;
+	private ItemStack breakStack = ItemStack.EMPTY;
+	private int breakProgress = 0;
 	private FakePlayerEntity fakePlayerEntity;
-	
+
 	public BreakerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.BREAKER, pos, state);
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-		this.propertyDelegate = new PropertyDelegate() {
-			@Override
-			public int get(int index) {
-				switch (index) {
-					case 0:
-						return BreakerBlockEntity.this.breakProgress;
-					case 1:
-						return BreakerBlockEntity.this.getBreakTime();
-					default:
-						return 0;
-				}
-			}
-			
-			@Override
-			public void set(int index, int value) {
-				if (index == 0) {
-					BreakerBlockEntity.this.breakProgress = value;
-				}
-				
-			}
-			
-			@Override
-			public int size() {
-				return 1;
-			}
-		};
 	}
-	
+
+	@Environment(EnvType.CLIENT)
+	public static void clientTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
+		if (blockEntity.isBreaking()) {
+			//System.out.println("breaking! time: " + blockEntity.getBreakTime() + " progress: " + blockEntity.getBreakProgress() + " percent: " + blockEntity.getBreakPercentage() + "%");
+			world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), blockEntity.getBreakPercentage() / 10);
+		} else {
+			world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), -1);
+		}
+	}
+
+	public static void serverTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
+		BlockState currentBreakState = world.getBlockState(blockEntity.getBreakPos());
+		int prevBreakPercentage = blockEntity.getBreakPercentage();
+		boolean dirty = false;
+		if (blockEntity.isBreaking()) {
+			BlockState breakState = blockEntity.getBreakState();
+			if (breakState == null) blockEntity.startBreak();
+			if (!blockEntity.getBreakStack().equals(blockEntity.getTool()) || !breakState.equals(currentBreakState) || currentBreakState.isAir() || currentBreakState.getHardness(world, pos) < 0) {
+				//System.out.println("cancel");
+				blockEntity.cancelBreak();
+			} else if (blockEntity.getBreakProgress() >= blockEntity.getBreakTime()) {
+				//System.out.println("break");
+				blockEntity.finishBreak();
+			} else {
+				blockEntity.continueBreak();
+			}
+
+			if (blockEntity.getBreakPercentage() != prevBreakPercentage) {
+				dirty = true;
+			}
+		}
+		if (blockEntity.isBreaking() != world.getBlockState(pos).get(ModProperties.BREAKING)) {
+			world.setBlockState(pos, world.getBlockState(pos).with(ModProperties.BREAKING, blockEntity.isBreaking()));
+			dirty = true;
+		}
+		if (dirty) {
+			((ServerChunkManager) world.getChunkManager()).markForUpdate(pos);
+			blockEntity.markDirty();
+		}
+	}
+
+	public static int getBreakPercentage(int breakProgress, int breakTime) {
+		if (breakTime > 0) {
+			float div = ((float) breakProgress / (float) breakTime);
+			return Math.min((int) (div * 100), 100);
+		} else return 0;
+	}
+
+	public ItemStack getBreakStack() {
+		return breakStack;
+	}
+
+	public void setBreakStack(ItemStack stack) {
+		this.breakStack = stack;
+	}
+
+	public BlockState getBreakState() {
+		return breakState;
+	}
+
+	public void setBreakState(BlockState state) {
+		this.breakState = state;
+	}
+
+	public int getBreakProgress() {
+		return breakProgress;
+	}
+
+	public void setBreakProgress(int breakProgress) {
+		this.breakProgress = breakProgress;
+	}
+
+	public void incrementBreakProgress() {
+		this.breakProgress++;
+	}
+
+	public void resetBreakProgress() {
+		this.breakProgress = 0;
+	}
+
+	public PropertyDelegate getPropertyDelegate() {
+		return this.propertyDelegate;
+	}
+
 	public int getBreakTime() {
-		if (this.breakState == null) return 0;
+		BlockState breakState = this.getBreakState();
+		ItemStack stack = this.getBreakStack();
+		if (breakState == null) return 0;
 		float baseTime = this.calcBlockBreakingTime();
-		float itemMultiplier = this.getTool().getMiningSpeedMultiplier(breakState);
-		int level = EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, this.getTool());
+		float itemMultiplier = stack.getMiningSpeedMultiplier(breakState);
+		int level = EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack);
 		if (level > 0) {
 			itemMultiplier += (level * level + 1);
 		}
 		float time = baseTime / itemMultiplier;
 		return (int) time;
 	}
-	
+
 	public boolean isToolEffective() {
-		if (this.breakState == null) return false;
+		BlockState breakState = this.getBreakState();
+		if (breakState == null) return false;
 		ItemStack item = this.getStack(0);
-		return !this.breakState.isToolRequired() || item.isSuitableFor(this.breakState);
+		return !breakState.isToolRequired() || item.isSuitableFor(breakState);
 	}
-	
+
 	public float calcBlockBreakingTime() {
-		float hardness = this.breakState.getHardness(this.getWorld(), this.getBreakPos());
+		BlockState breakState = this.getBreakState();
+		if (breakState == null) return 0.0F;
+		float hardness = breakState.getHardness(this.getWorld(), this.getBreakPos());
 		if (hardness == -1.0F) {
 			return 0.0F;
 		} else {
@@ -99,219 +164,217 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity implements 
 			return hardness * (float) multiplier;
 		}
 	}
-	
+
 	public void startBreak() {
 		//System.out.println("start break at "+getBreakPos().toString());
-		this.breakState = this.getWorld().getBlockState(this.getBreakPos());
-		this.breakStack = this.getTool();
-		this.breakProgress++;
+		this.setBreakState(this.getWorld().getBlockState(this.getBreakPos()));
+		this.setBreakStack(this.getTool());
+		this.incrementBreakProgress();
 		this.markDirty();
 	}
-	
+
 	public void cancelBreak() {
 		//System.out.println("finish/cancel break at "+getBreakPos().toString());
-		this.breakState = null;
-		this.breakStack = ItemStack.EMPTY;
-		this.breakProgress = 0;
+		this.setBreakState(null);
+		this.setBreakStack(ItemStack.EMPTY);
+		this.resetBreakProgress();
 		this.markDirty();
 	}
-	
+
 	public void finishBreak() {
 		//System.out.println("finish break at "+getBreakPos().toString());
 		this.breakBlock();
 		this.cancelBreak();
 		this.markDirty();
 	}
-	
+
 	public boolean isBreaking() {
-		return breakProgress > 0;
+		return getBreakProgress() > 0;
 	}
-	
+
+	public Direction getFacing() {
+		if (this.getWorld() == null) return Direction.NORTH;
+		return this.getWorld().getBlockState(this.getPos()).get(Properties.FACING);
+	}
+
 	public BlockPos getBreakPos() {
-		try {
-			return this.getPos().add(this.getWorld().getBlockState(this.getPos()).get(Properties.FACING).getVector());
-		} catch (Exception e) {
-			return this.getPos();
+		return this.getPos().add(getFacing().getVector());
+	}
+
+	public void breakBlock() {
+		//System.out.println("break at "+getBreakPos().toString());
+		World world = this.getWorld();
+		if (world != null && !world.isClient()) {
+			BlockState breakState = this.getBreakState();
+			PlayerEntity fakePlayer = this.getFakePlayer();
+			BlockEntity blockEntity = breakState.hasBlockEntity() ? world.getBlockEntity(getBreakPos()) : null;
+			this.getFakePlayer().setStackInHand(Hand.MAIN_HAND, getBreakStack());
+			if (getTool().getItem().canMine(breakState, world, getBreakPos(), fakePlayer) && isToolEffective()) {
+				Block.dropStacks(breakState, world, getBreakPos(), blockEntity, fakePlayer, getTool());
+			}
+			getTool().getItem().postMine(getTool(), world, breakState, getBreakPos(), fakePlayer);
+			world.breakBlock(getBreakPos(), false);
 		}
 	}
-	
-	public boolean breakBlock() {
-		//System.out.println("break at "+getBreakPos().toString());
-		if (!world.isClient()) {
-			BlockEntity blockEntity = breakState.hasBlockEntity() ? this.world.getBlockEntity(getBreakPos()) : null;
-			this.getFakePlayer().setStackInHand(Hand.MAIN_HAND, getTool());
-			if (getTool().getItem().canMine(breakState, world, getBreakPos(), this.getFakePlayer()) && isToolEffective()) {
-				Block.dropStacks(breakState, world, getBreakPos(), blockEntity, this.getFakePlayer(), getTool());
-			}
-			getTool().getItem().postMine(getTool(), world, breakState, getBreakPos(), this.getFakePlayer());
-			return world.breakBlock(getBreakPos(), false);
-		} else return true;
-	}
-	
+
 	public void continueBreak() {
-		this.breakProgress++;
+		this.incrementBreakProgress();
 		this.markDirty();
 	}
-	
+
 	public ItemStack getTool() {
 		return this.getStack(0);
 	}
 
 	public PlayerEntity getFakePlayer() {
-		if(fakePlayerEntity == null) fakePlayerEntity = new FakePlayerEntity(this.getWorld());
+		if (fakePlayerEntity == null) fakePlayerEntity = new FakePlayerEntity(this.getWorld(), this.getPos());
 		return fakePlayerEntity;
 	}
 
-	@Environment(EnvType.CLIENT)
-	public static void clientTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
-		MinecraftClient.getInstance().worldRenderer.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), blockEntity.getBreakPercentage() > 0 ? blockEntity.getBreakPercentage() / 10 : -1);
-	}
-
-	public static void serverTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
-		BlockState currentBreakState = world.getBlockState(blockEntity.getBreakPos());
-		if (blockEntity.isBreaking()) {
-			if (blockEntity.breakState == null) blockEntity.startBreak();
-			if (!blockEntity.breakStack.equals(blockEntity.getTool()) || !blockEntity.breakState.equals(currentBreakState) || currentBreakState.isAir() || currentBreakState.getHardness(world, pos) < 0) {
-				//System.out.println("cancel");
-				blockEntity.cancelBreak();
-			} else if (blockEntity.breakProgress >= blockEntity.getBreakTime()) {
-				//System.out.println("break");
-				blockEntity.finishBreak();
-			} else {
-				blockEntity.continueBreak();
-			}
-		}
-		if (blockEntity.isBreaking() != world.getBlockState(pos).get(ModProperties.BREAKING)) {
-			world.setBlockState(pos, world.getBlockState(pos).with(ModProperties.BREAKING, blockEntity.isBreaking()));
-			blockEntity.markDirty();
-		}
-		
-	}
-	
 	@Override
 	public Text getContainerName() {
 		return new TranslatableText("container.redstonebits.breaker");
 	}
-	
+
 	@Override
 	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-		return new BreakerScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+		return new BreakerScreenHandler(syncId, playerInventory, this, this.getPropertyDelegate());
 	}
-	
+
 	@Override
 	public int size() {
 		return 1;
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
-		Iterator var1 = this.inventory.iterator();
-		
+		Iterator<ItemStack> var1 = this.inventory.iterator();
+
 		ItemStack stack;
 		do {
 			if (!var1.hasNext()) {
 				return true;
 			}
-			
-			stack = (ItemStack) var1.next();
+
+			stack = var1.next();
 		} while (stack.isEmpty());
-		
+
 		return false;
 	}
-	
+
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		this.breakProgress = tag.getInt("BreakProgress");
-		Inventories.readNbt(tag, this.inventory);
-	}
-	
-	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		Inventories.writeNbt(tag, this.inventory);
-		tag.putInt("BreakProgress", breakProgress);
-		return tag;
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		Inventories.readNbt(nbt, this.inventory);
+		this.readBreakerNbt(nbt);
 	}
 
 	@Override
-	public void fromClientTag(NbtCompound tag) {
-		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		this.breakProgress = tag.getInt("BreakProgress");
-		Inventories.readNbt(tag, this.inventory);
+	public void writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		Inventories.writeNbt(nbt, this.inventory);
+		this.writeBreakerNbt(nbt);
 	}
 
-	@Override
-	public NbtCompound toClientTag(NbtCompound tag) {
-		super.writeNbt(tag);
-		Inventories.writeNbt(tag, this.inventory);
-		tag.putInt("BreakProgress", breakProgress);
-		return tag;
-	}
-	
 	@Override
 	public ItemStack getStack(int slot) {
 		return this.inventory.get(slot);
 	}
-	
+
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
 		ItemStack stack = Inventories.splitStack(this.inventory, slot, amount);
 		if (!stack.isEmpty()) {
 			this.markDirty();
 		}
-		
+
 		return stack;
 	}
-	
+
 	@Override
 	public ItemStack removeStack(int slot) {
 		return Inventories.removeStack(this.inventory, slot);
 	}
-	
+
 	@Override
 	public void setStack(int slot, ItemStack stack) {
 		this.inventory.set(slot, stack);
 		if (stack.getCount() > this.getMaxCountPerStack()) {
 			stack.setCount(this.getMaxCountPerStack());
 		}
-		
+
 		this.markDirty();
 	}
-	
+
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		if (this.world.getBlockEntity(this.pos) != this) {
+		BlockPos pos = this.getPos();
+		if (this.getWorld() == null || this.getWorld().getBlockEntity(pos) != this) {
 			return false;
 		} else {
-			return player.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+			return player.squaredDistanceTo((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
 		}
 	}
-	
+
 	@Override
 	public void clear() {
 		this.inventory.clear();
 	}
-	
-	@Override
-	public boolean checkUnlocked(PlayerEntity player) {
-		return super.checkUnlocked(player) && !player.isSpectator();
-	}
-	
-	@Override
-	public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		if (this.checkUnlocked(player)) {
-			return this.createScreenHandler(syncId, playerInventory);
-		} else {
-			return null;
-		}
-	}
-	
+
 	public int getBreakPercentage() {
-		if (this.getBreakTime() > 0) {
-			float div = ((float) this.breakProgress / (float) this.getBreakTime());
-			return Math.min((int) (div * 100), 100);
-		} else return 0;
+		return getBreakPercentage(this.getBreakProgress(), this.getBreakTime());
+	}
+
+	public void writeBreakerNbt(NbtCompound nbt) {
+		nbt.putInt("BreakProgress", this.getBreakProgress());
+		if (this.getBreakState() != null) {
+			nbt.put("BreakState", NbtHelper.fromBlockState(this.getBreakState()));
+		}
+		NbtCompound breakStack = new NbtCompound();
+		this.getBreakStack().writeNbt(breakStack);
+		nbt.put("BreakStack", breakStack);
+	}
+
+	public void readBreakerNbt(NbtCompound nbt) {
+		this.setBreakProgress(nbt.getInt("BreakProgress"));
+		if (nbt.contains("BreakState")) {
+			this.setBreakState(NbtHelper.toBlockState(nbt.getCompound("BreakState")));
+		} else this.setBreakState(null);
+		this.setBreakStack(ItemStack.fromNbt(nbt.getCompound("BreakStack")));
+	}
+
+	@Override
+	public NbtCompound toInitialChunkDataNbt() {
+		NbtCompound nbt = new NbtCompound();
+		writeBreakerNbt(nbt);
+		return nbt;
+	}
+
+	@Override
+	public BlockEntityUpdateS2CPacket toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.create(this);
+	}
+
+	private class BreakerPropertyDelegate implements PropertyDelegate {
+		@Override
+		public int get(int index) {
+			return switch (index) {
+				case 0 -> BreakerBlockEntity.this.getBreakProgress();
+				case 1 -> BreakerBlockEntity.this.getBreakTime();
+				default -> 0;
+			};
+		}
+
+		@Override
+		public void set(int index, int value) {
+			if (index == 0) {
+				BreakerBlockEntity.this.setBreakProgress(value);
+			}
+		}
+
+		@Override
+		public int size() {
+			return 2;
+		}
 	}
 }
