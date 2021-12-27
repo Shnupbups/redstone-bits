@@ -50,6 +50,9 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 
 	@Environment(EnvType.CLIENT)
 	public static void clientTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
+		if(blockEntity.getBreakState() == null || blockEntity.getBreakState().isAir()) {
+			return;
+		}
 		if (blockEntity.isBreaking()) {
 			//System.out.println("breaking! time: " + blockEntity.getBreakTime() + " progress: " + blockEntity.getBreakProgress() + " percent: " + blockEntity.getBreakPercentage() + "%");
 			world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), blockEntity.getBreakPercentage() / 10);
