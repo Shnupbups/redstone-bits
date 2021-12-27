@@ -119,8 +119,11 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public boolean startBreak(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
 		BlockState state = world.getBlockState(pos);
+		if(state.isAir()) {
+			return false;
+		}
 		BlockState breakState = world.getBlockState(pos.add(state.get(FACING).getVector()));
-		boolean isBreakable = !(breakState.isAir() || breakState.getHardness(world, pos) < 0);
+		boolean isBreakable = !(breakState.getHardness(world, pos) < 0);
 		if (be instanceof BreakerBlockEntity && isBreakable) {
 			((BreakerBlockEntity) be).startBreak();
 		}
