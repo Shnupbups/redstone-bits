@@ -15,5 +15,6 @@ public class RedstoneBits implements ModInitializer {
 		ModBlocks.init();
 		ModBlockEntities.init();
 		ModScreenHandlers.init();
+		ModSoundEvents.init();
 	}
 }
