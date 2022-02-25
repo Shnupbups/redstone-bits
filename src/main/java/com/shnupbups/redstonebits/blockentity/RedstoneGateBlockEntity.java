@@ -5,7 +5,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 
-import com.shnupbups.redstonebits.ModBlockEntities;
+import com.shnupbups.redstonebits.init.ModBlockEntities;
 
 public class RedstoneGateBlockEntity extends BlockEntity {
 	private int outputSignal;

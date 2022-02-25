@@ -7,11 +7,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -20,14 +27,36 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
+import com.shnupbups.redstonebits.init.ModSoundEvents;
 import com.shnupbups.redstonebits.blockentity.RedstoneGateBlockEntity;
 
 public class InverterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector, BlockEntityProvider {
 	public static final BooleanProperty LOCKED = Properties.LOCKED;
+	public static final BooleanProperty INVERTED = Properties.INVERTED;
 
 	public InverterBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(LOCKED, false));
+		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(LOCKED, false).with(INVERTED, true));
+	}
+
+	@Override
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+		world.createAndScheduleBlockTick(pos, this, 1);
+	}
+
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (!player.getAbilities().allowModifyWorld) {
+			return ActionResult.PASS;
+		} else {
+			boolean inverted = state.get(INVERTED);
+			float pitch = inverted ? 0.55F : 0.5F;
+			world.playSound(player, pos, ModSoundEvents.BLOCK_INVERTER_CLICK, SoundCategory.BLOCKS, 0.3F, pitch);
+			BlockState newState = state.with(INVERTED, !inverted);
+			world.setBlockState(pos, newState, Block.NOTIFY_ALL);
+			this.update(world, pos, newState);
+			return ActionResult.success(world.isClient());
+		}
 	}
 
 	@Override
@@ -46,8 +75,7 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 
 	@Override
 	protected int getOutputLevel(BlockView world, BlockPos pos, BlockState state) {
-		BlockEntity blockEntity = world.getBlockEntity(pos);
-		return blockEntity instanceof RedstoneGateBlockEntity ? ((RedstoneGateBlockEntity) blockEntity).getOutputSignal() : 0;
+		return world.getBlockEntity(pos) instanceof RedstoneGateBlockEntity redstoneGateBlockEntity ? redstoneGateBlockEntity.getOutputSignal() : 0;
 	}
 
 	@Override
@@ -57,7 +85,7 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 
 	@Override
 	public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED, LOCKED);
+		builder.add(FACING, POWERED, LOCKED, INVERTED);
 	}
 
 	@Override
@@ -66,14 +94,14 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 			Direction facing = state.get(FACING);
 			return direction == facing || direction.getOpposite() == facing;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
 	protected void updatePowered(World world, BlockPos pos, BlockState state) {
 		if (!world.getBlockTickScheduler().isTicking(pos, this)) {
-			TickPriority tickPriority = this.isTargetNotAligned(world, pos, state) ? TickPriority.HIGH : TickPriority.NORMAL;
-			world.createAndScheduleBlockTick(pos, this, 2, tickPriority);
+			TickPriority tickPriority = this.isTargetNotAligned(world, pos, state) ? TickPriority.EXTREMELY_HIGH : state.get(POWERED) ? TickPriority.VERY_HIGH : TickPriority.HIGH;
+			world.createAndScheduleBlockTick(pos, this, this.getUpdateDelayInternal(state), tickPriority);
 		}
 	}
 
@@ -99,9 +127,9 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 			int output = this.calculateOutputSignal(world, pos, state);
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			int currentOutput = 0;
-			if (blockEntity instanceof RedstoneGateBlockEntity resistorBlockEntity) {
-				currentOutput = resistorBlockEntity.getOutputSignal();
-				resistorBlockEntity.setOutputSignal(output);
+			if (blockEntity instanceof RedstoneGateBlockEntity gateBlockEntity) {
+				currentOutput = gateBlockEntity.getOutputSignal();
+				gateBlockEntity.setOutputSignal(output);
 			}
 
 			if (currentOutput != output) {
@@ -111,6 +139,8 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 					world.setBlockState(pos, state.with(POWERED, false), Block.NOTIFY_LISTENERS);
 				} else if (!bl2 && bl) {
 					world.setBlockState(pos, state.with(POWERED, true), Block.NOTIFY_LISTENERS);
+				} else {
+					world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
 				}
 
 				this.updateTarget(world, pos, state);
@@ -119,7 +149,8 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 	}
 
 	public int calculateOutputSignal(World world, BlockPos pos, BlockState state) {
-		return 15 - getPower(world, pos, state);
+		int power = getPower(world, pos, state);
+		return state.get(INVERTED) ? 15 - power : power;
 	}
 
 	@Override
@@ -133,10 +164,7 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 	}
 
 	@Override
-	public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-		if (state.get(FACING) == direction) {
-			return this.getOutputLevel(world, pos, state);
-		}
-		return 0;
+	public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction facing) {
+		return state.get(FACING) == facing ? this.getOutputLevel(world, pos, state) : 0;
 	}
 }

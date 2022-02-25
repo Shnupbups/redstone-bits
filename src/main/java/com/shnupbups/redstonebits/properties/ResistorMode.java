@@ -7,7 +7,7 @@ public enum ResistorMode implements StringIdentifiable {
 	HALVE(2),
 	THIRD(3);
 
-	public float divisor;
+	public final float divisor;
 
 	ResistorMode(float divisor) {
 		this.divisor = divisor;

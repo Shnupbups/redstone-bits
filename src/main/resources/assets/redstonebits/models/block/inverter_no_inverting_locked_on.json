@@ -1,0 +1,6 @@
+{
+    "parent": "redstonebits:block/inverter_locked",
+    "textures": {
+        "top": "redstonebits:block/inverter_no_inverting_on"
+    }
+}

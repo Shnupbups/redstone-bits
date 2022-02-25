@@ -4,6 +4,11 @@ import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.ModInitializer;
 
+import com.shnupbups.redstonebits.init.ModBlockEntities;
+import com.shnupbups.redstonebits.init.ModBlocks;
+import com.shnupbups.redstonebits.init.ModScreenHandlers;
+import com.shnupbups.redstonebits.init.ModSoundEvents;
+
 public class RedstoneBits implements ModInitializer {
 
 	public static Identifier id(String name) {

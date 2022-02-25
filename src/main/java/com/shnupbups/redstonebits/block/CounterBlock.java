@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.shnupbups.redstonebits.ModSoundEvents;
+import com.shnupbups.redstonebits.init.ModSoundEvents;
 import com.shnupbups.redstonebits.properties.ModProperties;
 
 public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector {
@@ -52,8 +52,8 @@ public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedR
 	}
 
 	@Override
-	public int getWeakRedstonePower(BlockState state, BlockView view, BlockPos pos, Direction facing) {
-		return state.get(FACING) == facing ? this.getOutputLevel(view, pos, state) : 0;
+	public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction facing) {
+		return state.get(FACING) == facing ? this.getOutputLevel(world, pos, state) : 0;
 	}
 
 	@Override
@@ -98,8 +98,8 @@ public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedR
 			boolean backwards = state.get(BACKWARDS);
 			float pitch = backwards ? 0.55F : 0.5F;
 			world.playSound(player, pos, ModSoundEvents.BLOCK_COUNTER_CLICK, SoundCategory.BLOCKS, 0.3F, pitch);
-			world.setBlockState(pos, state.with(BACKWARDS, !backwards), 2);
-			return ActionResult.SUCCESS;
+			world.setBlockState(pos, state.with(BACKWARDS, !backwards), Block.NOTIFY_ALL);
+			return ActionResult.success(world.isClient());
 		}
 	}
 
@@ -109,7 +109,7 @@ public class CounterBlock extends AbstractRedstoneGateBlock implements AdvancedR
 			Direction facing = state.get(FACING);
 			return direction == facing || direction.getOpposite() == facing;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

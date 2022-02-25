@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-import com.shnupbups.redstonebits.ModScreenHandlers;
+import com.shnupbups.redstonebits.init.ModScreenHandlers;
 
 public class CheckerScreenHandler extends ScreenHandler {
 	public final PlayerInventory playerInventory;

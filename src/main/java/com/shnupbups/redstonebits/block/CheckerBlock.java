@@ -38,7 +38,7 @@ import net.minecraft.world.WorldAccess;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
-import com.shnupbups.redstonebits.ModBlockEntities;
+import com.shnupbups.redstonebits.init.ModBlockEntities;
 import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
 import com.shnupbups.redstonebits.container.CheckerScreenHandler;
 
@@ -175,7 +175,7 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 			Direction facing = state.get(FACING);
 			return direction == facing;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

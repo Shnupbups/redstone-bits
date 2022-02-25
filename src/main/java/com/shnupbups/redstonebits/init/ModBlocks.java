@@ -1,10 +1,11 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.init;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.Oxidizable;
+import net.minecraft.block.WeightedPressurePlateBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -15,6 +16,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 
+import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.block.*;
 
 public class ModBlocks {
@@ -24,18 +26,20 @@ public class ModBlocks {
 
 	public static final Block CHECKER = new CheckerBlock(FabricBlockSettings.copyOf(Blocks.OBSERVER));
 
+	public static final Block ROTATOR = new RotatorBlock(FabricBlockSettings.copyOf(Blocks.OBSERVER));
+
 	public static final Block COUNTER = new CounterBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
 	public static final Block RESISTOR = new ResistorBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
 	public static final Block ADDER = new AdderBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
 	public static final Block INVERTER = new InverterBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
 
-	public static final Block ANALOG_REDSTONE_LAMP = new AnalogRedstoneRecieverBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP).luminance((state) -> state.get(AnalogRedstoneRecieverBlock.POWER)));
-	public static final Block REDSTONE_DISPLAY = new AnalogRedstoneRecieverBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP).luminance(0));
+	public static final Block ANALOG_REDSTONE_LAMP = new AnalogRedstoneReceiverBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP).luminance((state) -> state.get(AnalogRedstoneReceiverBlock.POWER)));
+	public static final Block REDSTONE_DISPLAY = new AnalogRedstoneReceiverBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP).luminance(0));
 
-	private static final FabricBlockSettings UNAFFECTED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.ORANGE).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER);
-	private static final FabricBlockSettings EXPOSED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.TERRACOTTA_LIGHT_GRAY).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER);
-	private static final FabricBlockSettings WEATHERED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.DARK_AQUA).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER);
-	private static final FabricBlockSettings OXIDIZED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.TEAL).requiresTool().strength(3.0F, 6.0F).sounds(BlockSoundGroup.COPPER);
+	private static final FabricBlockSettings UNAFFECTED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.ORANGE).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
+	private static final FabricBlockSettings EXPOSED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.TERRACOTTA_LIGHT_GRAY).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
+	private static final FabricBlockSettings WEATHERED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.DARK_AQUA).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
+	private static final FabricBlockSettings OXIDIZED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.TEAL).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
 
 	public static final Block COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.UNAFFECTED, 5, UNAFFECTED_COPPER_SETTINGS);
 	public static final Block EXPOSED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.EXPOSED, 15, EXPOSED_COPPER_SETTINGS);
@@ -52,10 +56,10 @@ public class ModBlocks {
 	public static final Block WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.WEATHERED, 90, WEATHERED_COPPER_SETTINGS);
 	public static final Block OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.OXIDIZED, 120, OXIDIZED_COPPER_SETTINGS);
 
-	public static final Block WAXED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new ModWeightedPressurePlateBlock(30, UNAFFECTED_COPPER_SETTINGS);
-	public static final Block WAXED_EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new ModWeightedPressurePlateBlock(60, EXPOSED_COPPER_SETTINGS);
-	public static final Block WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new ModWeightedPressurePlateBlock(90, WEATHERED_COPPER_SETTINGS);
-	public static final Block WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new ModWeightedPressurePlateBlock(120, OXIDIZED_COPPER_SETTINGS);
+	public static final Block WAXED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(30, UNAFFECTED_COPPER_SETTINGS);
+	public static final Block WAXED_EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(60, EXPOSED_COPPER_SETTINGS);
+	public static final Block WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(90, WEATHERED_COPPER_SETTINGS);
+	public static final Block WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(120, OXIDIZED_COPPER_SETTINGS);
 
 	public static <T extends Block> T register(String name, T block) {
 		T b = Registry.register(Registry.BLOCK, RedstoneBits.id(name), block);
@@ -70,6 +74,8 @@ public class ModBlocks {
 		register("breaker", BREAKER);
 
 		register("checker", CHECKER);
+
+		register("rotator", ROTATOR);
 
 		register("counter", COUNTER);
 		register("resistor", RESISTOR);

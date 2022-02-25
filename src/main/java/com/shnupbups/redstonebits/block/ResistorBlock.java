@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.shnupbups.redstonebits.ModSoundEvents;
+import com.shnupbups.redstonebits.init.ModSoundEvents;
 import com.shnupbups.redstonebits.blockentity.RedstoneGateBlockEntity;
 import com.shnupbups.redstonebits.properties.ModProperties;
 import com.shnupbups.redstonebits.properties.ResistorMode;
@@ -56,8 +56,7 @@ public class ResistorBlock extends AbstractRedstoneGateBlock implements Advanced
 
 	@Override
 	protected int getOutputLevel(BlockView world, BlockPos pos, BlockState state) {
-		BlockEntity blockEntity = world.getBlockEntity(pos);
-		return blockEntity instanceof RedstoneGateBlockEntity ? ((RedstoneGateBlockEntity) blockEntity).getOutputSignal() : 0;
+		return world.getBlockEntity(pos) instanceof RedstoneGateBlockEntity redstoneGateBlockEntity ? redstoneGateBlockEntity.getOutputSignal() : 0;
 	}
 
 	@Override
@@ -78,9 +77,9 @@ public class ResistorBlock extends AbstractRedstoneGateBlock implements Advanced
 			state = state.cycle(MODE);
 			float f = state.get(MODE).getDivisor();
 			world.playSound(player, pos, ModSoundEvents.BLOCK_RESISTOR_CLICK, SoundCategory.BLOCKS, 0.3F, f);
-			world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
+			world.setBlockState(pos, state, Block.NOTIFY_ALL);
 			this.update(world, pos, state);
-			return ActionResult.SUCCESS;
+			return ActionResult.success(world.isClient());
 		}
 	}
 
@@ -90,14 +89,17 @@ public class ResistorBlock extends AbstractRedstoneGateBlock implements Advanced
 			Direction facing = state.get(FACING);
 			return direction == facing || direction.getOpposite() == facing;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
 	protected void updatePowered(World world, BlockPos pos, BlockState state) {
+		if (this.isLocked(world, pos, state)) {
+			return;
+		}
 		if (!world.getBlockTickScheduler().isTicking(pos, this)) {
-			TickPriority tickPriority = this.isTargetNotAligned(world, pos, state) ? TickPriority.HIGH : TickPriority.NORMAL;
-			world.createAndScheduleBlockTick(pos, this, 2, tickPriority);
+			TickPriority tickPriority = this.isTargetNotAligned(world, pos, state) ? TickPriority.EXTREMELY_HIGH : state.get(POWERED) ? TickPriority.VERY_HIGH : TickPriority.HIGH;
+			world.createAndScheduleBlockTick(pos, this, this.getUpdateDelayInternal(state), tickPriority);
 		}
 	}
 

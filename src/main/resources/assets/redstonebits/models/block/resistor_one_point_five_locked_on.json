@@ -1,6 +1,7 @@
 {
     "parent": "redstonebits:block/resistor_one_point_five_locked",
     "textures": {
-        "top": "redstonebits:block/resistor_on"
+        "top": "redstonebits:block/resistor_on",
+        "torch": "block/redstone_torch"
     }
 }

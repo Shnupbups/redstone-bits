@@ -15,8 +15,8 @@ import com.shnupbups.redstonebits.block.AdvancedRedstoneConnector;
 public class RedstoneWireMixin {
 	@Inject(at = @At(value = "HEAD"), method = "connectsTo(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Direction;)Z", cancellable = true)
 	private static void connectsToMixin(BlockState state, Direction dir, CallbackInfoReturnable<Boolean> cir) {
-		if (state.getBlock() instanceof AdvancedRedstoneConnector) {
-			cir.setReturnValue(((AdvancedRedstoneConnector) state.getBlock()).connectsToRedstoneInDirection(state, dir));
+		if (state.getBlock() instanceof AdvancedRedstoneConnector arc) {
+			cir.setReturnValue(arc.connectsToRedstoneInDirection(state, dir));
 		}
 	}
 }

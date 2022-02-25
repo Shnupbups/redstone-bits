@@ -8,7 +8,7 @@ import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.shnupbups.redstonebits.ModSoundEvents;
+import com.shnupbups.redstonebits.init.ModSoundEvents;
 
 public class ModButtonBlock extends AbstractButtonBlock {
 	private final int pressTicks;

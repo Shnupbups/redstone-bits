@@ -6,7 +6,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 
-import com.shnupbups.redstonebits.ModBlockEntities;
+import com.shnupbups.redstonebits.init.ModBlockEntities;
 
 public class PlacerBlockEntity extends DispenserBlockEntity {
 	public PlacerBlockEntity(BlockPos pos, BlockState state) {

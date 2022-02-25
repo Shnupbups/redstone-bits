@@ -12,10 +12,10 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AnalogRedstoneRecieverBlock extends Block {
+public class AnalogRedstoneReceiverBlock extends Block {
 	public static final IntProperty POWER = Properties.POWER;
 
-	public AnalogRedstoneRecieverBlock(Settings settings) {
+	public AnalogRedstoneReceiverBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getDefaultState().with(POWER, 0));
 	}
@@ -29,9 +29,9 @@ public class AnalogRedstoneRecieverBlock extends Block {
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		if (!world.isClient) {
 			int power = state.get(POWER);
-			int recievedPower = world.getReceivedRedstonePower(pos);
-			if (power != recievedPower) {
-				if (power > 0 && recievedPower == 0) {
+			int receivedPower = world.getReceivedRedstonePower(pos);
+			if (power != receivedPower) {
+				if (power > 0 && receivedPower == 0) {
 					world.createAndScheduleBlockTick(pos, this, 4);
 				} else {
 					world.setBlockState(pos, state.with(POWER, world.getReceivedRedstonePower(pos)), 2);

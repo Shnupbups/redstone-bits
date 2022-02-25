@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_piston",
+  "textures": {
+    "platform": "redstonebits:block/rotator_top",
+    "bottom": "minecraft:block/piston_bottom",
+    "side": "redstonebits:block/rotator_side_inverted"
+  }
+}

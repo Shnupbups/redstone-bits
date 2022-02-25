@@ -42,7 +42,7 @@ import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
-import com.shnupbups.redstonebits.ModBlockEntities;
+import com.shnupbups.redstonebits.init.ModBlockEntities;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 import com.shnupbups.redstonebits.properties.ModProperties;
@@ -60,7 +60,7 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return checkType(type, ModBlockEntities.BREAKER, world.isClient ? BreakerBlockEntity::clientTick : BreakerBlockEntity::serverTick);
+		return checkType(type, ModBlockEntities.BREAKER, world.isClient ? null : BreakerBlockEntity::serverTick);
 	}
 
 	@Override
@@ -173,7 +173,6 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 				((BreakerBlockEntity) blockEntity).setCustomName(itemStack.getName());
 			}
 		}
-
 	}
 
 	@Override
@@ -196,7 +195,11 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 
 	@Override
 	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-		return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if(blockEntity instanceof BreakerBlockEntity breakerBlockEntity) {
+			return (int) (breakerBlockEntity.getBreakPercentage() / (100f / 15f));
+		}
+		return 0;
 	}
 
 	@Override

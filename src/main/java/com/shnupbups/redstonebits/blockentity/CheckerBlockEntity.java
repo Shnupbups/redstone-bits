@@ -17,7 +17,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.shnupbups.redstonebits.ModBlockEntities;
+import com.shnupbups.redstonebits.init.ModBlockEntities;
 import com.shnupbups.redstonebits.container.CheckerScreenHandler;
 
 public class CheckerBlockEntity extends LockableContainerBlockEntity {
@@ -73,7 +73,7 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 
 	@Override
 	public boolean isEmpty() {
-		Iterator var1 = this.inventory.iterator();
+		Iterator<ItemStack> var1 = this.inventory.iterator();
 
 		ItemStack stack;
 		do {

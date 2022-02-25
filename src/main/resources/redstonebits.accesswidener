@@ -1,3 +1,4 @@
 accessWidener v1 named
 
+accessible method net/minecraft/block/WeightedPressurePlateBlock <init> (ILnet/minecraft/block/AbstractBlock$Settings;)V
 extendable method net/minecraft/block/AbstractButtonBlock getPressTicks ()I

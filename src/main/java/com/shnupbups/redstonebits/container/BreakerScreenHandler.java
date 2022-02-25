@@ -13,7 +13,7 @@ import net.minecraft.screen.slot.Slot;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import com.shnupbups.redstonebits.ModScreenHandlers;
+import com.shnupbups.redstonebits.init.ModScreenHandlers;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 
 public class BreakerScreenHandler extends ScreenHandler {

@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.shnupbups.redstonebits.ModSoundEvents;
+import com.shnupbups.redstonebits.init.ModSoundEvents;
 import com.shnupbups.redstonebits.properties.ModProperties;
 
 public class AdderBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector {
@@ -82,9 +82,9 @@ public class AdderBlock extends AbstractRedstoneGateBlock implements AdvancedRed
 				world.setBlockState(pos, state.with(POWERED, false), Block.NOTIFY_LISTENERS);
 			} else if (!powered) {
 				int newPower = power;
-				int recievedPower = this.getPower(world, pos, state);
-				if (backwards) newPower -= recievedPower;
-				else newPower += recievedPower;
+				int receivedPower = this.getPower(world, pos, state);
+				if (backwards) newPower -= receivedPower;
+				else newPower += receivedPower;
 				if (newPower > 15) newPower -= 15;
 				else if (newPower < 0) newPower += 15;
 				world.setBlockState(pos, state.with(POWERED, true).with(POWER, newPower), Block.NOTIFY_LISTENERS);
@@ -103,8 +103,8 @@ public class AdderBlock extends AbstractRedstoneGateBlock implements AdvancedRed
 			boolean backwards = state.get(BACKWARDS);
 			float pitch = backwards ? 0.55F : 0.5F;
 			world.playSound(player, pos, ModSoundEvents.BLOCK_ADDER_CLICK, SoundCategory.BLOCKS, 0.3F, pitch);
-			world.setBlockState(pos, state.with(BACKWARDS, !backwards), 2);
-			return ActionResult.SUCCESS;
+			world.setBlockState(pos, state.with(BACKWARDS, !backwards), Block.NOTIFY_ALL);
+			return ActionResult.success(world.isClient());
 		}
 	}
 
@@ -114,7 +114,7 @@ public class AdderBlock extends AbstractRedstoneGateBlock implements AdvancedRed
 			Direction facing = state.get(FACING);
 			return direction == facing || direction.getOpposite() == facing;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

@@ -31,7 +31,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import com.shnupbups.redstonebits.FakePlayerEntity;
-import com.shnupbups.redstonebits.ModBlockEntities;
+import com.shnupbups.redstonebits.init.ModBlockEntities;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 import com.shnupbups.redstonebits.properties.ModProperties;
 
@@ -46,19 +46,6 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	public BreakerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.BREAKER, pos, state);
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-	}
-
-	@Environment(EnvType.CLIENT)
-	public static void clientTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
-		if(blockEntity.getBreakState() == null || blockEntity.getBreakState().isAir()) {
-			return;
-		}
-		if (blockEntity.isBreaking()) {
-			//System.out.println("breaking! time: " + blockEntity.getBreakTime() + " progress: " + blockEntity.getBreakProgress() + " percent: " + blockEntity.getBreakPercentage() + "%");
-			world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), blockEntity.getBreakPercentage() / 10);
-		} else {
-			world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), -1);
-		}
 	}
 
 	public static void serverTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
@@ -78,14 +65,25 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 				blockEntity.continueBreak();
 			}
 
-			if (blockEntity.getBreakPercentage() != prevBreakPercentage) {
+			int newBreakPercentage = blockEntity.getBreakPercentage();
+
+			if (newBreakPercentage != prevBreakPercentage) {
 				dirty = true;
+				world.updateComparators(pos, world.getBlockState(pos).getBlock());
+
+				if (newBreakPercentage <= 0 || newBreakPercentage >= 100) {
+					world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), -1);
+				} else {
+					world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), blockEntity.getBreakPercentage() / 10);
+				}
 			}
 		}
+
 		if (blockEntity.isBreaking() != world.getBlockState(pos).get(ModProperties.BREAKING)) {
 			world.setBlockState(pos, world.getBlockState(pos).with(ModProperties.BREAKING, blockEntity.isBreaking()));
 			dirty = true;
 		}
+
 		if (dirty) {
 			((ServerChunkManager) world.getChunkManager()).markForUpdate(pos);
 			blockEntity.markDirty();
@@ -142,7 +140,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		float baseTime = this.calcBlockBreakingTime();
 		float itemMultiplier = stack.getMiningSpeedMultiplier(breakState);
 		int level = EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack);
-		if (level > 0) {
+		if (level > 0 && itemMultiplier > 1.0f) {
 			itemMultiplier += (level * level + 1);
 		}
 		float time = baseTime / itemMultiplier;
@@ -152,8 +150,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	public boolean isToolEffective() {
 		BlockState breakState = this.getBreakState();
 		if (breakState == null) return false;
-		ItemStack item = this.getStack(0);
-		return !breakState.isToolRequired() || item.isSuitableFor(breakState);
+		return !breakState.isToolRequired() || this.getTool().isSuitableFor(breakState);
 	}
 
 	public float calcBlockBreakingTime() {
@@ -196,7 +193,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	public Direction getFacing() {
-		if (this.getWorld() == null) return Direction.NORTH;
+		if (this.getWorld() == null || !this.getWorld().getBlockState(this.getPos()).contains(Properties.FACING)) return Direction.NORTH;
 		return this.getWorld().getBlockState(this.getPos()).get(Properties.FACING);
 	}
 
@@ -211,7 +208,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 			BlockState breakState = this.getBreakState();
 			PlayerEntity fakePlayer = this.getFakePlayer();
 			BlockEntity blockEntity = breakState.hasBlockEntity() ? world.getBlockEntity(getBreakPos()) : null;
-			this.getFakePlayer().setStackInHand(Hand.MAIN_HAND, getBreakStack());
+			fakePlayer.setStackInHand(Hand.MAIN_HAND, getBreakStack());
 			if (getTool().getItem().canMine(breakState, world, getBreakPos(), fakePlayer) && isToolEffective()) {
 				Block.dropStacks(breakState, world, getBreakPos(), blockEntity, fakePlayer, getTool());
 			}

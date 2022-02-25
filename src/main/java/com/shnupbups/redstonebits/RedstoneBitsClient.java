@@ -8,6 +8,8 @@ import net.fabricmc.fabric.impl.blockrenderlayer.BlockRenderLayerMapImpl;
 
 import com.shnupbups.redstonebits.container.screen.BreakerHandledScreen;
 import com.shnupbups.redstonebits.container.screen.CheckerHandledScreen;
+import com.shnupbups.redstonebits.init.ModBlocks;
+import com.shnupbups.redstonebits.init.ModScreenHandlers;
 
 @SuppressWarnings("unused")
 public class RedstoneBitsClient implements ClientModInitializer {

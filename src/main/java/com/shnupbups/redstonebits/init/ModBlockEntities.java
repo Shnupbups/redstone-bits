@@ -1,10 +1,11 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.init;
 
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 
+import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
 import com.shnupbups.redstonebits.blockentity.PlacerBlockEntity;

@@ -1,9 +1,10 @@
-package com.shnupbups.redstonebits;
+package com.shnupbups.redstonebits.init;
 
 import net.minecraft.screen.ScreenHandlerType;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 
+import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
 import com.shnupbups.redstonebits.container.CheckerScreenHandler;
 

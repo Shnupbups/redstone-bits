@@ -28,5 +28,29 @@
       "random/click"
     ],
     "subtitle": "subtitles.block.adder.click"
+  },
+  "block.inverter.click": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.inverter.click"
+  },
+  "block.rotator.rotate": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.rotator.rotate"
+  },
+  "block.rotator.fail": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.rotator.fail"
+  },
+  "block.rotator.invert": {
+    "sounds": [
+      "random/click"
+    ],
+    "subtitle": "subtitles.block.rotator.invert"
   }
 }
