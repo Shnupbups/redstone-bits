@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.11-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -9,9 +9,6 @@ targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = project.mod_name
 version = project.mod_version + "+" + project.version_meta
 group = project.maven_group
-
-minecraft {
-}
 
 loom {
 	accessWidenerPath = file("src/main/resources/redstonebits.accesswidener")

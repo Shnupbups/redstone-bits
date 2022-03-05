@@ -27,9 +27,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import com.shnupbups.redstonebits.FakePlayerEntity;
 import com.shnupbups.redstonebits.init.ModBlockEntities;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
@@ -50,12 +47,10 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 
 	public static void serverTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
 		BlockState currentBreakState = world.getBlockState(blockEntity.getBreakPos());
-		int prevBreakPercentage = blockEntity.getBreakPercentage();
-		boolean dirty = false;
 		if (blockEntity.isBreaking()) {
 			BlockState breakState = blockEntity.getBreakState();
 			if (breakState == null) blockEntity.startBreak();
-			if (!blockEntity.getBreakStack().equals(blockEntity.getTool()) || !breakState.equals(currentBreakState) || currentBreakState.isAir() || currentBreakState.getHardness(world, pos) < 0) {
+			if (breakState == null || (!blockEntity.getBreakStack().equals(blockEntity.getTool()) || !breakState.equals(currentBreakState) || currentBreakState.isAir() || currentBreakState.getHardness(world, pos) < 0)) {
 				//System.out.println("cancel");
 				blockEntity.cancelBreak();
 			} else if (blockEntity.getBreakProgress() >= blockEntity.getBreakTime()) {
@@ -64,30 +59,23 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 			} else {
 				blockEntity.continueBreak();
 			}
-
-			int newBreakPercentage = blockEntity.getBreakPercentage();
-
-			if (newBreakPercentage != prevBreakPercentage) {
-				dirty = true;
-				world.updateComparators(pos, world.getBlockState(pos).getBlock());
-
-				if (newBreakPercentage <= 0 || newBreakPercentage >= 100) {
-					world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), -1);
-				} else {
-					world.setBlockBreakingInfo(blockEntity.getFakePlayer().getId(), blockEntity.getBreakPos(), blockEntity.getBreakPercentage() / 10);
-				}
-			}
 		}
 
 		if (blockEntity.isBreaking() != world.getBlockState(pos).get(ModProperties.BREAKING)) {
 			world.setBlockState(pos, world.getBlockState(pos).with(ModProperties.BREAKING, blockEntity.isBreaking()));
-			dirty = true;
-		}
-
-		if (dirty) {
 			((ServerChunkManager) world.getChunkManager()).markForUpdate(pos);
 			blockEntity.markDirty();
 		}
+	}
+
+	public void updateCracksAndComparators() {
+		if(this.getWorld() == null) return;
+		this.getWorld().updateComparators(getPos(), this.getWorld().getBlockState(getPos()).getBlock());
+
+		int breakPercentage = getBreakPercentage();
+		int crackProgress = breakPercentage <= 0 || breakPercentage >= 100 ? -1 : breakPercentage / 10;
+
+		this.getWorld().setBlockBreakingInfo(getFakePlayer().getId(), getBreakPos(), crackProgress);
 	}
 
 	public static int getBreakPercentage(int breakProgress, int breakTime) {
@@ -123,6 +111,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 
 	public void incrementBreakProgress() {
 		this.breakProgress++;
+		this.updateCracksAndComparators();
 	}
 
 	public void resetBreakProgress() {
@@ -178,6 +167,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		this.setBreakState(null);
 		this.setBreakStack(ItemStack.EMPTY);
 		this.resetBreakProgress();
+		this.updateCracksAndComparators();
 		this.markDirty();
 	}
 
@@ -185,6 +175,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		//System.out.println("finish break at "+getBreakPos().toString());
 		this.breakBlock();
 		this.cancelBreak();
+		this.updateCracksAndComparators();
 		this.markDirty();
 	}
 
@@ -322,6 +313,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	public int getBreakPercentage() {
+		if(breakStack == null || breakState == null) return -1;
 		return getBreakPercentage(this.getBreakProgress(), this.getBreakTime());
 	}
 

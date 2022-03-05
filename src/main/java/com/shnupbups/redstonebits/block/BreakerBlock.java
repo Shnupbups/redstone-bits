@@ -124,23 +124,23 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		}
 		BlockState breakState = world.getBlockState(pos.add(state.get(FACING).getVector()));
 		boolean isBreakable = !(breakState.getHardness(world, pos) < 0);
-		if (be instanceof BreakerBlockEntity && isBreakable) {
-			((BreakerBlockEntity) be).startBreak();
+		if (be instanceof BreakerBlockEntity breaker && isBreakable) {
+			breaker.startBreak();
 		}
 		return isBreakable;
 	}
 
 	public void cancelBreak(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof BreakerBlockEntity) {
-			((BreakerBlockEntity) be).cancelBreak();
+		if (be instanceof BreakerBlockEntity breaker) {
+			breaker.cancelBreak();
 		}
 	}
 
 	public boolean isBreaking(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof BreakerBlockEntity) {
-			return ((BreakerBlockEntity) be).isBreaking();
+		if (be instanceof BreakerBlockEntity breaker) {
+			return breaker.isBreaking();
 		}
 		return false;
 	}
@@ -153,9 +153,9 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (this.isBreaking(world, pos)) this.cancelBreak(world, pos);
 		else this.startBreak(world, pos);
-		boolean boolean_2 = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
-		boolean boolean_3 = state.get(TRIGGERED);
-		if (!boolean_2 && boolean_3) {
+		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
+		boolean triggered = state.get(TRIGGERED);
+		if (!powered && triggered) {
 			world.setBlockState(pos, state.with(TRIGGERED, false), Block.NO_REDRAW);
 		}
 	}
