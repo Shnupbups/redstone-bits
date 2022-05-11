@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "power=0": {
+      "model": "redstonebits:block/redstone_display_0"
+    },
+    "power=1": {
+      "model": "redstonebits:block/redstone_display_1"
+    },
+    "power=10": {
+      "model": "redstonebits:block/redstone_display_10"
+    },
+    "power=11": {
+      "model": "redstonebits:block/redstone_display_11"
+    },
+    "power=12": {
+      "model": "redstonebits:block/redstone_display_12"
+    },
+    "power=13": {
+      "model": "redstonebits:block/redstone_display_13"
+    },
+    "power=14": {
+      "model": "redstonebits:block/redstone_display_14"
+    },
+    "power=15": {
+      "model": "redstonebits:block/redstone_display_15"
+    },
+    "power=2": {
+      "model": "redstonebits:block/redstone_display_2"
+    },
+    "power=3": {
+      "model": "redstonebits:block/redstone_display_3"
+    },
+    "power=4": {
+      "model": "redstonebits:block/redstone_display_4"
+    },
+    "power=5": {
+      "model": "redstonebits:block/redstone_display_5"
+    },
+    "power=6": {
+      "model": "redstonebits:block/redstone_display_6"
+    },
+    "power=7": {
+      "model": "redstonebits:block/redstone_display_7"
+    },
+    "power=8": {
+      "model": "redstonebits:block/redstone_display_8"
+    },
+    "power=9": {
+      "model": "redstonebits:block/redstone_display_9"
+    }
+  }
+}

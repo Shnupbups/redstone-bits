@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,inverted=false": {
+      "model": "redstonebits:block/rotator",
+      "x": 180
+    },
+    "facing=down,inverted=true": {
+      "model": "redstonebits:block/rotator_inverted",
+      "x": 180
+    },
+    "facing=east,inverted=false": {
+      "model": "redstonebits:block/rotator",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,inverted=true": {
+      "model": "redstonebits:block/rotator_inverted",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,inverted=false": {
+      "model": "redstonebits:block/rotator",
+      "x": 90
+    },
+    "facing=north,inverted=true": {
+      "model": "redstonebits:block/rotator_inverted",
+      "x": 90
+    },
+    "facing=south,inverted=false": {
+      "model": "redstonebits:block/rotator",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,inverted=true": {
+      "model": "redstonebits:block/rotator_inverted",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,inverted=false": {
+      "model": "redstonebits:block/rotator"
+    },
+    "facing=up,inverted=true": {
+      "model": "redstonebits:block/rotator_inverted"
+    },
+    "facing=west,inverted=false": {
+      "model": "redstonebits:block/rotator",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,inverted=true": {
+      "model": "redstonebits:block/rotator_inverted",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

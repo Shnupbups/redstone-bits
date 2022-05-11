@@ -1,0 +1,10 @@
+{
+  "parent": "redstonebits:block/template_checker",
+  "textures": {
+    "particle": "redstonebits:block/checker_front",
+    "bottom": "minecraft:block/observer_back",
+    "side": "minecraft:block/observer_side",
+    "top": "minecraft:block/observer_top",
+    "front": "redstonebits:block/checker_front"
+  }
+}

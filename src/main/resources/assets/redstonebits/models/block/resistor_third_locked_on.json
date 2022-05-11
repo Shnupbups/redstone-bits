@@ -1,7 +1,0 @@
-{
-    "parent": "redstonebits:block/resistor_third_locked",
-    "textures": {
-        "top": "redstonebits:block/resistor_on",
-        "torch": "block/redstone_torch"
-    }
-}

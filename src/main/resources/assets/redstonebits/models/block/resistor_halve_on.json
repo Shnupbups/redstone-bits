@@ -1,7 +1,0 @@
-{
-    "parent": "redstonebits:block/resistor_halve",
-    "textures": {
-        "top": "redstonebits:block/resistor_on",
-        "torch": "block/redstone_torch"
-    }
-}

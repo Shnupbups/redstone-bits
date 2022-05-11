@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:copper_block"
+  },
+  "result": "redstonebits:medium_weighted_pressure_plate",
+  "count": 5
+}

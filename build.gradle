@@ -12,6 +12,27 @@ group = project.maven_group
 
 loom {
 	accessWidenerPath = file("src/main/resources/redstonebits.accesswidener")
+	
+	runs {
+		datagenClient {
+			client()
+			name "Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+
+			ideConfigGenerated = true
+			runDir "build/datagen"
+			source sourceSets.main
+		}
+	}
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDir "src/generated/resources"
+		}
+	}
 }
 
 repositories {
@@ -37,6 +58,11 @@ dependencies {
 	
 	// RoughlyEnoughItems
     modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+	
+	// Cloth Config
+	modApi ("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+		exclude module: "fabric-api" // irit
+	}
 }
 
 java {

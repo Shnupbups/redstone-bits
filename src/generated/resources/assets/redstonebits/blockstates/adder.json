@@ -1,0 +1,1028 @@
+{
+  "variants": {
+    "backwards=false,facing=east,locked=false,power=0": {
+      "model": "redstonebits:block/adder_0",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=1": {
+      "model": "redstonebits:block/adder_1",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=10": {
+      "model": "redstonebits:block/adder_10",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=11": {
+      "model": "redstonebits:block/adder_11",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=12": {
+      "model": "redstonebits:block/adder_12",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=13": {
+      "model": "redstonebits:block/adder_13",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=14": {
+      "model": "redstonebits:block/adder_14",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=15": {
+      "model": "redstonebits:block/adder_15",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=2": {
+      "model": "redstonebits:block/adder_2",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=3": {
+      "model": "redstonebits:block/adder_3",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=4": {
+      "model": "redstonebits:block/adder_4",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=5": {
+      "model": "redstonebits:block/adder_5",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=6": {
+      "model": "redstonebits:block/adder_6",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=7": {
+      "model": "redstonebits:block/adder_7",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=8": {
+      "model": "redstonebits:block/adder_8",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=false,power=9": {
+      "model": "redstonebits:block/adder_9",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=0": {
+      "model": "redstonebits:block/adder_locked_0",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=1": {
+      "model": "redstonebits:block/adder_locked_1",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=10": {
+      "model": "redstonebits:block/adder_locked_10",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=11": {
+      "model": "redstonebits:block/adder_locked_11",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=12": {
+      "model": "redstonebits:block/adder_locked_12",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=13": {
+      "model": "redstonebits:block/adder_locked_13",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=14": {
+      "model": "redstonebits:block/adder_locked_14",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=15": {
+      "model": "redstonebits:block/adder_locked_15",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=2": {
+      "model": "redstonebits:block/adder_locked_2",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=3": {
+      "model": "redstonebits:block/adder_locked_3",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=4": {
+      "model": "redstonebits:block/adder_locked_4",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=5": {
+      "model": "redstonebits:block/adder_locked_5",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=6": {
+      "model": "redstonebits:block/adder_locked_6",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=7": {
+      "model": "redstonebits:block/adder_locked_7",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=8": {
+      "model": "redstonebits:block/adder_locked_8",
+      "y": 270
+    },
+    "backwards=false,facing=east,locked=true,power=9": {
+      "model": "redstonebits:block/adder_locked_9",
+      "y": 270
+    },
+    "backwards=false,facing=north,locked=false,power=0": {
+      "model": "redstonebits:block/adder_0",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=1": {
+      "model": "redstonebits:block/adder_1",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=10": {
+      "model": "redstonebits:block/adder_10",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=11": {
+      "model": "redstonebits:block/adder_11",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=12": {
+      "model": "redstonebits:block/adder_12",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=13": {
+      "model": "redstonebits:block/adder_13",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=14": {
+      "model": "redstonebits:block/adder_14",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=15": {
+      "model": "redstonebits:block/adder_15",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=2": {
+      "model": "redstonebits:block/adder_2",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=3": {
+      "model": "redstonebits:block/adder_3",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=4": {
+      "model": "redstonebits:block/adder_4",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=5": {
+      "model": "redstonebits:block/adder_5",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=6": {
+      "model": "redstonebits:block/adder_6",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=7": {
+      "model": "redstonebits:block/adder_7",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=8": {
+      "model": "redstonebits:block/adder_8",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=false,power=9": {
+      "model": "redstonebits:block/adder_9",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=0": {
+      "model": "redstonebits:block/adder_locked_0",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=1": {
+      "model": "redstonebits:block/adder_locked_1",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=10": {
+      "model": "redstonebits:block/adder_locked_10",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=11": {
+      "model": "redstonebits:block/adder_locked_11",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=12": {
+      "model": "redstonebits:block/adder_locked_12",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=13": {
+      "model": "redstonebits:block/adder_locked_13",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=14": {
+      "model": "redstonebits:block/adder_locked_14",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=15": {
+      "model": "redstonebits:block/adder_locked_15",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=2": {
+      "model": "redstonebits:block/adder_locked_2",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=3": {
+      "model": "redstonebits:block/adder_locked_3",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=4": {
+      "model": "redstonebits:block/adder_locked_4",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=5": {
+      "model": "redstonebits:block/adder_locked_5",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=6": {
+      "model": "redstonebits:block/adder_locked_6",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=7": {
+      "model": "redstonebits:block/adder_locked_7",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=8": {
+      "model": "redstonebits:block/adder_locked_8",
+      "y": 180
+    },
+    "backwards=false,facing=north,locked=true,power=9": {
+      "model": "redstonebits:block/adder_locked_9",
+      "y": 180
+    },
+    "backwards=false,facing=south,locked=false,power=0": {
+      "model": "redstonebits:block/adder_0",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=1": {
+      "model": "redstonebits:block/adder_1",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=10": {
+      "model": "redstonebits:block/adder_10",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=11": {
+      "model": "redstonebits:block/adder_11",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=12": {
+      "model": "redstonebits:block/adder_12",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=13": {
+      "model": "redstonebits:block/adder_13",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=14": {
+      "model": "redstonebits:block/adder_14",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=15": {
+      "model": "redstonebits:block/adder_15",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=2": {
+      "model": "redstonebits:block/adder_2",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=3": {
+      "model": "redstonebits:block/adder_3",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=4": {
+      "model": "redstonebits:block/adder_4",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=5": {
+      "model": "redstonebits:block/adder_5",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=6": {
+      "model": "redstonebits:block/adder_6",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=7": {
+      "model": "redstonebits:block/adder_7",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=8": {
+      "model": "redstonebits:block/adder_8",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=false,power=9": {
+      "model": "redstonebits:block/adder_9",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=0": {
+      "model": "redstonebits:block/adder_locked_0",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=1": {
+      "model": "redstonebits:block/adder_locked_1",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=10": {
+      "model": "redstonebits:block/adder_locked_10",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=11": {
+      "model": "redstonebits:block/adder_locked_11",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=12": {
+      "model": "redstonebits:block/adder_locked_12",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=13": {
+      "model": "redstonebits:block/adder_locked_13",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=14": {
+      "model": "redstonebits:block/adder_locked_14",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=15": {
+      "model": "redstonebits:block/adder_locked_15",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=2": {
+      "model": "redstonebits:block/adder_locked_2",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=3": {
+      "model": "redstonebits:block/adder_locked_3",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=4": {
+      "model": "redstonebits:block/adder_locked_4",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=5": {
+      "model": "redstonebits:block/adder_locked_5",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=6": {
+      "model": "redstonebits:block/adder_locked_6",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=7": {
+      "model": "redstonebits:block/adder_locked_7",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=8": {
+      "model": "redstonebits:block/adder_locked_8",
+      "y": 0
+    },
+    "backwards=false,facing=south,locked=true,power=9": {
+      "model": "redstonebits:block/adder_locked_9",
+      "y": 0
+    },
+    "backwards=false,facing=west,locked=false,power=0": {
+      "model": "redstonebits:block/adder_0",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=1": {
+      "model": "redstonebits:block/adder_1",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=10": {
+      "model": "redstonebits:block/adder_10",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=11": {
+      "model": "redstonebits:block/adder_11",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=12": {
+      "model": "redstonebits:block/adder_12",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=13": {
+      "model": "redstonebits:block/adder_13",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=14": {
+      "model": "redstonebits:block/adder_14",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=15": {
+      "model": "redstonebits:block/adder_15",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=2": {
+      "model": "redstonebits:block/adder_2",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=3": {
+      "model": "redstonebits:block/adder_3",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=4": {
+      "model": "redstonebits:block/adder_4",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=5": {
+      "model": "redstonebits:block/adder_5",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=6": {
+      "model": "redstonebits:block/adder_6",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=7": {
+      "model": "redstonebits:block/adder_7",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=8": {
+      "model": "redstonebits:block/adder_8",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=false,power=9": {
+      "model": "redstonebits:block/adder_9",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=0": {
+      "model": "redstonebits:block/adder_locked_0",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=1": {
+      "model": "redstonebits:block/adder_locked_1",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=10": {
+      "model": "redstonebits:block/adder_locked_10",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=11": {
+      "model": "redstonebits:block/adder_locked_11",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=12": {
+      "model": "redstonebits:block/adder_locked_12",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=13": {
+      "model": "redstonebits:block/adder_locked_13",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=14": {
+      "model": "redstonebits:block/adder_locked_14",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=15": {
+      "model": "redstonebits:block/adder_locked_15",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=2": {
+      "model": "redstonebits:block/adder_locked_2",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=3": {
+      "model": "redstonebits:block/adder_locked_3",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=4": {
+      "model": "redstonebits:block/adder_locked_4",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=5": {
+      "model": "redstonebits:block/adder_locked_5",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=6": {
+      "model": "redstonebits:block/adder_locked_6",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=7": {
+      "model": "redstonebits:block/adder_locked_7",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=8": {
+      "model": "redstonebits:block/adder_locked_8",
+      "y": 90
+    },
+    "backwards=false,facing=west,locked=true,power=9": {
+      "model": "redstonebits:block/adder_locked_9",
+      "y": 90
+    },
+    "backwards=true,facing=east,locked=false,power=0": {
+      "model": "redstonebits:block/adder_backwards_0",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=1": {
+      "model": "redstonebits:block/adder_backwards_1",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=10": {
+      "model": "redstonebits:block/adder_backwards_10",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=11": {
+      "model": "redstonebits:block/adder_backwards_11",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=12": {
+      "model": "redstonebits:block/adder_backwards_12",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=13": {
+      "model": "redstonebits:block/adder_backwards_13",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=14": {
+      "model": "redstonebits:block/adder_backwards_14",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=15": {
+      "model": "redstonebits:block/adder_backwards_15",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=2": {
+      "model": "redstonebits:block/adder_backwards_2",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=3": {
+      "model": "redstonebits:block/adder_backwards_3",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=4": {
+      "model": "redstonebits:block/adder_backwards_4",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=5": {
+      "model": "redstonebits:block/adder_backwards_5",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=6": {
+      "model": "redstonebits:block/adder_backwards_6",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=7": {
+      "model": "redstonebits:block/adder_backwards_7",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=8": {
+      "model": "redstonebits:block/adder_backwards_8",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=false,power=9": {
+      "model": "redstonebits:block/adder_backwards_9",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=0": {
+      "model": "redstonebits:block/adder_backwards_locked_0",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=1": {
+      "model": "redstonebits:block/adder_backwards_locked_1",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=10": {
+      "model": "redstonebits:block/adder_backwards_locked_10",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=11": {
+      "model": "redstonebits:block/adder_backwards_locked_11",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=12": {
+      "model": "redstonebits:block/adder_backwards_locked_12",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=13": {
+      "model": "redstonebits:block/adder_backwards_locked_13",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=14": {
+      "model": "redstonebits:block/adder_backwards_locked_14",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=15": {
+      "model": "redstonebits:block/adder_backwards_locked_15",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=2": {
+      "model": "redstonebits:block/adder_backwards_locked_2",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=3": {
+      "model": "redstonebits:block/adder_backwards_locked_3",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=4": {
+      "model": "redstonebits:block/adder_backwards_locked_4",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=5": {
+      "model": "redstonebits:block/adder_backwards_locked_5",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=6": {
+      "model": "redstonebits:block/adder_backwards_locked_6",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=7": {
+      "model": "redstonebits:block/adder_backwards_locked_7",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=8": {
+      "model": "redstonebits:block/adder_backwards_locked_8",
+      "y": 270
+    },
+    "backwards=true,facing=east,locked=true,power=9": {
+      "model": "redstonebits:block/adder_backwards_locked_9",
+      "y": 270
+    },
+    "backwards=true,facing=north,locked=false,power=0": {
+      "model": "redstonebits:block/adder_backwards_0",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=1": {
+      "model": "redstonebits:block/adder_backwards_1",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=10": {
+      "model": "redstonebits:block/adder_backwards_10",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=11": {
+      "model": "redstonebits:block/adder_backwards_11",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=12": {
+      "model": "redstonebits:block/adder_backwards_12",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=13": {
+      "model": "redstonebits:block/adder_backwards_13",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=14": {
+      "model": "redstonebits:block/adder_backwards_14",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=15": {
+      "model": "redstonebits:block/adder_backwards_15",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=2": {
+      "model": "redstonebits:block/adder_backwards_2",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=3": {
+      "model": "redstonebits:block/adder_backwards_3",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=4": {
+      "model": "redstonebits:block/adder_backwards_4",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=5": {
+      "model": "redstonebits:block/adder_backwards_5",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=6": {
+      "model": "redstonebits:block/adder_backwards_6",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=7": {
+      "model": "redstonebits:block/adder_backwards_7",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=8": {
+      "model": "redstonebits:block/adder_backwards_8",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=false,power=9": {
+      "model": "redstonebits:block/adder_backwards_9",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=0": {
+      "model": "redstonebits:block/adder_backwards_locked_0",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=1": {
+      "model": "redstonebits:block/adder_backwards_locked_1",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=10": {
+      "model": "redstonebits:block/adder_backwards_locked_10",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=11": {
+      "model": "redstonebits:block/adder_backwards_locked_11",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=12": {
+      "model": "redstonebits:block/adder_backwards_locked_12",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=13": {
+      "model": "redstonebits:block/adder_backwards_locked_13",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=14": {
+      "model": "redstonebits:block/adder_backwards_locked_14",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=15": {
+      "model": "redstonebits:block/adder_backwards_locked_15",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=2": {
+      "model": "redstonebits:block/adder_backwards_locked_2",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=3": {
+      "model": "redstonebits:block/adder_backwards_locked_3",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=4": {
+      "model": "redstonebits:block/adder_backwards_locked_4",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=5": {
+      "model": "redstonebits:block/adder_backwards_locked_5",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=6": {
+      "model": "redstonebits:block/adder_backwards_locked_6",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=7": {
+      "model": "redstonebits:block/adder_backwards_locked_7",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=8": {
+      "model": "redstonebits:block/adder_backwards_locked_8",
+      "y": 180
+    },
+    "backwards=true,facing=north,locked=true,power=9": {
+      "model": "redstonebits:block/adder_backwards_locked_9",
+      "y": 180
+    },
+    "backwards=true,facing=south,locked=false,power=0": {
+      "model": "redstonebits:block/adder_backwards_0",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=1": {
+      "model": "redstonebits:block/adder_backwards_1",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=10": {
+      "model": "redstonebits:block/adder_backwards_10",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=11": {
+      "model": "redstonebits:block/adder_backwards_11",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=12": {
+      "model": "redstonebits:block/adder_backwards_12",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=13": {
+      "model": "redstonebits:block/adder_backwards_13",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=14": {
+      "model": "redstonebits:block/adder_backwards_14",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=15": {
+      "model": "redstonebits:block/adder_backwards_15",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=2": {
+      "model": "redstonebits:block/adder_backwards_2",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=3": {
+      "model": "redstonebits:block/adder_backwards_3",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=4": {
+      "model": "redstonebits:block/adder_backwards_4",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=5": {
+      "model": "redstonebits:block/adder_backwards_5",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=6": {
+      "model": "redstonebits:block/adder_backwards_6",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=7": {
+      "model": "redstonebits:block/adder_backwards_7",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=8": {
+      "model": "redstonebits:block/adder_backwards_8",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=false,power=9": {
+      "model": "redstonebits:block/adder_backwards_9",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=0": {
+      "model": "redstonebits:block/adder_backwards_locked_0",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=1": {
+      "model": "redstonebits:block/adder_backwards_locked_1",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=10": {
+      "model": "redstonebits:block/adder_backwards_locked_10",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=11": {
+      "model": "redstonebits:block/adder_backwards_locked_11",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=12": {
+      "model": "redstonebits:block/adder_backwards_locked_12",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=13": {
+      "model": "redstonebits:block/adder_backwards_locked_13",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=14": {
+      "model": "redstonebits:block/adder_backwards_locked_14",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=15": {
+      "model": "redstonebits:block/adder_backwards_locked_15",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=2": {
+      "model": "redstonebits:block/adder_backwards_locked_2",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=3": {
+      "model": "redstonebits:block/adder_backwards_locked_3",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=4": {
+      "model": "redstonebits:block/adder_backwards_locked_4",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=5": {
+      "model": "redstonebits:block/adder_backwards_locked_5",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=6": {
+      "model": "redstonebits:block/adder_backwards_locked_6",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=7": {
+      "model": "redstonebits:block/adder_backwards_locked_7",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=8": {
+      "model": "redstonebits:block/adder_backwards_locked_8",
+      "y": 0
+    },
+    "backwards=true,facing=south,locked=true,power=9": {
+      "model": "redstonebits:block/adder_backwards_locked_9",
+      "y": 0
+    },
+    "backwards=true,facing=west,locked=false,power=0": {
+      "model": "redstonebits:block/adder_backwards_0",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=1": {
+      "model": "redstonebits:block/adder_backwards_1",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=10": {
+      "model": "redstonebits:block/adder_backwards_10",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=11": {
+      "model": "redstonebits:block/adder_backwards_11",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=12": {
+      "model": "redstonebits:block/adder_backwards_12",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=13": {
+      "model": "redstonebits:block/adder_backwards_13",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=14": {
+      "model": "redstonebits:block/adder_backwards_14",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=15": {
+      "model": "redstonebits:block/adder_backwards_15",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=2": {
+      "model": "redstonebits:block/adder_backwards_2",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=3": {
+      "model": "redstonebits:block/adder_backwards_3",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=4": {
+      "model": "redstonebits:block/adder_backwards_4",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=5": {
+      "model": "redstonebits:block/adder_backwards_5",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=6": {
+      "model": "redstonebits:block/adder_backwards_6",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=7": {
+      "model": "redstonebits:block/adder_backwards_7",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=8": {
+      "model": "redstonebits:block/adder_backwards_8",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=false,power=9": {
+      "model": "redstonebits:block/adder_backwards_9",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=0": {
+      "model": "redstonebits:block/adder_backwards_locked_0",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=1": {
+      "model": "redstonebits:block/adder_backwards_locked_1",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=10": {
+      "model": "redstonebits:block/adder_backwards_locked_10",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=11": {
+      "model": "redstonebits:block/adder_backwards_locked_11",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=12": {
+      "model": "redstonebits:block/adder_backwards_locked_12",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=13": {
+      "model": "redstonebits:block/adder_backwards_locked_13",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=14": {
+      "model": "redstonebits:block/adder_backwards_locked_14",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=15": {
+      "model": "redstonebits:block/adder_backwards_locked_15",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=2": {
+      "model": "redstonebits:block/adder_backwards_locked_2",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=3": {
+      "model": "redstonebits:block/adder_backwards_locked_3",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=4": {
+      "model": "redstonebits:block/adder_backwards_locked_4",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=5": {
+      "model": "redstonebits:block/adder_backwards_locked_5",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=6": {
+      "model": "redstonebits:block/adder_backwards_locked_6",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=7": {
+      "model": "redstonebits:block/adder_backwards_locked_7",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=8": {
+      "model": "redstonebits:block/adder_backwards_locked_8",
+      "y": 90
+    },
+    "backwards=true,facing=west,locked=true,power=9": {
+      "model": "redstonebits:block/adder_backwards_locked_9",
+      "y": 90
+    }
+  }
+}

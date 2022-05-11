@@ -1,0 +1,8 @@
+{
+  "parent": "redstonebits:block/template_adder_or_counter",
+  "textures": {
+    "slab": "minecraft:block/smooth_stone",
+    "top": "redstonebits:block/adder_5",
+    "torch": "minecraft:block/redstone_torch_off"
+  }
+}

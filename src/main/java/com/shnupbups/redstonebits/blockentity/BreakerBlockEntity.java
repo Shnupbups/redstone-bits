@@ -28,8 +28,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.FakePlayerEntity;
+import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.init.ModBlockEntities;
 import com.shnupbups.redstonebits.container.BreakerScreenHandler;
+import com.shnupbups.redstonebits.init.ModTags;
 import com.shnupbups.redstonebits.properties.ModProperties;
 
 public class BreakerBlockEntity extends LockableContainerBlockEntity {
@@ -132,8 +134,12 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		if (level > 0 && itemMultiplier > 1.0f) {
 			itemMultiplier += (level * level + 1);
 		}
-		float time = baseTime / itemMultiplier;
+		float time = (baseTime / itemMultiplier) * getBreakTimeMultiplier();
 		return (int) time;
+	}
+
+	public float getBreakTimeMultiplier() {
+		return RedstoneBits.getConfig().breaker().breakTimeMultiplier();
 	}
 
 	public boolean isToolEffective() {
@@ -154,12 +160,19 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		}
 	}
 
-	public void startBreak() {
+	public boolean startBreak() {
 		//System.out.println("start break at "+getBreakPos().toString());
-		this.setBreakState(this.getWorld().getBlockState(this.getBreakPos()));
-		this.setBreakStack(this.getTool());
-		this.incrementBreakProgress();
-		this.markDirty();
+		BlockState toBreak = this.getWorld().getBlockState(this.getBreakPos());
+		ItemStack tool = this.getTool();
+		if(toBreak.isIn(ModTags.Blocks.BREAKER_BLACKLIST) || tool.isIn(ModTags.Items.BREAKER_TOOL_BLACKLIST)) {
+			return false;
+		} else {
+			this.setBreakState(toBreak);
+			this.setBreakStack(tool);
+			this.incrementBreakProgress();
+			this.markDirty();
+			return true;
+		}
 	}
 
 	public void cancelBreak() {

@@ -27,6 +27,12 @@
     ],
     "client": [
       "com.shnupbups.redstonebits.RedstoneBitsClient"
+    ],
+    "modmenu": [
+      "com.shnupbups.redstonebits.config.RedstoneBitsConfigScreen"
+    ],
+    "fabric-datagen": [
+      "com.shnupbups.redstonebits.datagen.RedstoneBitsDatagen"
     ]
   },
   "accessWidener": "redstonebits.accesswidener",

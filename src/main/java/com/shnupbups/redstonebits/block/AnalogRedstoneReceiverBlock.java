@@ -44,7 +44,7 @@ public class AnalogRedstoneReceiverBlock extends Block {
 	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(POWER) > 0 && !world.isReceivingRedstonePower(pos)) {
-			world.setBlockState(pos, state.with(POWER, 0), 2);
+			world.setBlockState(pos, state.with(POWER, 0), Block.NOTIFY_LISTENERS);
 		}
 	}
 

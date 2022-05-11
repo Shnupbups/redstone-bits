@@ -1,0 +1,132 @@
+{
+  "variants": {
+    "facing=east,inverted=false,locked=false,powered=false": {
+      "model": "redstonebits:block/inverter_no_inverting",
+      "y": 270
+    },
+    "facing=east,inverted=false,locked=false,powered=true": {
+      "model": "redstonebits:block/inverter_no_inverting_on",
+      "y": 270
+    },
+    "facing=east,inverted=false,locked=true,powered=false": {
+      "model": "redstonebits:block/inverter_no_inverting_locked",
+      "y": 270
+    },
+    "facing=east,inverted=false,locked=true,powered=true": {
+      "model": "redstonebits:block/inverter_no_inverting_locked_on",
+      "y": 270
+    },
+    "facing=east,inverted=true,locked=false,powered=false": {
+      "model": "redstonebits:block/inverter",
+      "y": 270
+    },
+    "facing=east,inverted=true,locked=false,powered=true": {
+      "model": "redstonebits:block/inverter_on",
+      "y": 270
+    },
+    "facing=east,inverted=true,locked=true,powered=false": {
+      "model": "redstonebits:block/inverter_locked",
+      "y": 270
+    },
+    "facing=east,inverted=true,locked=true,powered=true": {
+      "model": "redstonebits:block/inverter_locked_on",
+      "y": 270
+    },
+    "facing=north,inverted=false,locked=false,powered=false": {
+      "model": "redstonebits:block/inverter_no_inverting",
+      "y": 180
+    },
+    "facing=north,inverted=false,locked=false,powered=true": {
+      "model": "redstonebits:block/inverter_no_inverting_on",
+      "y": 180
+    },
+    "facing=north,inverted=false,locked=true,powered=false": {
+      "model": "redstonebits:block/inverter_no_inverting_locked",
+      "y": 180
+    },
+    "facing=north,inverted=false,locked=true,powered=true": {
+      "model": "redstonebits:block/inverter_no_inverting_locked_on",
+      "y": 180
+    },
+    "facing=north,inverted=true,locked=false,powered=false": {
+      "model": "redstonebits:block/inverter",
+      "y": 180
+    },
+    "facing=north,inverted=true,locked=false,powered=true": {
+      "model": "redstonebits:block/inverter_on",
+      "y": 180
+    },
+    "facing=north,inverted=true,locked=true,powered=false": {
+      "model": "redstonebits:block/inverter_locked",
+      "y": 180
+    },
+    "facing=north,inverted=true,locked=true,powered=true": {
+      "model": "redstonebits:block/inverter_locked_on",
+      "y": 180
+    },
+    "facing=south,inverted=false,locked=false,powered=false": {
+      "model": "redstonebits:block/inverter_no_inverting",
+      "y": 0
+    },
+    "facing=south,inverted=false,locked=false,powered=true": {
+      "model": "redstonebits:block/inverter_no_inverting_on",
+      "y": 0
+    },
+    "facing=south,inverted=false,locked=true,powered=false": {
+      "model": "redstonebits:block/inverter_no_inverting_locked",
+      "y": 0
+    },
+    "facing=south,inverted=false,locked=true,powered=true": {
+      "model": "redstonebits:block/inverter_no_inverting_locked_on",
+      "y": 0
+    },
+    "facing=south,inverted=true,locked=false,powered=false": {
+      "model": "redstonebits:block/inverter",
+      "y": 0
+    },
+    "facing=south,inverted=true,locked=false,powered=true": {
+      "model": "redstonebits:block/inverter_on",
+      "y": 0
+    },
+    "facing=south,inverted=true,locked=true,powered=false": {
+      "model": "redstonebits:block/inverter_locked",
+      "y": 0
+    },
+    "facing=south,inverted=true,locked=true,powered=true": {
+      "model": "redstonebits:block/inverter_locked_on",
+      "y": 0
+    },
+    "facing=west,inverted=false,locked=false,powered=false": {
+      "model": "redstonebits:block/inverter_no_inverting",
+      "y": 90
+    },
+    "facing=west,inverted=false,locked=false,powered=true": {
+      "model": "redstonebits:block/inverter_no_inverting_on",
+      "y": 90
+    },
+    "facing=west,inverted=false,locked=true,powered=false": {
+      "model": "redstonebits:block/inverter_no_inverting_locked",
+      "y": 90
+    },
+    "facing=west,inverted=false,locked=true,powered=true": {
+      "model": "redstonebits:block/inverter_no_inverting_locked_on",
+      "y": 90
+    },
+    "facing=west,inverted=true,locked=false,powered=false": {
+      "model": "redstonebits:block/inverter",
+      "y": 90
+    },
+    "facing=west,inverted=true,locked=false,powered=true": {
+      "model": "redstonebits:block/inverter_on",
+      "y": 90
+    },
+    "facing=west,inverted=true,locked=true,powered=false": {
+      "model": "redstonebits:block/inverter_locked",
+      "y": 90
+    },
+    "facing=west,inverted=true,locked=true,powered=true": {
+      "model": "redstonebits:block/inverter_locked_on",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "block.redstonebits.analog_redstone_lamp": "Analogue Redstone Lamp",
+  "block.redstonebits.oxidized_copper_button": "Oxidised Copper Button",
+  "block.redstonebits.waxed_oxidized_copper_button": "Waxed Oxidised Copper Button",
+  "block.redstonebits.oxidized_medium_weighted_pressure_plate": "Oxidised Medium Weighted Pressure Plate",
+  "block.redstonebits.waxed_oxidized_medium_weighted_pressure_plate": "Waxed Oxidised Medium Weighted Pressure Plate",
+
+  "text.autoconfig.redstonebits.option.buttonPressTimes.oxidizedPressTicks": "Oxidised Copper Button",
+  "text.autoconfig.redstonebits.option.buttonPressTimes.oxidizedPressTicks.@Tooltip": "The time (in ticks) the Oxidised Copper Button remains pressed",
+  "text.autoconfig.redstonebits.option.pressurePlateWeights.oxidizedWeight": "Oxidised Medium Weighted Pressure Plates",
+  "text.autoconfig.redstonebits.option.pressurePlateWeights.oxidizedWeight.@Tooltip": "The 'weightedness' of the Oxidised Medium Weighted Pressure Plate"
+}

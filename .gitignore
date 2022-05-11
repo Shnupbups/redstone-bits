@@ -24,3 +24,8 @@ bin/
 # fabric
 
 run/
+src/generated/resources/.cache/cache
+
+# stuff
+
+ignored/

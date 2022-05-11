@@ -11,7 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class WaxedCopperButtonBlock extends ModButtonBlock {
-
 	public WaxedCopperButtonBlock(int pressTicks, AbstractBlock.Settings settings) {
 		super(pressTicks, settings);
 	}

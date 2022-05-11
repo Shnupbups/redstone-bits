@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "redstonebits:block/breaker_vertical",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "redstonebits:block/breaker",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "redstonebits:block/breaker"
+    },
+    "facing=south": {
+      "model": "redstonebits:block/breaker",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "redstonebits:block/breaker_vertical"
+    },
+    "facing=west": {
+      "model": "redstonebits:block/breaker",
+      "y": 270
+    }
+  }
+}

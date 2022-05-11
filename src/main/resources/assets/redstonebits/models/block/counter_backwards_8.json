@@ -1,7 +1,0 @@
-{
-    "parent": "redstonebits:block/counter_0",
-    "textures": {
-        "top": "redstonebits:block/counter_8",
-        "torch": "block/redstone_torch"
-    }
-}

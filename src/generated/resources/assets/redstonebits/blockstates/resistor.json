@@ -1,0 +1,196 @@
+{
+  "variants": {
+    "facing=east,locked=false,mode=halve,powered=false": {
+      "model": "redstonebits:block/resistor_halve",
+      "y": 270
+    },
+    "facing=east,locked=false,mode=halve,powered=true": {
+      "model": "redstonebits:block/resistor_halve_on",
+      "y": 270
+    },
+    "facing=east,locked=false,mode=one_point_five,powered=false": {
+      "model": "redstonebits:block/resistor_one_point_five",
+      "y": 270
+    },
+    "facing=east,locked=false,mode=one_point_five,powered=true": {
+      "model": "redstonebits:block/resistor_one_point_five_on",
+      "y": 270
+    },
+    "facing=east,locked=false,mode=third,powered=false": {
+      "model": "redstonebits:block/resistor_third",
+      "y": 270
+    },
+    "facing=east,locked=false,mode=third,powered=true": {
+      "model": "redstonebits:block/resistor_third_on",
+      "y": 270
+    },
+    "facing=east,locked=true,mode=halve,powered=false": {
+      "model": "redstonebits:block/resistor_halve_locked",
+      "y": 270
+    },
+    "facing=east,locked=true,mode=halve,powered=true": {
+      "model": "redstonebits:block/resistor_halve_locked_on",
+      "y": 270
+    },
+    "facing=east,locked=true,mode=one_point_five,powered=false": {
+      "model": "redstonebits:block/resistor_one_point_five_locked",
+      "y": 270
+    },
+    "facing=east,locked=true,mode=one_point_five,powered=true": {
+      "model": "redstonebits:block/resistor_one_point_five_locked_on",
+      "y": 270
+    },
+    "facing=east,locked=true,mode=third,powered=false": {
+      "model": "redstonebits:block/resistor_third_locked",
+      "y": 270
+    },
+    "facing=east,locked=true,mode=third,powered=true": {
+      "model": "redstonebits:block/resistor_third_locked_on",
+      "y": 270
+    },
+    "facing=north,locked=false,mode=halve,powered=false": {
+      "model": "redstonebits:block/resistor_halve",
+      "y": 180
+    },
+    "facing=north,locked=false,mode=halve,powered=true": {
+      "model": "redstonebits:block/resistor_halve_on",
+      "y": 180
+    },
+    "facing=north,locked=false,mode=one_point_five,powered=false": {
+      "model": "redstonebits:block/resistor_one_point_five",
+      "y": 180
+    },
+    "facing=north,locked=false,mode=one_point_five,powered=true": {
+      "model": "redstonebits:block/resistor_one_point_five_on",
+      "y": 180
+    },
+    "facing=north,locked=false,mode=third,powered=false": {
+      "model": "redstonebits:block/resistor_third",
+      "y": 180
+    },
+    "facing=north,locked=false,mode=third,powered=true": {
+      "model": "redstonebits:block/resistor_third_on",
+      "y": 180
+    },
+    "facing=north,locked=true,mode=halve,powered=false": {
+      "model": "redstonebits:block/resistor_halve_locked",
+      "y": 180
+    },
+    "facing=north,locked=true,mode=halve,powered=true": {
+      "model": "redstonebits:block/resistor_halve_locked_on",
+      "y": 180
+    },
+    "facing=north,locked=true,mode=one_point_five,powered=false": {
+      "model": "redstonebits:block/resistor_one_point_five_locked",
+      "y": 180
+    },
+    "facing=north,locked=true,mode=one_point_five,powered=true": {
+      "model": "redstonebits:block/resistor_one_point_five_locked_on",
+      "y": 180
+    },
+    "facing=north,locked=true,mode=third,powered=false": {
+      "model": "redstonebits:block/resistor_third_locked",
+      "y": 180
+    },
+    "facing=north,locked=true,mode=third,powered=true": {
+      "model": "redstonebits:block/resistor_third_locked_on",
+      "y": 180
+    },
+    "facing=south,locked=false,mode=halve,powered=false": {
+      "model": "redstonebits:block/resistor_halve",
+      "y": 0
+    },
+    "facing=south,locked=false,mode=halve,powered=true": {
+      "model": "redstonebits:block/resistor_halve_on",
+      "y": 0
+    },
+    "facing=south,locked=false,mode=one_point_five,powered=false": {
+      "model": "redstonebits:block/resistor_one_point_five",
+      "y": 0
+    },
+    "facing=south,locked=false,mode=one_point_five,powered=true": {
+      "model": "redstonebits:block/resistor_one_point_five_on",
+      "y": 0
+    },
+    "facing=south,locked=false,mode=third,powered=false": {
+      "model": "redstonebits:block/resistor_third",
+      "y": 0
+    },
+    "facing=south,locked=false,mode=third,powered=true": {
+      "model": "redstonebits:block/resistor_third_on",
+      "y": 0
+    },
+    "facing=south,locked=true,mode=halve,powered=false": {
+      "model": "redstonebits:block/resistor_halve_locked",
+      "y": 0
+    },
+    "facing=south,locked=true,mode=halve,powered=true": {
+      "model": "redstonebits:block/resistor_halve_locked_on",
+      "y": 0
+    },
+    "facing=south,locked=true,mode=one_point_five,powered=false": {
+      "model": "redstonebits:block/resistor_one_point_five_locked",
+      "y": 0
+    },
+    "facing=south,locked=true,mode=one_point_five,powered=true": {
+      "model": "redstonebits:block/resistor_one_point_five_locked_on",
+      "y": 0
+    },
+    "facing=south,locked=true,mode=third,powered=false": {
+      "model": "redstonebits:block/resistor_third_locked",
+      "y": 0
+    },
+    "facing=south,locked=true,mode=third,powered=true": {
+      "model": "redstonebits:block/resistor_third_locked_on",
+      "y": 0
+    },
+    "facing=west,locked=false,mode=halve,powered=false": {
+      "model": "redstonebits:block/resistor_halve",
+      "y": 90
+    },
+    "facing=west,locked=false,mode=halve,powered=true": {
+      "model": "redstonebits:block/resistor_halve_on",
+      "y": 90
+    },
+    "facing=west,locked=false,mode=one_point_five,powered=false": {
+      "model": "redstonebits:block/resistor_one_point_five",
+      "y": 90
+    },
+    "facing=west,locked=false,mode=one_point_five,powered=true": {
+      "model": "redstonebits:block/resistor_one_point_five_on",
+      "y": 90
+    },
+    "facing=west,locked=false,mode=third,powered=false": {
+      "model": "redstonebits:block/resistor_third",
+      "y": 90
+    },
+    "facing=west,locked=false,mode=third,powered=true": {
+      "model": "redstonebits:block/resistor_third_on",
+      "y": 90
+    },
+    "facing=west,locked=true,mode=halve,powered=false": {
+      "model": "redstonebits:block/resistor_halve_locked",
+      "y": 90
+    },
+    "facing=west,locked=true,mode=halve,powered=true": {
+      "model": "redstonebits:block/resistor_halve_locked_on",
+      "y": 90
+    },
+    "facing=west,locked=true,mode=one_point_five,powered=false": {
+      "model": "redstonebits:block/resistor_one_point_five_locked",
+      "y": 90
+    },
+    "facing=west,locked=true,mode=one_point_five,powered=true": {
+      "model": "redstonebits:block/resistor_one_point_five_locked_on",
+      "y": 90
+    },
+    "facing=west,locked=true,mode=third,powered=false": {
+      "model": "redstonebits:block/resistor_third_locked",
+      "y": 90
+    },
+    "facing=west,locked=true,mode=third,powered=true": {
+      "model": "redstonebits:block/resistor_third_locked_on",
+      "y": 90
+    }
+  }
+}

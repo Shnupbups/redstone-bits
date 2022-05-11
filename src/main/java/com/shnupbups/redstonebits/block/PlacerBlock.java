@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.dispenser.DispenserBehavior;
+import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,9 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.blockentity.PlacerBlockEntity;
+import com.shnupbups.redstonebits.init.ModTags;
 
 public class PlacerBlock extends DispenserBlock {
-	private static final DispenserBehavior BEHAVIOR = new BlockPlacementDispenserBehavior();
+	private static final DispenserBehavior PLACE_BLOCK = new BlockPlacementDispenserBehavior();
+	private static final DispenserBehavior BLACKLISTED = new BlacklistedDispenserBehavior();
 
 	public PlacerBlock(Settings settings) {
 		super(settings);
@@ -24,7 +27,7 @@ public class PlacerBlock extends DispenserBlock {
 
 	@Override
 	protected DispenserBehavior getBehaviorForItem(ItemStack stack) {
-		return BEHAVIOR;
+		return stack.isIn(ModTags.Items.PLACER_BLACKLIST) ? BLACKLISTED : PLACE_BLOCK;
 	}
 
 	@Override
@@ -41,5 +44,12 @@ public class PlacerBlock extends DispenserBlock {
 			}
 		}
 		return ActionResult.SUCCESS;
+	}
+
+	public static class BlacklistedDispenserBehavior extends FallibleItemDispenserBehavior {
+		@Override
+		public boolean isSuccess() {
+			return false;
+		}
 	}
 }

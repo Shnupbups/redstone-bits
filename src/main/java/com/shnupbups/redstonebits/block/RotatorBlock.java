@@ -26,16 +26,17 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.init.ModSoundEvents;
+import com.shnupbups.redstonebits.init.ModTags;
 
 public class RotatorBlock extends FacingBlock {
 	public static final BooleanProperty INVERTED = Properties.INVERTED;
 	public static final BooleanProperty POWERED = Properties.POWERED;
 
 	public static final List<Property<?>> ROTATION_PROPERTIES = List.of(
-			Properties.FACING, Properties.HOPPER_FACING, Properties.HORIZONTAL_FACING, Properties.VERTICAL_DIRECTION,
-			Properties.AXIS, Properties.HORIZONTAL_AXIS,
-			Properties.ROTATION,
-			Properties.RAIL_SHAPE, Properties.STRAIGHT_RAIL_SHAPE
+			Properties.FACING, Properties.HOPPER_FACING, Properties.HORIZONTAL_FACING, Properties.VERTICAL_DIRECTION, // DirectionProperty
+			Properties.AXIS, Properties.HORIZONTAL_AXIS, // EnumProperty<Direction.Axis>
+			Properties.ROTATION, // IntProperty
+			Properties.RAIL_SHAPE, Properties.STRAIGHT_RAIL_SHAPE // EnumProperty<RailShape>
 	);
 
 	public RotatorBlock(Settings settings) {
@@ -58,24 +59,25 @@ public class RotatorBlock extends FacingBlock {
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos pos2, boolean notify) {
-		BlockPos facingPos = getFacingPos(state, pos);
-		BlockState facingState = world.getBlockState(facingPos);
-
 		boolean receivingPower = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 		boolean powered = state.get(POWERED);
 
+		BlockPos facingPos = getFacingPos(state, pos);
 		boolean shouldUpdateComparators = pos2.equals(facingPos);
 
 		if(receivingPower && !powered) {
-			BlockState rotatedState = facingState.rotate(state.get(INVERTED) ? BlockRotation.COUNTERCLOCKWISE_90 : BlockRotation.CLOCKWISE_90);
-			if(!rotatedState.equals(facingState) && rotatedState.canPlaceAt(world, facingPos)) {
-				world.setBlockState(facingPos, rotatedState, Block.NOTIFY_ALL);
-				world.playSound(null, pos, ModSoundEvents.BLOCK_ROTATOR_ROTATE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-				shouldUpdateComparators = true;
-			} else {
-				world.playSound(null, pos, ModSoundEvents.BLOCK_ROTATOR_FAIL, SoundCategory.BLOCKS, 1.0f, 1.2f);
-			}
 			world.setBlockState(pos, state.with(POWERED, true), Block.NOTIFY_ALL | Block.NO_REDRAW);
+			BlockState facingState = world.getBlockState(facingPos);
+			if(canRotate(facingState)) {
+				BlockState rotatedState = facingState.rotate(state.get(INVERTED) ? BlockRotation.COUNTERCLOCKWISE_90 : BlockRotation.CLOCKWISE_90);
+				if(!rotatedState.equals(facingState) && rotatedState.canPlaceAt(world, facingPos)) {
+					world.setBlockState(facingPos, rotatedState, Block.NOTIFY_ALL);
+					world.playSound(null, pos, ModSoundEvents.BLOCK_ROTATOR_ROTATE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+					shouldUpdateComparators = true;
+				} else {
+					world.playSound(null, pos, ModSoundEvents.BLOCK_ROTATOR_FAIL, SoundCategory.BLOCKS, 1.0f, 1.2f);
+				}
+			}
 		} else if(!receivingPower && powered) {
 			world.setBlockState(pos, state.with(POWERED, false), Block.NOTIFY_ALL | Block.NO_REDRAW);
 		}
@@ -98,19 +100,34 @@ public class RotatorBlock extends FacingBlock {
 	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
 		BlockState facingState = world.getBlockState(getFacingPos(state, pos));
 
-		Property<?> rotationProperty = getRotationProperty(facingState);
+		return getComparatorValue(facingState);
+	}
 
-		if(facingState.contains(rotationProperty)) {
+	public static boolean canRotate(BlockState state) {
+		return !state.isIn(ModTags.Blocks.ROTATOR_BLACKLIST);
+	}
+
+	public static boolean canGetComparatorValue(BlockState state) {
+		if (!canRotate(state)) return false;
+
+		Property<?> rotationProperty = getRotationProperty(state);
+		return rotationProperty != null && state.contains(rotationProperty);
+	}
+
+	public static int getComparatorValue(BlockState state) {
+		if(canGetComparatorValue(state)) {
+			Property<?> rotationProperty = getRotationProperty(state);
+
 			if(rotationProperty instanceof DirectionProperty property) {
-				return getComparatorValue(facingState.get(property));
+				return getComparatorValue(state.get(property));
 			} else if(rotationProperty instanceof EnumProperty property) {
-				if(facingState.get(property) instanceof Direction.Axis axis) {
+				if(state.get(property) instanceof Direction.Axis axis) {
 					return getComparatorValue(axis);
-				} else if(facingState.get(property) instanceof RailShape railShape) {
+				} else if(state.get(property) instanceof RailShape railShape) {
 					return getComparatorValue(railShape);
 				}
 			} else if(rotationProperty instanceof IntProperty property) {
-				return facingState.get(property);
+				return state.get(property);
 			}
 		}
 
@@ -126,7 +143,6 @@ public class RotatorBlock extends FacingBlock {
 
 	public static int getComparatorValue(Direction direction) {
 		return switch(direction) {
-			case SOUTH -> 0;
 			case WEST -> 4;
 			case NORTH -> 8;
 			case EAST -> 12;
@@ -135,21 +151,15 @@ public class RotatorBlock extends FacingBlock {
 	}
 
 	public static int getComparatorValue(Direction.Axis axis) {
-		return switch(axis) {
-			case Z -> 0;
-			case X -> 4;
-			default -> 0;
-		};
+		return axis.equals(Direction.Axis.X) ? 4 : 0;
 	}
 
 	public static int getComparatorValue(RailShape railShape) {
 		return switch(railShape) {
-			case NORTH_SOUTH -> 0;
-			case EAST_WEST -> 4;
+			case NORTH_SOUTH, ASCENDING_SOUTH -> 0;
+			case EAST_WEST, ASCENDING_WEST -> 4;
 			case ASCENDING_EAST -> 12;
-			case ASCENDING_WEST -> 4;
 			case ASCENDING_NORTH -> 8;
-			case ASCENDING_SOUTH -> 0;
 			case SOUTH_EAST -> 14;
 			case SOUTH_WEST -> 2;
 			case NORTH_WEST -> 6;

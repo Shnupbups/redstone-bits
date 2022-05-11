@@ -5,11 +5,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.Oxidizable;
+import net.minecraft.block.RedstoneLampBlock;
 import net.minecraft.block.WeightedPressurePlateBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -26,7 +28,7 @@ public class ModBlocks {
 
 	public static final Block CHECKER = new CheckerBlock(FabricBlockSettings.copyOf(Blocks.OBSERVER));
 
-	public static final Block ROTATOR = new RotatorBlock(FabricBlockSettings.copyOf(Blocks.OBSERVER));
+	public static final Block ROTATOR = new RotatorBlock(FabricBlockSettings.copyOf(Blocks.PISTON));
 
 	public static final Block COUNTER = new CounterBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
 	public static final Block RESISTOR = new ResistorBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
@@ -41,25 +43,25 @@ public class ModBlocks {
 	private static final FabricBlockSettings WEATHERED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.DARK_AQUA).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
 	private static final FabricBlockSettings OXIDIZED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.TEAL).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
 
-	public static final Block COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.UNAFFECTED, 5, UNAFFECTED_COPPER_SETTINGS);
-	public static final Block EXPOSED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.EXPOSED, 15, EXPOSED_COPPER_SETTINGS);
-	public static final Block WEATHERED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.WEATHERED, 25, WEATHERED_COPPER_SETTINGS);
-	public static final Block OXIDIZED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.OXIDIZED, 35, OXIDIZED_COPPER_SETTINGS);
+	public static final Block COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.UNAFFECTED, RedstoneBits.getConfig().buttonPressTimes().unaffectedPressTicks(), UNAFFECTED_COPPER_SETTINGS);
+	public static final Block EXPOSED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.EXPOSED, RedstoneBits.getConfig().buttonPressTimes().exposedPressTicks(), EXPOSED_COPPER_SETTINGS);
+	public static final Block WEATHERED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.WEATHERED, RedstoneBits.getConfig().buttonPressTimes().weatheredPressTicks(), WEATHERED_COPPER_SETTINGS);
+	public static final Block OXIDIZED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.OXIDIZED, RedstoneBits.getConfig().buttonPressTimes().oxidizedPressTicks(), OXIDIZED_COPPER_SETTINGS);
 
-	public static final Block WAXED_COPPER_BUTTON = new WaxedCopperButtonBlock(5, UNAFFECTED_COPPER_SETTINGS);
-	public static final Block WAXED_EXPOSED_COPPER_BUTTON = new WaxedCopperButtonBlock(15, EXPOSED_COPPER_SETTINGS);
-	public static final Block WAXED_WEATHERED_COPPER_BUTTON = new WaxedCopperButtonBlock(25, WEATHERED_COPPER_SETTINGS);
-	public static final Block WAXED_OXIDIZED_COPPER_BUTTON = new WaxedCopperButtonBlock(35, OXIDIZED_COPPER_SETTINGS);
+	public static final Block WAXED_COPPER_BUTTON = new WaxedCopperButtonBlock(RedstoneBits.getConfig().buttonPressTimes().unaffectedPressTicks(), UNAFFECTED_COPPER_SETTINGS);
+	public static final Block WAXED_EXPOSED_COPPER_BUTTON = new WaxedCopperButtonBlock(RedstoneBits.getConfig().buttonPressTimes().exposedPressTicks(), EXPOSED_COPPER_SETTINGS);
+	public static final Block WAXED_WEATHERED_COPPER_BUTTON = new WaxedCopperButtonBlock(RedstoneBits.getConfig().buttonPressTimes().weatheredPressTicks(), WEATHERED_COPPER_SETTINGS);
+	public static final Block WAXED_OXIDIZED_COPPER_BUTTON = new WaxedCopperButtonBlock(RedstoneBits.getConfig().buttonPressTimes().oxidizedPressTicks(), OXIDIZED_COPPER_SETTINGS);
 
-	public static final Block MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.UNAFFECTED, 30, UNAFFECTED_COPPER_SETTINGS);
-	public static final Block EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.EXPOSED, 60, EXPOSED_COPPER_SETTINGS);
-	public static final Block WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.WEATHERED, 90, WEATHERED_COPPER_SETTINGS);
-	public static final Block OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.OXIDIZED, 120, OXIDIZED_COPPER_SETTINGS);
+	public static final Block MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.UNAFFECTED, RedstoneBits.getConfig().pressurePlateWeights().unaffectedWeight(), UNAFFECTED_COPPER_SETTINGS);
+	public static final Block EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.EXPOSED, RedstoneBits.getConfig().pressurePlateWeights().exposedWeight(), EXPOSED_COPPER_SETTINGS);
+	public static final Block WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.WEATHERED, RedstoneBits.getConfig().pressurePlateWeights().weatheredWeight(), WEATHERED_COPPER_SETTINGS);
+	public static final Block OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new CopperPressurePlateBlock(Oxidizable.OxidationLevel.OXIDIZED, RedstoneBits.getConfig().pressurePlateWeights().oxidizedWeight(), OXIDIZED_COPPER_SETTINGS);
 
-	public static final Block WAXED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(30, UNAFFECTED_COPPER_SETTINGS);
-	public static final Block WAXED_EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(60, EXPOSED_COPPER_SETTINGS);
-	public static final Block WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(90, WEATHERED_COPPER_SETTINGS);
-	public static final Block WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(120, OXIDIZED_COPPER_SETTINGS);
+	public static final Block WAXED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().unaffectedWeight(), UNAFFECTED_COPPER_SETTINGS);
+	public static final Block WAXED_EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().exposedWeight(), EXPOSED_COPPER_SETTINGS);
+	public static final Block WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().weatheredWeight(), WEATHERED_COPPER_SETTINGS);
+	public static final Block WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().oxidizedWeight(), OXIDIZED_COPPER_SETTINGS);
 
 	public static <T extends Block> T register(String name, T block) {
 		T b = Registry.register(Registry.BLOCK, RedstoneBits.id(name), block);

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:waxed_medium_weighted_pressure_plate_from_honeycomb"
+    ]
+  },
+  "criteria": {
+    "has_medium_weighted_pressure_plate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "redstonebits:medium_weighted_pressure_plate"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:waxed_medium_weighted_pressure_plate_from_honeycomb"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_medium_weighted_pressure_plate",
+      "has_the_recipe"
+    ]
+  ]
+}

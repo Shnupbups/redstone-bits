@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:exposed_copper"
+  },
+  "result": "redstonebits:exposed_medium_weighted_pressure_plate",
+  "count": 5
+}
