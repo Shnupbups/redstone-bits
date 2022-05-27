@@ -94,9 +94,9 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 
 			@Override
 			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-				if (world.getBlockEntity(pos) instanceof BreakerBlockEntity blockEntity) {
-					return new BreakerScreenHandler(syncId, playerInventory, blockEntity);
-				} else return new BreakerScreenHandler(syncId, playerInventory);
+				if (world.getBlockEntity(pos) instanceof BreakerBlockEntity breakerBlockEntity) {
+					return new BreakerScreenHandler(syncId, playerInventory, breakerBlockEntity);
+				} else return null;
 			}
 		};
 	}
@@ -124,23 +124,23 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		}
 		BlockState breakState = world.getBlockState(pos.add(state.get(FACING).getVector()));
 		boolean isBreakable = !(breakState.getHardness(world, pos) < 0);
-		if (be instanceof BreakerBlockEntity breaker && isBreakable) {
-			return breaker.startBreak();
+		if (be instanceof BreakerBlockEntity breakerBlockEntity && isBreakable) {
+			return breakerBlockEntity.startBreak();
 		}
 		return isBreakable;
 	}
 
 	public void cancelBreak(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof BreakerBlockEntity breaker) {
-			breaker.cancelBreak();
+		if (be instanceof BreakerBlockEntity breakerBlockEntity) {
+			breakerBlockEntity.cancelBreak();
 		}
 	}
 
 	public boolean isBreaking(World world, BlockPos pos) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof BreakerBlockEntity breaker) {
-			return breaker.isBreaking();
+		if (be instanceof BreakerBlockEntity breakerBlockEntity) {
+			return breakerBlockEntity.isBreaking();
 		}
 		return false;
 	}
@@ -169,8 +169,8 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
 		if (itemStack.hasCustomName()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof BreakerBlockEntity) {
-				((BreakerBlockEntity) blockEntity).setCustomName(itemStack.getName());
+			if (blockEntity instanceof BreakerBlockEntity breakerBlockEntity) {
+				breakerBlockEntity.setCustomName(itemStack.getName());
 			}
 		}
 	}
@@ -179,8 +179,8 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		if (!state.isOf(newState.getBlock())) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof BreakerBlockEntity) {
-				ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
+			if (blockEntity instanceof BreakerBlockEntity breakerBlockEntity) {
+				ItemScatterer.spawn(world, pos, breakerBlockEntity);
 				world.updateComparators(pos, this);
 			}
 
