@@ -20,7 +20,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -237,7 +236,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 
 	@Override
 	public Text getContainerName() {
-		return new TranslatableText("container.redstonebits.breaker");
+		return Text.translatable("container.redstonebits.breaker");
 	}
 
 	@Override

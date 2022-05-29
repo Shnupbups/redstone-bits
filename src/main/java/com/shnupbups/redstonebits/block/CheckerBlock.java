@@ -1,7 +1,5 @@
 package com.shnupbups.redstonebits.block;
 
-import java.util.Random;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -24,7 +22,6 @@ import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -32,6 +29,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -188,7 +186,7 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 
 			@Override
 			public Text getDisplayName() {
-				return new TranslatableText(getTranslationKey());
+				return Text.translatable(getTranslationKey());
 			}
 
 			@Override

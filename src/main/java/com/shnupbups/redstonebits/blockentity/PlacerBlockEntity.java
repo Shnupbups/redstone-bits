@@ -3,7 +3,6 @@ package com.shnupbups.redstonebits.blockentity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 
 import com.shnupbups.redstonebits.init.ModBlockEntities;
@@ -15,6 +14,6 @@ public class PlacerBlockEntity extends DispenserBlockEntity {
 
 	@Override
 	protected Text getContainerName() {
-		return new TranslatableText("container.redstonebits.placer");
+		return Text.translatable("container.redstonebits.placer");
 	}
 }

@@ -27,7 +27,7 @@ public class RBRecipeProvider extends FabricRecipeProvider {
 	protected void generateRecipes(Consumer<RecipeJsonProvider> exporter) {
 		RedstoneBits.LOGGER.info("Generating recipes...");
 
-		createPressurePlateRecipe(exporter, ModBlocks.MEDIUM_WEIGHTED_PRESSURE_PLATE, Items.COPPER_INGOT);
+		offerPressurePlateRecipe(exporter, ModBlocks.MEDIUM_WEIGHTED_PRESSURE_PLATE, Items.COPPER_INGOT);
 		offerSingleOutputShapelessRecipe(exporter, ModBlocks.COPPER_BUTTON, Items.COPPER_INGOT, null);
 		
 		offerWaxing(exporter, ModBlocks.COPPER_BUTTON, ModBlocks.WAXED_COPPER_BUTTON);
