@@ -28,7 +28,7 @@ public class ModBlocks {
 
 	public static final Block CHECKER = new CheckerBlock(FabricBlockSettings.copyOf(Blocks.OBSERVER));
 
-	public static final Block ROTATOR = new RotatorBlock(FabricBlockSettings.copyOf(Blocks.PISTON));
+	public static final Block ROTATOR = new RotatorBlock(FabricBlockSettings.of(Material.PISTON).strength(1.5f));
 
 	public static final Block COUNTER = new CounterBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
 	public static final Block RESISTOR = new ResistorBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
