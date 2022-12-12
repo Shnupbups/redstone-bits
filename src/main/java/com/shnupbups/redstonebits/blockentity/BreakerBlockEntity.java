@@ -15,6 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerChunkManager;
@@ -342,7 +345,8 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	public void readBreakerNbt(NbtCompound nbt) {
 		this.setBreakProgress(nbt.getInt("BreakProgress"));
 		if (nbt.contains("BreakState")) {
-			this.setBreakState(NbtHelper.toBlockState(nbt.getCompound("BreakState")));
+			RegistryWrapper<Block> registryEntryLookup = this.world != null ? this.world.createCommandRegistryWrapper(RegistryKeys.BLOCK) : Registries.BLOCK.getReadOnlyWrapper();
+			this.setBreakState(NbtHelper.toBlockState(registryEntryLookup, nbt.getCompound("BreakState")));
 		} else this.setBreakState(null);
 		this.setBreakStack(ItemStack.fromNbt(nbt.getCompound("BreakStack")));
 	}

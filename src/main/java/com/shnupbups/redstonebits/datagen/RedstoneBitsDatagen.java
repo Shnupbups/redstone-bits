@@ -10,11 +10,13 @@ public class RedstoneBitsDatagen implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
 		RedstoneBits.LOGGER.info("Starting Redstone Bits datagen...");
 
-		dataGenerator.addProvider(RBModelProvider::new);
-		dataGenerator.addProvider(RBRecipeProvider::new);
-		dataGenerator.addProvider(RBBlockLootTableProvider::new);
+		FabricDataGenerator.Pack pack = dataGenerator.createPack();
 
-		RBBlockTagProvider blockTagProvider = dataGenerator.addProvider(RBBlockTagProvider::new);
-		dataGenerator.addProvider(new RBItemTagProvider(dataGenerator, blockTagProvider));
+		pack.addProvider(RBModelProvider::new);
+		pack.addProvider(RBRecipeProvider::new);
+		pack.addProvider(RBBlockLootTableProvider::new);
+
+		RBBlockTagProvider blockTagProvider = pack.addProvider(RBBlockTagProvider::new);
+		pack.addProvider((output, registriesFuture) -> new RBItemTagProvider(output, registriesFuture, blockTagProvider));
 	}
 }

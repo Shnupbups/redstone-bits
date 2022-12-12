@@ -98,7 +98,7 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 
 	private void scheduleTick(WorldAccess world, BlockPos pos) {
 		if (!world.isClient() && !world.getBlockTickScheduler().isQueued(pos, this)) {
-			world.createAndScheduleBlockTick(pos, this, 2);
+			world.scheduleBlockTick(pos, this, 2);
 		}
 	}
 

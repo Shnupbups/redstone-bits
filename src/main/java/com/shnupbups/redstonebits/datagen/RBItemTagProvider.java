@@ -1,21 +1,25 @@
 package com.shnupbups.redstonebits.datagen;
 
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.ItemTags;
+import java.util.concurrent.CompletableFuture;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.ItemTags;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.init.ModTags;
 
 public class RBItemTagProvider extends FabricTagProvider.ItemTagProvider {
-	public RBItemTagProvider(FabricDataGenerator dataGenerator, BlockTagProvider blockTagProvider) {
-		super(dataGenerator, blockTagProvider);
+	public RBItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture, @Nullable FabricTagProvider.BlockTagProvider blockTagProvider) {
+		super(output, registriesFuture, blockTagProvider);
 	}
 
 	@Override
-	protected void generateTags() {
+	protected void configure(RegistryWrapper.WrapperLookup registries) {
 		RedstoneBits.LOGGER.info("Generating item tags...");
 
 		copy(ModTags.Blocks.UNWAXED_COPPER_BUTTONS, ModTags.Items.UNWAXED_COPPER_BUTTONS);

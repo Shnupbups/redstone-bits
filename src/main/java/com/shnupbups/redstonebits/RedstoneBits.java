@@ -15,6 +15,7 @@ import com.shnupbups.redstonebits.config.RedstoneBitsConfig;
 import com.shnupbups.redstonebits.config.updater.ConfigUpdaters;
 import com.shnupbups.redstonebits.init.ModBlockEntities;
 import com.shnupbups.redstonebits.init.ModBlocks;
+import com.shnupbups.redstonebits.init.ModItemGroupStuff;
 import com.shnupbups.redstonebits.init.ModScreenHandlers;
 import com.shnupbups.redstonebits.init.ModSoundEvents;
 
@@ -39,6 +40,7 @@ public class RedstoneBits implements ModInitializer {
 		ModBlockEntities.init();
 		ModSoundEvents.init();
 		ModScreenHandlers.init();
+		ModItemGroupStuff.init();
 	}
 
 	public static boolean isConfigLoaded() {

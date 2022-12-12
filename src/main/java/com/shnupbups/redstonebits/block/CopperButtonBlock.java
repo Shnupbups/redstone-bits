@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -17,8 +18,8 @@ import net.minecraft.world.World;
 public class CopperButtonBlock extends ModButtonBlock implements Oxidizable {
 	private final Oxidizable.OxidationLevel oxidationLevel;
 
-	public CopperButtonBlock(Oxidizable.OxidationLevel oxidationLevel, int pressTicks, AbstractBlock.Settings settings) {
-		super(pressTicks, settings);
+	public CopperButtonBlock(Oxidizable.OxidationLevel oxidationLevel, Settings settings, int pressTicks, SoundEvent clickOffSound, SoundEvent clickOnSound) {
+		super(settings, pressTicks, false, clickOffSound, clickOnSound);
 		this.oxidationLevel = oxidationLevel;
 	}
 

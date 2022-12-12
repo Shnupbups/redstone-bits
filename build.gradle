@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -11,8 +11,6 @@ version = project.mod_version + "+" + project.version_meta
 group = project.maven_group
 
 loom {
-	accessWidenerPath = file("src/main/resources/redstonebits.accesswidener")
-	
 	runs {
 		datagenClient {
 			client()

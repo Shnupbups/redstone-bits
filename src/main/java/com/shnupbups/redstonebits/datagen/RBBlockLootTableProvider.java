@@ -1,22 +1,18 @@
 package com.shnupbups.redstonebits.datagen;
 
-import java.io.IOException;
-
-import net.minecraft.data.DataCache;
-
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.init.ModBlocks;
 
 public class RBBlockLootTableProvider extends FabricBlockLootTableProvider {
-	protected RBBlockLootTableProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	protected RBBlockLootTableProvider(FabricDataOutput output) {
+		super(output);
 	}
 
 	@Override
-	protected void generateBlockLootTables() {
+	public void generate() {
 		RedstoneBits.LOGGER.info("Generating block loot tables...");
 
 		addDrop(ModBlocks.PLACER);

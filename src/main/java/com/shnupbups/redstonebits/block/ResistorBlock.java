@@ -20,10 +20,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.TickPriority;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.tick.TickPriority;
 
 import com.shnupbups.redstonebits.init.ModSoundEvents;
 import com.shnupbups.redstonebits.blockentity.RedstoneGateBlockEntity;
@@ -98,7 +98,7 @@ public class ResistorBlock extends AbstractRedstoneGateBlock implements Advanced
 		}
 		if (!world.getBlockTickScheduler().isTicking(pos, this)) {
 			TickPriority tickPriority = this.isTargetNotAligned(world, pos, state) ? TickPriority.EXTREMELY_HIGH : state.get(POWERED) ? TickPriority.VERY_HIGH : TickPriority.HIGH;
-			world.createAndScheduleBlockTick(pos, this, this.getUpdateDelayInternal(state), tickPriority);
+			world.scheduleBlockTick(pos, this, this.getUpdateDelayInternal(state), tickPriority);
 		}
 	}
 

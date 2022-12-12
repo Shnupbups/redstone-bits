@@ -1,9 +1,9 @@
 package com.shnupbups.redstonebits.block;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -11,8 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class WaxedCopperButtonBlock extends ModButtonBlock {
-	public WaxedCopperButtonBlock(int pressTicks, AbstractBlock.Settings settings) {
-		super(pressTicks, settings);
+	public WaxedCopperButtonBlock(Settings settings, int pressTicks, SoundEvent clickOffSound, SoundEvent clickOnSound) {
+		super(settings, pressTicks, false, clickOffSound, clickOnSound);
 	}
 
 	@Override

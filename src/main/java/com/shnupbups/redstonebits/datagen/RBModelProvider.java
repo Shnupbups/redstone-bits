@@ -16,6 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 
 import com.shnupbups.redstonebits.RedstoneBits;
@@ -40,8 +41,8 @@ public class RBModelProvider extends FabricModelProvider {
 	public static final Model TEMPLATE_INVERTER = createRedstoneGateModel("template_inverter", false);
 	public static final Model TEMPLATE_INVERTER_LOCKED = createRedstoneGateModel("template_inverter_locked", true);
 
-	public RBModelProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public RBModelProvider(FabricDataOutput output) {
+		super(output);
 	}
 
 	@Override

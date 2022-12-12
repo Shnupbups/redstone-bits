@@ -2,9 +2,10 @@ package com.shnupbups.redstonebits.init;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 
@@ -21,7 +22,7 @@ public class ModTags {
 		public static final TagKey<Block> BREAKER_BLACKLIST = of("breaker_blacklist");
 
 		public static TagKey<Block> of(String id) {
-			return ModTags.of(Registry.BLOCK_KEY, id);
+			return ModTags.of(RegistryKeys.BLOCK, id);
 		}
 	}
 
@@ -37,7 +38,7 @@ public class ModTags {
 		public static final TagKey<Item> PLACER_BLACKLIST = of("placer_blacklist");
 
 		public static TagKey<Item> of(String id) {
-			return ModTags.of(Registry.ITEM_KEY, id);
+			return ModTags.of(RegistryKeys.ITEM, id);
 		}
 	}
 

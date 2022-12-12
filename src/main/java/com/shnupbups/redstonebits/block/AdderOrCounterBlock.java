@@ -18,10 +18,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.TickPriority;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.tick.TickPriority;
 
 import com.shnupbups.redstonebits.init.ModSoundEvents;
 import com.shnupbups.redstonebits.properties.ModProperties;
@@ -89,7 +89,7 @@ public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock impl
 				else if (newPower < 0) newPower += 15;
 				world.setBlockState(pos, state.with(POWERED, true).with(POWER, newPower), Block.NOTIFY_LISTENERS);
 				if (!hasPower) {
-					world.createAndScheduleBlockTick(pos, this, this.getUpdateDelayInternal(state), TickPriority.HIGH);
+					world.scheduleBlockTick(pos, this, this.getUpdateDelayInternal(state), TickPriority.HIGH);
 				}
 			}
 		}

@@ -31,7 +31,7 @@ public class AnalogRedstoneReceiverBlock extends Block {
 			int receivedPower = world.getReceivedRedstonePower(pos);
 			if (power != receivedPower) {
 				if (power > 0 && receivedPower == 0) {
-					world.createAndScheduleBlockTick(pos, this, 4);
+					world.scheduleBlockTick(pos, this, 4);
 				} else {
 					world.setBlockState(pos, state.with(POWER, world.getReceivedRedstonePower(pos)), 2);
 				}
