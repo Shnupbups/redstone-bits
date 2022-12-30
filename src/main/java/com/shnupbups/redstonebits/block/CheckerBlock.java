@@ -36,9 +36,9 @@ import net.minecraft.world.WorldAccess;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
-import com.shnupbups.redstonebits.init.ModBlockEntities;
+import com.shnupbups.redstonebits.init.RBBlockEntities;
 import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
-import com.shnupbups.redstonebits.container.CheckerScreenHandler;
+import com.shnupbups.redstonebits.screen.handler.CheckerScreenHandler;
 
 public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneConnector {
 	public static final DirectionProperty FACING = Properties.FACING;
@@ -52,7 +52,7 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return checkType(type, ModBlockEntities.CHECKER, world.isClient ? null : CheckerBlockEntity::serverTick);
+		return checkType(type, RBBlockEntities.CHECKER, world.isClient ? null : CheckerBlockEntity::serverTick);
 	}
 
 	@Override

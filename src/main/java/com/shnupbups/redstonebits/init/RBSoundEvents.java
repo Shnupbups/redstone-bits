@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 
-public class ModSoundEvents {
+public class RBSoundEvents {
 	public static final SoundEvent BLOCK_COPPER_BUTTON_CLICK_ON = SoundEvent.of(RedstoneBits.id("block.copper_button.click_on"));
 	public static final SoundEvent BLOCK_COPPER_BUTTON_CLICK_OFF = SoundEvent.of(RedstoneBits.id("block.copper_button.click_off"));
 	public static final SoundEvent BLOCK_COUNTER_CLICK = SoundEvent.of(RedstoneBits.id("block.counter.click"));

@@ -16,14 +16,14 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.shnupbups.redstonebits.init.ModBlockEntities;
-import com.shnupbups.redstonebits.container.CheckerScreenHandler;
+import com.shnupbups.redstonebits.init.RBBlockEntities;
+import com.shnupbups.redstonebits.screen.handler.CheckerScreenHandler;
 
 public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	private DefaultedList<ItemStack> inventory;
 
 	public CheckerBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.CHECKER, pos, state);
+		super(RBBlockEntities.CHECKER, pos, state);
 		this.inventory = DefaultedList.ofSize(15, ItemStack.EMPTY);
 	}
 

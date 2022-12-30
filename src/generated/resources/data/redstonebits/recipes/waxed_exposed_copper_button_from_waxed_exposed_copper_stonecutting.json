@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 9,
   "ingredient": {
     "item": "minecraft:waxed_exposed_copper"
   },
-  "result": "redstonebits:waxed_exposed_copper_button",
-  "count": 9
+  "result": "redstonebits:waxed_exposed_copper_button"
 }

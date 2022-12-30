@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "power=0": {
+      "model": "redstonebits:block/redstone_glass"
+    },
+    "power=1": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=10": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=11": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=12": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=13": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=14": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=15": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=2": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=3": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=4": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=5": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=6": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=7": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=8": {
+      "model": "redstonebits:block/redstone_glass_on"
+    },
+    "power=9": {
+      "model": "redstonebits:block/redstone_glass_on"
+    }
+  }
+}

@@ -31,10 +31,10 @@ import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.FakePlayerEntity;
 import com.shnupbups.redstonebits.RedstoneBits;
-import com.shnupbups.redstonebits.init.ModBlockEntities;
-import com.shnupbups.redstonebits.container.BreakerScreenHandler;
-import com.shnupbups.redstonebits.init.ModTags;
-import com.shnupbups.redstonebits.properties.ModProperties;
+import com.shnupbups.redstonebits.init.RBBlockEntities;
+import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
+import com.shnupbups.redstonebits.init.RBTags;
+import com.shnupbups.redstonebits.properties.RBProperties;
 
 public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	private final PropertyDelegate propertyDelegate = new BreakerPropertyDelegate();
@@ -45,7 +45,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	private FakePlayerEntity fakePlayerEntity;
 
 	public BreakerBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.BREAKER, pos, state);
+		super(RBBlockEntities.BREAKER, pos, state);
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
 	}
 
@@ -65,8 +65,8 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 			}
 		}
 
-		if (blockEntity.isBreaking() != world.getBlockState(pos).get(ModProperties.BREAKING)) {
-			world.setBlockState(pos, world.getBlockState(pos).with(ModProperties.BREAKING, blockEntity.isBreaking()));
+		if (blockEntity.isBreaking() != world.getBlockState(pos).get(RBProperties.BREAKING)) {
+			world.setBlockState(pos, world.getBlockState(pos).with(RBProperties.BREAKING, blockEntity.isBreaking()));
 			((ServerChunkManager) world.getChunkManager()).markForUpdate(pos);
 			blockEntity.markDirty();
 		}
@@ -166,7 +166,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		//System.out.println("start break at "+getBreakPos().toString());
 		BlockState toBreak = this.getWorld().getBlockState(this.getBreakPos());
 		ItemStack tool = this.getTool();
-		if(toBreak.isIn(ModTags.Blocks.BREAKER_BLACKLIST) || tool.isIn(ModTags.Items.BREAKER_TOOL_BLACKLIST)) {
+		if(toBreak.isIn(RBTags.Blocks.BREAKER_BLACKLIST) || tool.isIn(RBTags.Items.BREAKER_TOOL_BLACKLIST)) {
 			return false;
 		} else {
 			this.setBreakState(toBreak);

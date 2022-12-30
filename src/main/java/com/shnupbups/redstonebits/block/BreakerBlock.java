@@ -39,15 +39,15 @@ import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
-import com.shnupbups.redstonebits.init.ModBlockEntities;
+import com.shnupbups.redstonebits.init.RBBlockEntities;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
-import com.shnupbups.redstonebits.container.BreakerScreenHandler;
-import com.shnupbups.redstonebits.properties.ModProperties;
+import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
+import com.shnupbups.redstonebits.properties.RBProperties;
 
 public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider {
 	public static final DirectionProperty FACING = FacingBlock.FACING;
 	public static final BooleanProperty TRIGGERED = Properties.TRIGGERED;
-	public static final BooleanProperty BREAKING = ModProperties.BREAKING;
+	public static final BooleanProperty BREAKING = RBProperties.BREAKING;
 
 	public BreakerBlock(Settings settings) {
 		super(settings);
@@ -57,7 +57,7 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return checkType(type, ModBlockEntities.BREAKER, world.isClient ? null : BreakerBlockEntity::serverTick);
+		return checkType(type, RBBlockEntities.BREAKER, world.isClient ? null : BreakerBlockEntity::serverTick);
 	}
 
 	@Override

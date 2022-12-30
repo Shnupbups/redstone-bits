@@ -4,21 +4,21 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.impl.blockrenderlayer.BlockRenderLayerMapImpl;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 
-import com.shnupbups.redstonebits.container.screen.BreakerHandledScreen;
-import com.shnupbups.redstonebits.container.screen.CheckerHandledScreen;
-import com.shnupbups.redstonebits.init.ModBlocks;
-import com.shnupbups.redstonebits.init.ModScreenHandlers;
+import com.shnupbups.redstonebits.screen.handled.BreakerHandledScreen;
+import com.shnupbups.redstonebits.screen.handled.CheckerHandledScreen;
+import com.shnupbups.redstonebits.init.RBBlocks;
+import com.shnupbups.redstonebits.init.RBScreenHandlers;
 
 @SuppressWarnings("unused")
 public class RedstoneBitsClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		HandledScreens.register(ModScreenHandlers.BREAKER, BreakerHandledScreen::new);
-		HandledScreens.register(ModScreenHandlers.CHECKER, CheckerHandledScreen::new);
+		HandledScreens.register(RBScreenHandlers.BREAKER, BreakerHandledScreen::new);
+		HandledScreens.register(RBScreenHandlers.CHECKER, CheckerHandledScreen::new);
 
-		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), ModBlocks.COUNTER, ModBlocks.RESISTOR, ModBlocks.ADDER, ModBlocks.INVERTER);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), RBBlocks.COUNTER, RBBlocks.RESISTOR, RBBlocks.ADDER, RBBlocks.INVERTER, RBBlocks.REDSTONE_GLASS);
 	}
 }

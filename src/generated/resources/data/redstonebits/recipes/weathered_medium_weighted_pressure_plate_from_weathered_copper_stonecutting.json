@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 5,
   "ingredient": {
     "item": "minecraft:weathered_copper"
   },
-  "result": "redstonebits:weathered_medium_weighted_pressure_plate",
-  "count": 5
+  "result": "redstonebits:weathered_medium_weighted_pressure_plate"
 }

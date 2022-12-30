@@ -26,7 +26,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.TickPriority;
 
-import com.shnupbups.redstonebits.init.ModSoundEvents;
+import com.shnupbups.redstonebits.init.RBSoundEvents;
 import com.shnupbups.redstonebits.blockentity.RedstoneGateBlockEntity;
 
 public class InverterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector, BlockEntityProvider {
@@ -50,7 +50,7 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 		} else {
 			boolean inverted = state.get(INVERTED);
 			float pitch = inverted ? 0.55F : 0.5F;
-			world.playSound(player, pos, ModSoundEvents.BLOCK_INVERTER_CLICK, SoundCategory.BLOCKS, 0.3F, pitch);
+			world.playSound(player, pos, RBSoundEvents.BLOCK_INVERTER_CLICK, SoundCategory.BLOCKS, 0.3F, pitch);
 			BlockState newState = state.with(INVERTED, !inverted);
 			world.setBlockState(pos, newState, Block.NOTIFY_ALL);
 			this.update(world, pos, newState);

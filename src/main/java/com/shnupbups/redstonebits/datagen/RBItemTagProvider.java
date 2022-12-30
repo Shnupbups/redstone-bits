@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
 import com.shnupbups.redstonebits.RedstoneBits;
-import com.shnupbups.redstonebits.init.ModTags;
+import com.shnupbups.redstonebits.init.RBTags;
 
 public class RBItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	public RBItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture, @Nullable FabricTagProvider.BlockTagProvider blockTagProvider) {
@@ -22,18 +22,18 @@ public class RBItemTagProvider extends FabricTagProvider.ItemTagProvider {
 	protected void configure(RegistryWrapper.WrapperLookup registries) {
 		RedstoneBits.LOGGER.info("Generating item tags...");
 
-		copy(ModTags.Blocks.UNWAXED_COPPER_BUTTONS, ModTags.Items.UNWAXED_COPPER_BUTTONS);
-		copy(ModTags.Blocks.WAXED_COPPER_BUTTONS, ModTags.Items.WAXED_COPPER_BUTTONS);
-		copy(ModTags.Blocks.COPPER_BUTTONS, ModTags.Items.COPPER_BUTTONS);
+		copy(RBTags.Blocks.UNWAXED_COPPER_BUTTONS, RBTags.Items.UNWAXED_COPPER_BUTTONS);
+		copy(RBTags.Blocks.WAXED_COPPER_BUTTONS, RBTags.Items.WAXED_COPPER_BUTTONS);
+		copy(RBTags.Blocks.COPPER_BUTTONS, RBTags.Items.COPPER_BUTTONS);
 
-		copy(ModTags.Blocks.UNWAXED_COPPER_PRESSURE_PLATES, ModTags.Items.UNWAXED_COPPER_PRESSURE_PLATES);
-		copy(ModTags.Blocks.WAXED_COPPER_PRESSURE_PLATES, ModTags.Items.WAXED_COPPER_PRESSURE_PLATES);
-		copy(ModTags.Blocks.COPPER_PRESSURE_PLATES, ModTags.Items.COPPER_PRESSURE_PLATES);
+		copy(RBTags.Blocks.UNWAXED_COPPER_PRESSURE_PLATES, RBTags.Items.UNWAXED_COPPER_PRESSURE_PLATES);
+		copy(RBTags.Blocks.WAXED_COPPER_PRESSURE_PLATES, RBTags.Items.WAXED_COPPER_PRESSURE_PLATES);
+		copy(RBTags.Blocks.COPPER_PRESSURE_PLATES, RBTags.Items.COPPER_PRESSURE_PLATES);
 
-		getOrCreateTagBuilder(ModTags.Items.BREAKER_TOOL_BLACKLIST);
-		getOrCreateTagBuilder(ModTags.Items.PLACER_BLACKLIST);
+		getOrCreateTagBuilder(RBTags.Items.BREAKER_TOOL_BLACKLIST);
+		getOrCreateTagBuilder(RBTags.Items.PLACER_BLACKLIST);
 
-		getOrCreateTagBuilder(ItemTags.BUTTONS).addTag(ModTags.Items.COPPER_BUTTONS);
+		getOrCreateTagBuilder(ItemTags.BUTTONS).addTag(RBTags.Items.COPPER_BUTTONS);
 
 		RedstoneBits.LOGGER.info("Finished generating item tags!");
 	}

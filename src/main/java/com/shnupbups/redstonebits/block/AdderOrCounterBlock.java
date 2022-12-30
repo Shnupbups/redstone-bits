@@ -23,12 +23,12 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.TickPriority;
 
-import com.shnupbups.redstonebits.init.ModSoundEvents;
-import com.shnupbups.redstonebits.properties.ModProperties;
+import com.shnupbups.redstonebits.init.RBSoundEvents;
+import com.shnupbups.redstonebits.properties.RBProperties;
 
 public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector {
 	public static final IntProperty POWER = Properties.POWER;
-	public static final BooleanProperty BACKWARDS = ModProperties.BACKWARDS;
+	public static final BooleanProperty BACKWARDS = RBProperties.BACKWARDS;
 	public static final BooleanProperty LOCKED = Properties.LOCKED;
 
 	public AdderOrCounterBlock(Settings settings) {
@@ -102,7 +102,7 @@ public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock impl
 		} else {
 			boolean backwards = state.get(BACKWARDS);
 			float pitch = backwards ? 0.55F : 0.5F;
-			world.playSound(player, pos, ModSoundEvents.BLOCK_ADDER_CLICK, SoundCategory.BLOCKS, 0.3F, pitch);
+			world.playSound(player, pos, RBSoundEvents.BLOCK_ADDER_CLICK, SoundCategory.BLOCKS, 0.3F, pitch);
 			world.setBlockState(pos, state.with(BACKWARDS, !backwards), Block.NOTIFY_ALL);
 			return ActionResult.success(world.isClient());
 		}

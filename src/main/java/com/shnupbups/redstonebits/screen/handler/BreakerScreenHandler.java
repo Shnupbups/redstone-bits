@@ -1,4 +1,4 @@
-package com.shnupbups.redstonebits.container;
+package com.shnupbups.redstonebits.screen.handler;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,7 +13,7 @@ import net.minecraft.screen.slot.Slot;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import com.shnupbups.redstonebits.init.ModScreenHandlers;
+import com.shnupbups.redstonebits.init.RBScreenHandlers;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
 
 public class BreakerScreenHandler extends ScreenHandler {
@@ -30,7 +30,7 @@ public class BreakerScreenHandler extends ScreenHandler {
 	}
 
 	public BreakerScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
-		super(ModScreenHandlers.BREAKER, syncId);
+		super(RBScreenHandlers.BREAKER, syncId);
 		checkSize(inventory, 1);
 		this.inventory = inventory;
 		this.playerInventory = playerInventory;

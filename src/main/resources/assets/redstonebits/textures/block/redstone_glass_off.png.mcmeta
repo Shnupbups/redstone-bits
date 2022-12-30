@@ -1,0 +1,10 @@
+{
+    "ctm":{
+        "ctm_version": 1,
+        "type":"CTM",
+        "layer":"CUTOUT",
+        "textures":[
+            "redstonebits:block/redstone_glass_off_ctm"
+        ]
+    }
+}

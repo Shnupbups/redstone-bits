@@ -1,4 +1,4 @@
-package com.shnupbups.redstonebits.container.screen;
+package com.shnupbups.redstonebits.screen.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -10,15 +10,15 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import com.shnupbups.redstonebits.RedstoneBits;
-import com.shnupbups.redstonebits.container.CheckerScreenHandler;
+import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
 
-public class CheckerHandledScreen extends HandledScreen<CheckerScreenHandler> {
+public class BreakerHandledScreen extends HandledScreen<BreakerScreenHandler> {
 
-	private static final Identifier TEXTURE = RedstoneBits.id("textures/gui/container/checker.png");
+	private static final Identifier TEXTURE = RedstoneBits.id("textures/gui/container/breaker.png");
 
-	private final CheckerScreenHandler handler;
+	private final BreakerScreenHandler handler;
 
-	public CheckerHandledScreen(CheckerScreenHandler handler, PlayerInventory playerInventory, Text name) {
+	public BreakerHandledScreen(BreakerScreenHandler handler, PlayerInventory playerInventory, Text name) {
 		super(handler, playerInventory, name);
 		this.handler = handler;
 	}
@@ -38,15 +38,10 @@ public class CheckerHandledScreen extends HandledScreen<CheckerScreenHandler> {
 		int x = (this.width - this.backgroundWidth) / 2;
 		int y = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
-		for (int row = 0; row < 3; row++) {
-			for (int column = 0; column < 5; column++) {
-				int slot = (column + row * 5);
-				if (!handler.getSlot(slot).hasStack()) {
-					int power = slot + 1;
-					String slotText = (power < 10 ? "0" : "") + power;
-					this.textRenderer.draw(matrices, slotText, (x + 44 + (column * 18)) + 3, (y + 17 + (row * 18)) + 5, 0x192022);
-				}
-			}
+		if (!handler.getSlot(0).hasStack()) {
+			this.drawTexture(matrices, x + 80, y + 35, this.backgroundWidth, 0, 16, 16);
 		}
+		if (handler.getBreakPercentage() > 0)
+			this.drawTexture(matrices, x + 80, y + 53, this.backgroundWidth, 16 + ((int) Math.floor(handler.getBreakPercentage() / 10.0) * 16), 16, 16);
 	}
 }

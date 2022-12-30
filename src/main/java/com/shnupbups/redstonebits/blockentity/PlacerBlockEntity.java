@@ -5,11 +5,11 @@ import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
-import com.shnupbups.redstonebits.init.ModBlockEntities;
+import com.shnupbups.redstonebits.init.RBBlockEntities;
 
 public class PlacerBlockEntity extends DispenserBlockEntity {
 	public PlacerBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.PLACER, pos, state);
+		super(RBBlockEntities.PLACER, pos, state);
 	}
 
 	@Override

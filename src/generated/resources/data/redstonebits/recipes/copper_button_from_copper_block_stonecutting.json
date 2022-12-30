@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 9,
   "ingredient": {
     "item": "minecraft:copper_block"
   },
-  "result": "redstonebits:copper_button",
-  "count": 9
+  "result": "redstonebits:copper_button"
 }

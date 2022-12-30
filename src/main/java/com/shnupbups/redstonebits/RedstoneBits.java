@@ -13,11 +13,11 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 import com.shnupbups.redstonebits.config.RedstoneBitsConfig;
 import com.shnupbups.redstonebits.config.updater.ConfigUpdaters;
-import com.shnupbups.redstonebits.init.ModBlockEntities;
-import com.shnupbups.redstonebits.init.ModBlocks;
-import com.shnupbups.redstonebits.init.ModItemGroupStuff;
-import com.shnupbups.redstonebits.init.ModScreenHandlers;
-import com.shnupbups.redstonebits.init.ModSoundEvents;
+import com.shnupbups.redstonebits.init.RBBlockEntities;
+import com.shnupbups.redstonebits.init.RBBlocks;
+import com.shnupbups.redstonebits.init.RBItemGroupStuff;
+import com.shnupbups.redstonebits.init.RBScreenHandlers;
+import com.shnupbups.redstonebits.init.RBSoundEvents;
 
 public class RedstoneBits implements ModInitializer {
 	public static final String MOD_ID = "redstonebits";
@@ -36,11 +36,11 @@ public class RedstoneBits implements ModInitializer {
 	public void onInitialize() {
 		if(!isConfigLoaded()) loadConfig();
 
-		ModBlocks.init();
-		ModBlockEntities.init();
-		ModSoundEvents.init();
-		ModScreenHandlers.init();
-		ModItemGroupStuff.init();
+		RBBlocks.init();
+		RBBlockEntities.init();
+		RBSoundEvents.init();
+		RBScreenHandlers.init();
+		RBItemGroupStuff.init();
 	}
 
 	public static boolean isConfigLoaded() {

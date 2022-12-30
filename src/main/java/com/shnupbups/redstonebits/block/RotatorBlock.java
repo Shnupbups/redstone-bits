@@ -25,8 +25,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-import com.shnupbups.redstonebits.init.ModSoundEvents;
-import com.shnupbups.redstonebits.init.ModTags;
+import com.shnupbups.redstonebits.init.RBSoundEvents;
+import com.shnupbups.redstonebits.init.RBTags;
 
 public class RotatorBlock extends FacingBlock {
 	public static final BooleanProperty INVERTED = Properties.INVERTED;
@@ -51,7 +51,7 @@ public class RotatorBlock extends FacingBlock {
 		} else {
 			boolean inverted = state.get(INVERTED);
 			float pitch = inverted ? 0.55F : 0.5F;
-			world.playSound(player, pos, ModSoundEvents.BLOCK_ROTATOR_INVERT, SoundCategory.BLOCKS, 0.3F, pitch);
+			world.playSound(player, pos, RBSoundEvents.BLOCK_ROTATOR_INVERT, SoundCategory.BLOCKS, 0.3F, pitch);
 			world.setBlockState(pos, state.with(INVERTED, !inverted), Block.NOTIFY_ALL);
 			return ActionResult.SUCCESS;
 		}
@@ -72,10 +72,10 @@ public class RotatorBlock extends FacingBlock {
 				BlockState rotatedState = facingState.rotate(state.get(INVERTED) ? BlockRotation.COUNTERCLOCKWISE_90 : BlockRotation.CLOCKWISE_90);
 				if(!rotatedState.equals(facingState) && rotatedState.canPlaceAt(world, facingPos)) {
 					world.setBlockState(facingPos, rotatedState, Block.NOTIFY_ALL);
-					world.playSound(null, pos, ModSoundEvents.BLOCK_ROTATOR_ROTATE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+					world.playSound(null, pos, RBSoundEvents.BLOCK_ROTATOR_ROTATE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 					shouldUpdateComparators = true;
 				} else {
-					world.playSound(null, pos, ModSoundEvents.BLOCK_ROTATOR_FAIL, SoundCategory.BLOCKS, 1.0f, 1.2f);
+					world.playSound(null, pos, RBSoundEvents.BLOCK_ROTATOR_FAIL, SoundCategory.BLOCKS, 1.0f, 1.2f);
 				}
 			}
 		} else if(!receivingPower && powered) {
@@ -104,7 +104,7 @@ public class RotatorBlock extends FacingBlock {
 	}
 
 	public static boolean canRotate(BlockState state) {
-		return !state.isIn(ModTags.Blocks.ROTATOR_BLACKLIST);
+		return !state.isIn(RBTags.Blocks.ROTATOR_BLACKLIST);
 	}
 
 	public static boolean canGetComparatorValue(BlockState state) {

@@ -1,13 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "##"
-  ],
+  "category": "redstone",
   "key": {
     "#": {
       "item": "minecraft:copper_ingot"
     }
   },
+  "pattern": [
+    "##"
+  ],
   "result": {
     "item": "redstonebits:medium_weighted_pressure_plate"
   }

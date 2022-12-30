@@ -5,13 +5,13 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 
-import com.shnupbups.redstonebits.init.ModBlockEntities;
+import com.shnupbups.redstonebits.init.RBBlockEntities;
 
 public class RedstoneGateBlockEntity extends BlockEntity {
 	private int outputSignal;
 
 	public RedstoneGateBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.REDSTONE_GATE, pos, state);
+		super(RBBlockEntities.REDSTONE_GATE, pos, state);
 	}
 
 	@Override

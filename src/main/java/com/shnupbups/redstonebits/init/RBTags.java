@@ -9,7 +9,7 @@ import net.minecraft.registry.RegistryKey;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 
-public class ModTags {
+public class RBTags {
 	public static class Blocks {
 		public static final TagKey<Block> COPPER_BUTTONS = of("copper_buttons");
 		public static final TagKey<Block> COPPER_PRESSURE_PLATES = of("copper_pressure_plates");
@@ -22,7 +22,7 @@ public class ModTags {
 		public static final TagKey<Block> BREAKER_BLACKLIST = of("breaker_blacklist");
 
 		public static TagKey<Block> of(String id) {
-			return ModTags.of(RegistryKeys.BLOCK, id);
+			return RBTags.of(RegistryKeys.BLOCK, id);
 		}
 	}
 
@@ -38,7 +38,7 @@ public class ModTags {
 		public static final TagKey<Item> PLACER_BLACKLIST = of("placer_blacklist");
 
 		public static TagKey<Item> of(String id) {
-			return ModTags.of(RegistryKeys.ITEM, id);
+			return RBTags.of(RegistryKeys.ITEM, id);
 		}
 	}
 

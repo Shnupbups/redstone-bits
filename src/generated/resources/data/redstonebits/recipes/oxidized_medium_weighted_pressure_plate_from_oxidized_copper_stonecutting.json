@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 5,
   "ingredient": {
     "item": "minecraft:oxidized_copper"
   },
-  "result": "redstonebits:oxidized_medium_weighted_pressure_plate",
-  "count": 5
+  "result": "redstonebits:oxidized_medium_weighted_pressure_plate"
 }

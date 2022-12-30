@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import com.shnupbups.redstonebits.block.placer.BetterBlockPlacementDispenserBehavior;
 import com.shnupbups.redstonebits.block.placer.BlacklistedDispenserBehavior;
 import com.shnupbups.redstonebits.blockentity.PlacerBlockEntity;
-import com.shnupbups.redstonebits.init.ModTags;
+import com.shnupbups.redstonebits.init.RBTags;
 
 public class PlacerBlock extends DispenserBlock {
 	private static final DispenserBehavior PLACE_BLOCK = new BetterBlockPlacementDispenserBehavior();
@@ -27,7 +27,7 @@ public class PlacerBlock extends DispenserBlock {
 
 	@Override
 	protected DispenserBehavior getBehaviorForItem(ItemStack stack) {
-		return stack.isIn(ModTags.Items.PLACER_BLACKLIST) ? BLACKLISTED : PLACE_BLOCK;
+		return stack.isIn(RBTags.Items.PLACER_BLACKLIST) ? BLACKLISTED : PLACE_BLOCK;
 	}
 
 	@Override

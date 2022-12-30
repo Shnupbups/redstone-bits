@@ -1,9 +1,9 @@
 {
   "parent": "redstonebits:block/template_adder_or_counter_locked",
   "textures": {
+    "lock": "minecraft:block/bedrock",
     "slab": "minecraft:block/smooth_stone",
     "top": "redstonebits:block/adder_13",
-    "torch": "minecraft:block/redstone_torch_off",
-    "lock": "minecraft:block/bedrock"
+    "torch": "minecraft:block/redstone_torch_off"
   }
 }

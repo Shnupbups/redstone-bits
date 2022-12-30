@@ -8,10 +8,10 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 
-public class CopperPressurePlateBlock extends WeightedPressurePlateBlock implements Oxidizable {
+public class MediumWeightedPressurePlateBlock extends WeightedPressurePlateBlock implements Oxidizable {
 	private final Oxidizable.OxidationLevel oxidationLevel;
 
-	public CopperPressurePlateBlock(Oxidizable.OxidationLevel oxidationLevel, int weight, Settings settings, SoundEvent depressSound, SoundEvent pressSound) {
+	public MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel oxidationLevel, int weight, Settings settings, SoundEvent depressSound, SoundEvent pressSound) {
 		super(weight, settings, depressSound, pressSound);
 		this.oxidationLevel = oxidationLevel;
 	}

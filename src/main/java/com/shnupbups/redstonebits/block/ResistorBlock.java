@@ -25,13 +25,13 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.TickPriority;
 
-import com.shnupbups.redstonebits.init.ModSoundEvents;
+import com.shnupbups.redstonebits.init.RBSoundEvents;
 import com.shnupbups.redstonebits.blockentity.RedstoneGateBlockEntity;
-import com.shnupbups.redstonebits.properties.ModProperties;
+import com.shnupbups.redstonebits.properties.RBProperties;
 import com.shnupbups.redstonebits.properties.ResistorMode;
 
 public class ResistorBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector, BlockEntityProvider {
-	public static final EnumProperty<ResistorMode> MODE = ModProperties.RESISTOR_MODE;
+	public static final EnumProperty<ResistorMode> MODE = RBProperties.RESISTOR_MODE;
 	public static final BooleanProperty LOCKED = Properties.LOCKED;
 
 	public ResistorBlock(Settings settings) {
@@ -75,7 +75,7 @@ public class ResistorBlock extends AbstractRedstoneGateBlock implements Advanced
 		} else {
 			state = state.cycle(MODE);
 			float f = state.get(MODE).getDivisor();
-			world.playSound(player, pos, ModSoundEvents.BLOCK_RESISTOR_CLICK, SoundCategory.BLOCKS, 0.3F, f);
+			world.playSound(player, pos, RBSoundEvents.BLOCK_RESISTOR_CLICK, SoundCategory.BLOCKS, 0.3F, f);
 			world.setBlockState(pos, state, Block.NOTIFY_ALL);
 			this.update(world, pos, state);
 			return ActionResult.success(world.isClient());

@@ -9,7 +9,8 @@
     "Shnupbups"
   ],
   "contributors": [
-    "XuyuEre"
+    "XuyuEre",
+    "Fer9721"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/redstone-bits",
@@ -42,7 +43,7 @@
   "depends": {
     "fabricloader": ">=0.14.0",
 	"fabric": ">=0.53.0",
-    "minecraft": ">=1.19-beta.3",
+    "minecraft": ">=1.19.3",
     "java": ">=17",
     "cloth-config": "*"
   }

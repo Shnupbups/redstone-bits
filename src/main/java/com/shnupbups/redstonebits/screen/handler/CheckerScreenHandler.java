@@ -1,4 +1,4 @@
-package com.shnupbups.redstonebits.container;
+package com.shnupbups.redstonebits.screen.handler;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-import com.shnupbups.redstonebits.init.ModScreenHandlers;
+import com.shnupbups.redstonebits.init.RBScreenHandlers;
 
 public class CheckerScreenHandler extends ScreenHandler {
 	public final PlayerInventory playerInventory;
@@ -19,7 +19,7 @@ public class CheckerScreenHandler extends ScreenHandler {
 	}
 
 	public CheckerScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-		super(ModScreenHandlers.CHECKER, syncId);
+		super(RBScreenHandlers.CHECKER, syncId);
 		checkSize(inventory, 15);
 		this.inventory = inventory;
 		this.playerInventory = playerInventory;
