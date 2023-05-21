@@ -106,6 +106,7 @@ jar {
 modrinth {
 	projectId = project.modrinth_project
 	uploadFile = remapJar
+	versionName = "${project.mod_version} for Minecraft ${project.minecraft_version}"
 	gameVersions = ["${project.minecraft_version}"]
 	dependencies {
 		required.project "fabric-api"
