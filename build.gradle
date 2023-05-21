@@ -56,7 +56,7 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 	
 	// RoughlyEnoughItems
-    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    //modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
 	// Architectury Fabric
 	modImplementation "dev.architectury:architectury-fabric:${project.arch_version}"

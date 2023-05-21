@@ -9,8 +9,10 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -26,6 +28,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -141,6 +144,12 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 		if (!state.isOf(oldState.getBlock())) {
 			if (!world.isClient && state.get(POWER) > 0 && world.getBlockTickScheduler().isQueued(pos, this)) {
 				this.updateNeighbors(world, pos, state.with(POWER, 0));
+			}
+
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof CheckerBlockEntity) {
+				ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
+				world.updateComparators(pos, this);
 			}
 		}
 		super.onStateReplaced(state, world, pos, oldState, notify);

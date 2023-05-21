@@ -30,5 +30,6 @@
     "recipes": [
       "minecraft:waxed_copper_button_from_waxed_copper_block_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

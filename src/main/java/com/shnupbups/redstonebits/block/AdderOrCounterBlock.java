@@ -123,8 +123,8 @@ public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock impl
 	}
 
 	@Override
-	protected boolean isValidInput(BlockState state) {
-		return AbstractRedstoneGateBlock.isRedstoneGate(state);
+	public boolean getSideInputFromGatesOnly() {
+		return true;
 	}
 
 	public abstract int getPowerChange(int receivedPower);

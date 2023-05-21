@@ -153,7 +153,7 @@ public class ResistorBlock extends AbstractRedstoneGateBlock implements Advanced
 	}
 
 	@Override
-	protected boolean isValidInput(BlockState state) {
-		return AbstractRedstoneGateBlock.isRedstoneGate(state);
+	public boolean getSideInputFromGatesOnly() {
+		return true;
 	}
 }

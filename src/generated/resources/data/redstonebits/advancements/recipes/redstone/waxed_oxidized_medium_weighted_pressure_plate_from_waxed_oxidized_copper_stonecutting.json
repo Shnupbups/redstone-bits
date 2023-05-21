@@ -30,5 +30,6 @@
     "recipes": [
       "minecraft:waxed_oxidized_medium_weighted_pressure_plate_from_waxed_oxidized_copper_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
