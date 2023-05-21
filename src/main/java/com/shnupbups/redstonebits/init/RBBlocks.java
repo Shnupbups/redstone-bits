@@ -1,6 +1,7 @@
 package com.shnupbups.redstonebits.init;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
@@ -15,6 +16,7 @@ import net.minecraft.sound.SoundEvents;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.type.BlockSetTypeRegistry;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 
 import com.shnupbups.redstonebits.RedstoneBits;
@@ -39,30 +41,55 @@ public class RBBlocks {
 
 	public static final Block REDSTONE_GLASS = new RedstoneGlassBlock(FabricBlockSettings.copyOf(Blocks.TINTED_GLASS).solidBlock(RedstoneGlassBlock::shouldBeOpaque).suffocates(RedstoneGlassBlock::shouldBeOpaque).blockVision(RedstoneGlassBlock::shouldBeOpaque));
 
-	private static final FabricBlockSettings UNAFFECTED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.ORANGE).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
-	private static final FabricBlockSettings EXPOSED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.TERRACOTTA_LIGHT_GRAY).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
-	private static final FabricBlockSettings WEATHERED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.DARK_AQUA).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
-	private static final FabricBlockSettings OXIDIZED_COPPER_SETTINGS = FabricBlockSettings.of(Material.METAL, MapColor.TEAL).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
+	public static final BlockSetType COPPER_BLOCK_SET_TYPE = BlockSetTypeRegistry.register(RedstoneBits.id("copper"), BlockSoundGroup.COPPER, SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
+	public static final BlockSetType EXPOSED_COPPER_BLOCK_SET_TYPE = BlockSetTypeRegistry.register(RedstoneBits.id("exposed_copper"), BlockSoundGroup.COPPER, SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
+	public static final BlockSetType WEATHERED_COPPER_BLOCK_SET_TYPE = BlockSetTypeRegistry.register(RedstoneBits.id("weathered_copper"), BlockSoundGroup.COPPER, SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
+	public static final BlockSetType OXIDIZED_COPPER_BLOCK_SET_TYPE = BlockSetTypeRegistry.register(RedstoneBits.id("oxidized_copper"), BlockSoundGroup.COPPER, SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
 
-	public static final Block COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.UNAFFECTED, UNAFFECTED_COPPER_SETTINGS, RedstoneBits.getConfig().buttonPressTimes().unaffectedPressTicks(), RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
-	public static final Block EXPOSED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.EXPOSED, EXPOSED_COPPER_SETTINGS, RedstoneBits.getConfig().buttonPressTimes().exposedPressTicks(), RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
-	public static final Block WEATHERED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.WEATHERED, WEATHERED_COPPER_SETTINGS, RedstoneBits.getConfig().buttonPressTimes().weatheredPressTicks(), RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
-	public static final Block OXIDIZED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.OXIDIZED, OXIDIZED_COPPER_SETTINGS, RedstoneBits.getConfig().buttonPressTimes().oxidizedPressTicks(), RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
+	public static final BlockSetType WAXED_COPPER_BLOCK_SET_TYPE = BlockSetTypeRegistry.register(RedstoneBits.id("waxed_copper"), BlockSoundGroup.COPPER, SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
+	public static final BlockSetType WAXED_EXPOSED_COPPER_BLOCK_SET_TYPE = BlockSetTypeRegistry.register(RedstoneBits.id("waxed_exposed_copper"), BlockSoundGroup.COPPER, SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
+	public static final BlockSetType WAXED_WEATHERED_COPPER_BLOCK_SET_TYPE = BlockSetTypeRegistry.register(RedstoneBits.id("waxed_weathered_copper"), BlockSoundGroup.COPPER, SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
+	public static final BlockSetType WAXED_OXIDIZED_COPPER_BLOCK_SET_TYPE = BlockSetTypeRegistry.register(RedstoneBits.id("waxed_oxidized_copper"), BlockSoundGroup.COPPER, SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
 
-	public static final Block WAXED_COPPER_BUTTON = new WaxedCopperButtonBlock(UNAFFECTED_COPPER_SETTINGS, RedstoneBits.getConfig().buttonPressTimes().unaffectedPressTicks(), RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
-	public static final Block WAXED_EXPOSED_COPPER_BUTTON = new WaxedCopperButtonBlock(EXPOSED_COPPER_SETTINGS, RedstoneBits.getConfig().buttonPressTimes().exposedPressTicks(), RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
-	public static final Block WAXED_WEATHERED_COPPER_BUTTON = new WaxedCopperButtonBlock(WEATHERED_COPPER_SETTINGS, RedstoneBits.getConfig().buttonPressTimes().weatheredPressTicks(), RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
-	public static final Block WAXED_OXIDIZED_COPPER_BUTTON = new WaxedCopperButtonBlock(OXIDIZED_COPPER_SETTINGS, RedstoneBits.getConfig().buttonPressTimes().oxidizedPressTicks(), RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_OFF, RBSoundEvents.BLOCK_COPPER_BUTTON_CLICK_ON);
+	public static final Block COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.UNAFFECTED, createUnaffectedCopperSettings(), COPPER_BLOCK_SET_TYPE, RedstoneBits.getConfig().buttonPressTimes().unaffectedPressTicks());
+	public static final Block EXPOSED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.EXPOSED, createExposedCopperSettings(), EXPOSED_COPPER_BLOCK_SET_TYPE, RedstoneBits.getConfig().buttonPressTimes().exposedPressTicks());
+	public static final Block WEATHERED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.WEATHERED, createWeatheredCopperSettings(), WEATHERED_COPPER_BLOCK_SET_TYPE, RedstoneBits.getConfig().buttonPressTimes().weatheredPressTicks());
+	public static final Block OXIDIZED_COPPER_BUTTON = new CopperButtonBlock(Oxidizable.OxidationLevel.OXIDIZED, createOxidizedCopperSettings(), OXIDIZED_COPPER_BLOCK_SET_TYPE, RedstoneBits.getConfig().buttonPressTimes().oxidizedPressTicks());
 
-	public static final Block MEDIUM_WEIGHTED_PRESSURE_PLATE = new MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel.UNAFFECTED, RedstoneBits.getConfig().pressurePlateWeights().unaffectedWeight(), UNAFFECTED_COPPER_SETTINGS, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
-	public static final Block EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel.EXPOSED, RedstoneBits.getConfig().pressurePlateWeights().exposedWeight(), EXPOSED_COPPER_SETTINGS, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
-	public static final Block WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel.WEATHERED, RedstoneBits.getConfig().pressurePlateWeights().weatheredWeight(), WEATHERED_COPPER_SETTINGS, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
-	public static final Block OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel.OXIDIZED, RedstoneBits.getConfig().pressurePlateWeights().oxidizedWeight(), OXIDIZED_COPPER_SETTINGS, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
+	public static final Block WAXED_COPPER_BUTTON = new WaxedCopperButtonBlock(createUnaffectedCopperSettings(), WAXED_COPPER_BLOCK_SET_TYPE, RedstoneBits.getConfig().buttonPressTimes().unaffectedPressTicks());
+	public static final Block WAXED_EXPOSED_COPPER_BUTTON = new WaxedCopperButtonBlock(createExposedCopperSettings(), WAXED_EXPOSED_COPPER_BLOCK_SET_TYPE, RedstoneBits.getConfig().buttonPressTimes().exposedPressTicks());
+	public static final Block WAXED_WEATHERED_COPPER_BUTTON = new WaxedCopperButtonBlock(createWeatheredCopperSettings(), WAXED_WEATHERED_COPPER_BLOCK_SET_TYPE, RedstoneBits.getConfig().buttonPressTimes().weatheredPressTicks());
+	public static final Block WAXED_OXIDIZED_COPPER_BUTTON = new WaxedCopperButtonBlock(createOxidizedCopperSettings(), WAXED_OXIDIZED_COPPER_BLOCK_SET_TYPE, RedstoneBits.getConfig().buttonPressTimes().oxidizedPressTicks());
 
-	public static final Block WAXED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().unaffectedWeight(), UNAFFECTED_COPPER_SETTINGS, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
-	public static final Block WAXED_EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().exposedWeight(), EXPOSED_COPPER_SETTINGS, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
-	public static final Block WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().weatheredWeight(), WEATHERED_COPPER_SETTINGS, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
-	public static final Block WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().oxidizedWeight(), OXIDIZED_COPPER_SETTINGS, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
+	public static final Block MEDIUM_WEIGHTED_PRESSURE_PLATE = new MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel.UNAFFECTED, RedstoneBits.getConfig().pressurePlateWeights().unaffectedWeight(), createUnaffectedCopperSettings(), COPPER_BLOCK_SET_TYPE);
+	public static final Block EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel.EXPOSED, RedstoneBits.getConfig().pressurePlateWeights().exposedWeight(), createExposedCopperSettings(), EXPOSED_COPPER_BLOCK_SET_TYPE);
+	public static final Block WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel.WEATHERED, RedstoneBits.getConfig().pressurePlateWeights().weatheredWeight(), createWeatheredCopperSettings(), WEATHERED_COPPER_BLOCK_SET_TYPE);
+	public static final Block OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel.OXIDIZED, RedstoneBits.getConfig().pressurePlateWeights().oxidizedWeight(), createOxidizedCopperSettings(), OXIDIZED_COPPER_BLOCK_SET_TYPE);
+
+	public static final Block WAXED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().unaffectedWeight(), createUnaffectedCopperSettings(), WAXED_COPPER_BLOCK_SET_TYPE);
+	public static final Block WAXED_EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().exposedWeight(), createExposedCopperSettings(), WAXED_EXPOSED_COPPER_BLOCK_SET_TYPE);
+	public static final Block WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().weatheredWeight(), createWeatheredCopperSettings(), WAXED_WEATHERED_COPPER_BLOCK_SET_TYPE);
+	public static final Block WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().oxidizedWeight(), createOxidizedCopperSettings(), WAXED_OXIDIZED_COPPER_BLOCK_SET_TYPE);
+
+	public static FabricBlockSettings createCopperSettings(MapColor color) {
+		return FabricBlockSettings.of(Material.METAL, color).requiresTool().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER);
+	}
+
+	public static FabricBlockSettings createUnaffectedCopperSettings() {
+		return createCopperSettings(MapColor.ORANGE);
+	}
+
+	public static FabricBlockSettings createExposedCopperSettings() {
+		return createCopperSettings(MapColor.TERRACOTTA_LIGHT_GRAY);
+	}
+
+	public static FabricBlockSettings createWeatheredCopperSettings() {
+		return createCopperSettings(MapColor.DARK_AQUA);
+	}
+
+	public static FabricBlockSettings createOxidizedCopperSettings() {
+		return createCopperSettings(MapColor.TEAL);
+	}
 
 	public static <T extends Block> T register(String name, T block) {
 		T b = Registry.register(Registries.BLOCK, RedstoneBits.id(name), block);

@@ -41,7 +41,7 @@ public class BetterAutomaticItemPlacementContext extends ItemPlacementContext {
 	}
 
 	@Override
-	public Direction getPlayerFacing() {
+	public Direction getHorizontalPlayerFacing() {
 		return this.facing.getAxis() == Direction.Axis.Y ? Direction.NORTH : this.facing;
 	}
 

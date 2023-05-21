@@ -1,11 +1,13 @@
 package com.shnupbups.redstonebits.block;
 
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Items;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
@@ -18,8 +20,8 @@ import net.minecraft.world.World;
 public class CopperButtonBlock extends ModButtonBlock implements Oxidizable {
 	private final Oxidizable.OxidationLevel oxidationLevel;
 
-	public CopperButtonBlock(Oxidizable.OxidationLevel oxidationLevel, Settings settings, int pressTicks, SoundEvent clickOffSound, SoundEvent clickOnSound) {
-		super(settings, pressTicks, false, clickOffSound, clickOnSound);
+	public CopperButtonBlock(Oxidizable.OxidationLevel oxidationLevel, Settings settings, BlockSetType blockSetType, int pressTicks) {
+		super(settings, blockSetType, pressTicks, false);
 		this.oxidationLevel = oxidationLevel;
 	}
 
@@ -40,7 +42,7 @@ public class CopperButtonBlock extends ModButtonBlock implements Oxidizable {
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if ((player.getStackInHand(hand).isOf(Items.HONEYCOMB) || player.getStackInHand(hand).getItem() instanceof AxeItem) && !state.get(POWERED))
+		if ((player.getStackInHand(hand).isOf(Items.HONEYCOMB) || player.getStackInHand(hand).isIn(ItemTags.AXES)) && !state.get(POWERED))
 			return ActionResult.PASS;
 		return super.onUse(state, world, pos, player, hand, hit);
 	}

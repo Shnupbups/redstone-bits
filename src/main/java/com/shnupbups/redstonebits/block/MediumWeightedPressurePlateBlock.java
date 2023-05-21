@@ -1,5 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.block.WeightedPressurePlateBlock;
@@ -11,8 +12,8 @@ import net.minecraft.util.math.random.Random;
 public class MediumWeightedPressurePlateBlock extends WeightedPressurePlateBlock implements Oxidizable {
 	private final Oxidizable.OxidationLevel oxidationLevel;
 
-	public MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel oxidationLevel, int weight, Settings settings, SoundEvent depressSound, SoundEvent pressSound) {
-		super(weight, settings, depressSound, pressSound);
+	public MediumWeightedPressurePlateBlock(Oxidizable.OxidationLevel oxidationLevel, int weight, Settings settings, BlockSetType blockSetType) {
+		super(weight, settings, blockSetType);
 		this.oxidationLevel = oxidationLevel;
 	}
 

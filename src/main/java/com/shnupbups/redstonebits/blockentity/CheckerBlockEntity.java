@@ -7,6 +7,7 @@ import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
@@ -72,18 +73,7 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 
 	@Override
 	public boolean isEmpty() {
-		Iterator<ItemStack> var1 = this.inventory.iterator();
-
-		ItemStack stack;
-		do {
-			if (!var1.hasNext()) {
-				return true;
-			}
-
-			stack = (ItemStack) var1.next();
-		} while (stack.isEmpty());
-
-		return false;
+		return this.inventory.stream().allMatch(ItemStack::isEmpty);
 	}
 
 	@Override
@@ -131,11 +121,7 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		if (this.world.getBlockEntity(this.pos) != this) {
-			return false;
-		} else {
-			return player.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
-		}
+		return Inventory.canPlayerUse(this, player);
 	}
 
 	@Override

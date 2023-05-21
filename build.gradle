@@ -1,6 +1,7 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
+	id "com.modrinth.minotaur" version "2.+"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -100,6 +101,16 @@ jar {
                 "MixinConfigs"            : "${mod_name}.mixins.json"
         ])
     }
+}
+
+modrinth {
+	projectId = project.modrinth_project
+	uploadFile = remapJar
+	gameVersions = ["${project.minecraft_version}"]
+	dependencies {
+		required.project "fabric-api"
+		required.project "cloth-config"
+	}
 }
 
 publishing {

@@ -11,6 +11,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -254,18 +255,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 
 	@Override
 	public boolean isEmpty() {
-		Iterator<ItemStack> var1 = this.inventory.iterator();
-
-		ItemStack stack;
-		do {
-			if (!var1.hasNext()) {
-				return true;
-			}
-
-			stack = var1.next();
-		} while (stack.isEmpty());
-
-		return false;
+		return this.inventory.stream().allMatch(ItemStack::isEmpty);
 	}
 
 	@Override
@@ -314,12 +304,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		BlockPos pos = this.getPos();
-		if (this.getWorld() == null || this.getWorld().getBlockEntity(pos) != this) {
-			return false;
-		} else {
-			return player.squaredDistanceTo((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
-		}
+		return Inventory.canPlayerUse(this, player);
 	}
 
 	@Override

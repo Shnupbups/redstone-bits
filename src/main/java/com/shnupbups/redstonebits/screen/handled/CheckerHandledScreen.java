@@ -2,6 +2,7 @@ package com.shnupbups.redstonebits.screen.handled;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -37,7 +38,7 @@ public class CheckerHandledScreen extends HandledScreen<CheckerScreenHandler> {
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		int x = (this.width - this.backgroundWidth) / 2;
 		int y = (this.height - this.backgroundHeight) / 2;
-		this.drawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
+		DrawableHelper.drawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
 		for (int row = 0; row < 3; row++) {
 			for (int column = 0; column < 5; column++) {
 				int slot = (column + row * 5);

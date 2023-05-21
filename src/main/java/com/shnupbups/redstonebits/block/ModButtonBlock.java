@@ -1,5 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ButtonBlock;
 import net.minecraft.registry.tag.BlockTags;
@@ -9,8 +10,8 @@ import net.minecraft.world.World;
 
 public class ModButtonBlock extends ButtonBlock {
 
-	public ModButtonBlock(Settings settings, int pressTicks, boolean wooden, SoundEvent clickOffSound, SoundEvent clickOnSound) {
-		super(settings, pressTicks, wooden, clickOffSound, clickOnSound);
+	public ModButtonBlock(Settings settings, BlockSetType blockSetType, int pressTicks, boolean wooden) {
+		super(settings, blockSetType, pressTicks, wooden);
 	}
 
 	@Override

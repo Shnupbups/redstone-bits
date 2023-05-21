@@ -88,8 +88,8 @@ public class BreakerScreenHandler extends ScreenHandler {
 	}
 
 	@Override
-	public void close(PlayerEntity player) {
-		super.close(player);
+	public void onClosed(PlayerEntity player) {
+		super.onClosed(player);
 		this.inventory.onClose(player);
 	}
 
