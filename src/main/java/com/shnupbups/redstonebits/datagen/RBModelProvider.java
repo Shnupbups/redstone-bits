@@ -59,14 +59,14 @@ public class RBModelProvider extends FabricModelProvider {
 		registerResistor(generator);
 		registerInverter(generator);
 
-		registerPressurePlate(generator, RBBlocks.MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.COPPER_BLOCK);
-		registerPressurePlate(generator, RBBlocks.EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.EXPOSED_COPPER);
-		registerPressurePlate(generator, RBBlocks.WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.WEATHERED_COPPER);
-		registerPressurePlate(generator, RBBlocks.OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.OXIDIZED_COPPER);
-		registerPressurePlate(generator, RBBlocks.WAXED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.COPPER_BLOCK);
-		registerPressurePlate(generator, RBBlocks.WAXED_EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.EXPOSED_COPPER);
-		registerPressurePlate(generator, RBBlocks.WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.WEATHERED_COPPER);
-		registerPressurePlate(generator, RBBlocks.WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.OXIDIZED_COPPER);
+		registerWeightedPressurePlate(generator, RBBlocks.MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.COPPER_BLOCK);
+		registerWeightedPressurePlate(generator, RBBlocks.EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.EXPOSED_COPPER);
+		registerWeightedPressurePlate(generator, RBBlocks.WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.WEATHERED_COPPER);
+		registerWeightedPressurePlate(generator, RBBlocks.OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.OXIDIZED_COPPER);
+		registerWeightedPressurePlate(generator, RBBlocks.WAXED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.COPPER_BLOCK);
+		registerWeightedPressurePlate(generator, RBBlocks.WAXED_EXPOSED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.EXPOSED_COPPER);
+		registerWeightedPressurePlate(generator, RBBlocks.WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.WEATHERED_COPPER);
+		registerWeightedPressurePlate(generator, RBBlocks.WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE, Blocks.OXIDIZED_COPPER);
 
 		registerButton(generator, RBBlocks.COPPER_BUTTON, Blocks.COPPER_BLOCK);
 		registerButton(generator, RBBlocks.EXPOSED_COPPER_BUTTON, Blocks.EXPOSED_COPPER);
@@ -191,8 +191,8 @@ public class RBModelProvider extends FabricModelProvider {
 		generator.registerParentedItemModel(button, buttonInventoryModelId);
 	}
 
-	public void registerPressurePlate(BlockStateModelGenerator generator, Block pressurePlate, Block textureSource)  {
-		generator.registerPressurePlate(pressurePlate, textureSource);
+	public void registerWeightedPressurePlate(BlockStateModelGenerator generator, Block pressurePlate, Block textureSource)  {
+		generator.registerWeightedPressurePlate(pressurePlate, textureSource);
 
 		registerParentedItemModel(generator, pressurePlate);
 	}

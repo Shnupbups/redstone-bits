@@ -41,8 +41,7 @@
   ],
 
   "depends": {
-	"fabric-api": "*",
-    "minecraft": "~1.20-beta.4",
+    "fabric-api": "*",
     "java": ">=17",
     "cloth-config": "*"
   }

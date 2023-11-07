@@ -55,7 +55,7 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return checkType(type, RBBlockEntities.CHECKER, world.isClient ? null : CheckerBlockEntity::serverTick);
+		return validateTicker(type, RBBlockEntities.CHECKER, world.isClient ? null : CheckerBlockEntity::serverTick);
 	}
 
 	@Override

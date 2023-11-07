@@ -1,7 +1,8 @@
 plugins {
 	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
-	id "com.modrinth.minotaur" version "2.+"
+	id "com.modrinth.minotaur" version "${minotaur_version}"
+	id 'net.darkhax.curseforgegradle' version "${cfgradle_version}"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -112,6 +113,16 @@ modrinth {
 		required.project "fabric-api"
 		required.project "cloth-config"
 	}
+}
+
+task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    apiToken = findProperty('CF_TOKEN')
+
+    def mainFile = upload(project.cf_project, remapJar)
+	mainFile.displayName = "${project.mod_version} for Minecraft ${project.minecraft_version}"
+	mainFile.addModLoader("Fabric")
+	mainFile.addGameVersion("${project.minecraft_version}")
+	mainFile.addRequirement("fabric-api", "cloth-config")
 }
 
 publishing {

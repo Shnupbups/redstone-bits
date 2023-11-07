@@ -3,6 +3,7 @@ package com.shnupbups.redstonebits.datagen;
 import java.util.function.Consumer;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
@@ -22,7 +23,7 @@ public class RBRecipeProvider extends FabricRecipeProvider {
 	}
 
 	@Override
-	public void generate(Consumer<RecipeJsonProvider> exporter) {
+	public void generate(RecipeExporter exporter) {
 		RedstoneBits.LOGGER.info("Generating recipes...");
 
 		offerPressurePlateRecipe(exporter, RBBlocks.MEDIUM_WEIGHTED_PRESSURE_PLATE, Items.COPPER_INGOT);
@@ -59,7 +60,7 @@ public class RBRecipeProvider extends FabricRecipeProvider {
 		RedstoneBits.LOGGER.info("Finished generating recipes!");
 	}
 
-	public static void offerWaxing(Consumer<RecipeJsonProvider> exporter, ItemConvertible unwaxed, ItemConvertible waxed) {
+	public static void offerWaxing(RecipeExporter exporter, ItemConvertible unwaxed, ItemConvertible waxed) {
 		ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, waxed).input(unwaxed).input(Items.HONEYCOMB).group(RecipeProvider.getItemPath(waxed)).criterion(RecipeProvider.hasItem(unwaxed), RecipeProvider.conditionsFromItem(unwaxed)).offerTo(exporter, RecipeProvider.convertBetween(waxed, Items.HONEYCOMB));
 	}
 }

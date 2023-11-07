@@ -18,11 +18,11 @@ public class BetterBlockPlacementDispenserBehavior extends FallibleItemDispenser
 		this.setSuccess(false);
 		Item item = stack.getItem();
 		if (item instanceof BlockItem blockItem) {
-			Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
-			BlockPos blockPos = pointer.getPos().offset(direction);
-			Direction direction2 = pointer.getWorld().isAir(blockPos.down()) ? direction : Direction.UP;
+			Direction direction = pointer.state().get(DispenserBlock.FACING);
+			BlockPos blockPos = pointer.pos().offset(direction);
+			Direction direction2 = pointer.world().isAir(blockPos.down()) ? direction : Direction.UP;
 			try {
-				this.setSuccess(blockItem.place(new BetterAutomaticItemPlacementContext(pointer.getWorld(), blockPos, direction, stack, direction2)).isAccepted());
+				this.setSuccess(blockItem.place(new BetterAutomaticItemPlacementContext(pointer.world(), blockPos, direction, stack, direction2)).isAccepted());
 			}
 			catch (Exception exception) {
 				RedstoneBits.LOGGER.error("Error trying to place block at {} with item {}: {}", blockPos, item, exception);

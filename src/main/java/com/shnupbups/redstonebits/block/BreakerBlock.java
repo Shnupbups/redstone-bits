@@ -57,7 +57,7 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return checkType(type, RBBlockEntities.BREAKER, world.isClient ? null : BreakerBlockEntity::serverTick);
+		return validateTicker(type, RBBlockEntities.BREAKER, world.isClient ? null : BreakerBlockEntity::serverTick);
 	}
 
 	@Override
