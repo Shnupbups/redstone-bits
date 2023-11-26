@@ -1,5 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -35,6 +36,9 @@ public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock impl
 		super(settings);
 		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(BACKWARDS, false).with(POWER, 0).with(LOCKED, false));
 	}
+
+	@Override
+	protected abstract MapCodec<? extends AdderOrCounterBlock> getCodec();
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {

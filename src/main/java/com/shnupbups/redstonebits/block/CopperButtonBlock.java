@@ -1,49 +1,52 @@
 package com.shnupbups.redstonebits.block;
 
-import net.minecraft.block.AbstractBlock;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.shnupbups.redstonebits.mixin.ButtonBlockAccessor;
 import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Oxidizable;
+import net.minecraft.block.ButtonBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.Items;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class CopperButtonBlock extends ModButtonBlock implements Oxidizable {
-	private final Oxidizable.OxidationLevel oxidationLevel;
+public class CopperButtonBlock extends ButtonBlock {
+	public static final MapCodec<CopperButtonBlock> CODEC = RecordCodecBuilder.mapCodec(
+		instance -> instance.group(
+				Codec.intRange(1, 1024).fieldOf("ticks_to_stay_pressed").forGetter(block -> ((ButtonBlockAccessor)block).getPressTicks()),
+				createSettingsCodec()
+			)
+			.apply(instance, CopperButtonBlock::new)
+	);
 
-	public CopperButtonBlock(Oxidizable.OxidationLevel oxidationLevel, Settings settings, BlockSetType blockSetType, int pressTicks) {
-		super(settings, blockSetType, pressTicks, false);
-		this.oxidationLevel = oxidationLevel;
+	public CopperButtonBlock(int pressTicks, Settings settings) {
+		super(BlockSetType.COPPER, pressTicks, settings);
 	}
 
-	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		this.tickDegradation(state, world, pos, random);
-	}
+	/*TODO: @Override
+	public MapCodec<? extends CopperButtonBlock> getCodec() {
+		return CODEC;
+	}*/
 
 	@Override
-	public boolean hasRandomTicks(BlockState state) {
-		return Oxidizable.getIncreasedOxidationBlock(state.getBlock()).isPresent();
-	}
-
-	@Override
-	public OxidationLevel getDegradationLevel() {
-		return this.oxidationLevel;
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		super.onStateReplaced(state, world, pos, newState, moved);
+		if (!moved && !state.isOf(newState.getBlock())) {
+			if (newState.isIn(BlockTags.BUTTONS) && state.get(POWERED) && newState.get(POWERED)) {
+				world.setBlockState(pos, newState.with(POWERED, false));
+			}
+		}
 	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if ((player.getStackInHand(hand).isOf(Items.HONEYCOMB) || player.getStackInHand(hand).isIn(ItemTags.AXES)) && !state.get(POWERED))
-			return ActionResult.PASS;
+		if (player.getStackInHand(hand).isIn(ItemTags.AXES) && !state.get(POWERED)) return ActionResult.PASS;
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
 }

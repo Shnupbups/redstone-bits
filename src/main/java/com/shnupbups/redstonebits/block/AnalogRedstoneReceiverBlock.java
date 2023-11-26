@@ -1,5 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemPlacementContext;
@@ -12,11 +13,18 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class AnalogRedstoneReceiverBlock extends Block {
+	public static final MapCodec<AnalogRedstoneReceiverBlock> CODEC = createCodec(AnalogRedstoneReceiverBlock::new);
+
 	public static final IntProperty POWER = Properties.POWER;
 
 	public AnalogRedstoneReceiverBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getDefaultState().with(POWER, 0));
+	}
+
+	@Override
+	protected MapCodec<? extends AnalogRedstoneReceiverBlock> getCodec() {
+		return CODEC;
 	}
 
 	@Override

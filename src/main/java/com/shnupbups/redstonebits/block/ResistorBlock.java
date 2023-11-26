@@ -1,5 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -31,12 +32,19 @@ import com.shnupbups.redstonebits.properties.RBProperties;
 import com.shnupbups.redstonebits.properties.ResistorMode;
 
 public class ResistorBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector, BlockEntityProvider {
+	public static final MapCodec<ResistorBlock> CODEC = createCodec(ResistorBlock::new);
+
 	public static final EnumProperty<ResistorMode> MODE = RBProperties.RESISTOR_MODE;
 	public static final BooleanProperty LOCKED = Properties.LOCKED;
 
 	public ResistorBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(MODE, ResistorMode.HALVE).with(LOCKED, false));
+	}
+
+	@Override
+	protected MapCodec<? extends ResistorBlock> getCodec() {
+		return CODEC;
 	}
 
 	@Override

@@ -3,7 +3,9 @@
   "package": "com.shnupbups.redstonebits.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "RedstoneWireMixin"
+    "ButtonBlockAccessor",
+    "RedstoneWireMixin",
+    "WeightedPressurePlateBlockAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

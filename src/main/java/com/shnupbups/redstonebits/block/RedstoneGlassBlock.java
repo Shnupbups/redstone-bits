@@ -1,10 +1,10 @@
 package com.shnupbups.redstonebits.block;
 
-import net.minecraft.block.AbstractGlassBlock;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.TransparentBlock;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
@@ -17,12 +17,19 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-public class RedstoneGlassBlock extends AbstractGlassBlock {
+public class RedstoneGlassBlock extends TransparentBlock {
+	public static final MapCodec<RedstoneGlassBlock> CODEC = createCodec(RedstoneGlassBlock::new);
+
 	public static final IntProperty POWER = Properties.POWER;
 
 	public RedstoneGlassBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getDefaultState().with(POWER, 0));
+	}
+
+	@Override
+	protected MapCodec<? extends RedstoneGlassBlock> getCodec() {
+		return CODEC;
 	}
 
 	@Override

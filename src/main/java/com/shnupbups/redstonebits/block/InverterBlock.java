@@ -1,5 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -30,12 +31,19 @@ import com.shnupbups.redstonebits.init.RBSoundEvents;
 import com.shnupbups.redstonebits.blockentity.RedstoneGateBlockEntity;
 
 public class InverterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector, BlockEntityProvider {
+	public static final MapCodec<InverterBlock> CODEC = createCodec(InverterBlock::new);
+
 	public static final BooleanProperty LOCKED = Properties.LOCKED;
 	public static final BooleanProperty INVERTED = Properties.INVERTED;
 
 	public InverterBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getDefaultState().with(POWERED, false).with(LOCKED, false).with(INVERTED, true));
+	}
+
+	@Override
+	protected MapCodec<? extends InverterBlock> getCodec() {
+		return CODEC;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
+import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -45,6 +46,8 @@ import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
 import com.shnupbups.redstonebits.properties.RBProperties;
 
 public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider {
+	public static final MapCodec<BreakerBlock> CODEC = createCodec(BreakerBlock::new);
+
 	public static final DirectionProperty FACING = FacingBlock.FACING;
 	public static final BooleanProperty TRIGGERED = Properties.TRIGGERED;
 	public static final BooleanProperty BREAKING = RBProperties.BREAKING;
@@ -52,6 +55,11 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public BreakerBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false).with(BREAKING, false));
+	}
+
+	@Override
+	protected MapCodec<? extends BreakerBlock> getCodec() {
+		return CODEC;
 	}
 
 	@Nullable

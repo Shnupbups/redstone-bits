@@ -1,5 +1,6 @@
 package com.shnupbups.redstonebits.block;
 
+import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -44,12 +45,19 @@ import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
 import com.shnupbups.redstonebits.screen.handler.CheckerScreenHandler;
 
 public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneConnector {
+	public static final MapCodec<CheckerBlock> CODEC = createCodec(CheckerBlock::new);
+
 	public static final DirectionProperty FACING = Properties.FACING;
 	public static final IntProperty POWER = Properties.POWER;
 
 	public CheckerBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.SOUTH).with(POWER, 0));
+	}
+
+	@Override
+	protected MapCodec<? extends CheckerBlock> getCodec() {
+		return CODEC;
 	}
 
 	@Nullable

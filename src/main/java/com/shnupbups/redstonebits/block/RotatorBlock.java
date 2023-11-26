@@ -2,6 +2,7 @@ package com.shnupbups.redstonebits.block;
 
 import java.util.List;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
@@ -29,6 +30,8 @@ import com.shnupbups.redstonebits.init.RBSoundEvents;
 import com.shnupbups.redstonebits.init.RBTags;
 
 public class RotatorBlock extends FacingBlock {
+	public static final MapCodec<RotatorBlock> CODEC = createCodec(RotatorBlock::new);
+
 	public static final BooleanProperty INVERTED = Properties.INVERTED;
 	public static final BooleanProperty POWERED = Properties.POWERED;
 
@@ -42,6 +45,11 @@ public class RotatorBlock extends FacingBlock {
 	public RotatorBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getDefaultState().with(FACING, Direction.UP).with(POWERED, false).with(INVERTED, false));
+	}
+
+	@Override
+	protected MapCodec<? extends RotatorBlock> getCodec() {
+		return CODEC;
 	}
 
 	@Override
