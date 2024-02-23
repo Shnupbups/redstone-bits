@@ -59,6 +59,7 @@ public class RBBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 		getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(
 				RBBlocks.CHECKER,
 				RBBlocks.BREAKER,
+				RBBlocks.ITEM_USER,
 				RBBlocks.PLACER,
 				RBBlocks.ROTATOR
 		).addTag(RBTags.Blocks.COPPER_BUTTONS).addTag(RBTags.Blocks.COPPER_PRESSURE_PLATES);
