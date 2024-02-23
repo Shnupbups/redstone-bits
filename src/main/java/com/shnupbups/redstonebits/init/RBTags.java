@@ -36,6 +36,7 @@ public class RBTags {
 
 		public static final TagKey<Item> BREAKER_TOOL_BLACKLIST = of("breaker_tool_blacklist");
 		public static final TagKey<Item> PLACER_BLACKLIST = of("placer_blacklist");
+		public static final TagKey<Item> ITEM_USER_BLACKLIST = of("item_user_blacklist");
 
 		public static TagKey<Item> of(String id) {
 			return RBTags.of(RegistryKeys.ITEM, id);

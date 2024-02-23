@@ -22,6 +22,8 @@ import com.shnupbups.redstonebits.block.*;
 
 public class RBBlocks {
 
+
+	public static final Block ITEM_USER = new ItemUserBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER));
 	public static final Block PLACER = new PlacerBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER));
 	public static final Block BREAKER = new BreakerBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER));
 
@@ -82,6 +84,7 @@ public class RBBlocks {
 	}
 
 	public static void init() {
+		register("item_user", ITEM_USER);
 		register("placer", PLACER);
 		register("breaker", BREAKER);
 

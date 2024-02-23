@@ -4,6 +4,7 @@
     "redstonebits:checker",
     "redstonebits:breaker",
     "redstonebits:placer",
+    "redstonebits:item_user",
     "redstonebits:rotator",
     "#redstonebits:copper_buttons",
     "#redstonebits:copper_pressure_plates"

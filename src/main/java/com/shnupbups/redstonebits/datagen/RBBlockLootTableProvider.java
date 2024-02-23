@@ -15,6 +15,7 @@ public class RBBlockLootTableProvider extends FabricBlockLootTableProvider {
 	public void generate() {
 		RedstoneBits.LOGGER.info("Generating block loot tables...");
 
+		addDrop(RBBlocks.ITEM_USER);
 		addDrop(RBBlocks.PLACER);
 		addDrop(RBBlocks.BREAKER);
 

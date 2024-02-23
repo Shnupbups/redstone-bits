@@ -1,5 +1,6 @@
 {
   "block.redstonebits.placer": "Placer",
+  "block.redstonebits.item_user": "Item User",
   "block.redstonebits.breaker": "Breaker",
   "block.redstonebits.checker": "Checker",
   "block.redstonebits.counter": "Redstone Counter",
@@ -27,6 +28,7 @@
   "block.redstonebits.waxed_oxidized_medium_weighted_pressure_plate": "Waxed Oxidized Medium Weighted Pressure Plate",
   "block.redstonebits.rotator": "Rotator",
 
+  "container.redstonebits.item_user": "Item User",
   "container.redstonebits.placer": "Placer",
   "container.redstonebits.breaker": "Breaker",
   "container.redstonebits.checker": "Checker",

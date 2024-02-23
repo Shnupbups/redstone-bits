@@ -15,7 +15,7 @@ public class RBItemGroupStuff {
 					RBBlocks.WAXED_COPPER_BUTTON, RBBlocks.WAXED_EXPOSED_COPPER_BUTTON,
 					RBBlocks.WAXED_WEATHERED_COPPER_BUTTON, RBBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
 			entries.addAfter(Blocks.DROPPER,
-					RBBlocks.BREAKER, RBBlocks.PLACER);
+					RBBlocks.BREAKER, RBBlocks.PLACER,RBBlocks.ITEM_USER);
 			entries.addAfter(Blocks.OBSERVER,
 					RBBlocks.CHECKER);
 			entries.addAfter(Blocks.STICKY_PISTON,

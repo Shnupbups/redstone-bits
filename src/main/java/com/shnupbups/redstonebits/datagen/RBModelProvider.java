@@ -48,6 +48,7 @@ public class RBModelProvider extends FabricModelProvider {
 	public void generateBlockStateModels(BlockStateModelGenerator generator) {
 		RedstoneBits.LOGGER.info("Generating blockstate models...");
 
+		registerDispenserLikeOrientable(generator, RBBlocks.ITEM_USER);
 		registerDispenserLikeOrientable(generator, RBBlocks.PLACER);
 		registerDispenserLikeOrientable(generator, RBBlocks.BREAKER);
 
