@@ -45,8 +45,8 @@ public class CopperButtonBlock extends ButtonBlock {
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (player.getStackInHand(hand).isIn(ItemTags.AXES) && !state.get(POWERED)) return ActionResult.PASS;
-		return super.onUse(state, world, pos, player, hand, hit);
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+		if (player.getStackInHand(Hand.MAIN_HAND).isIn(ItemTags.AXES) && !state.get(POWERED)) return ActionResult.PASS;
+		return super.onUse(state, world, pos, player, hit);
 	}
 }

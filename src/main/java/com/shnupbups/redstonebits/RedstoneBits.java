@@ -29,7 +29,7 @@ public class RedstoneBits implements ModInitializer {
 	private static RedstoneBitsConfig config;
 
 	public static Identifier id(String name) {
-		return new Identifier(MOD_ID, name);
+		return Identifier.of(MOD_ID, name);
 	}
 
 	@Override

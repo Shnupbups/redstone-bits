@@ -1,7 +1,5 @@
 package com.shnupbups.redstonebits.blockentity;
 
-import java.util.Iterator;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,6 +13,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
@@ -37,9 +36,11 @@ import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
 import com.shnupbups.redstonebits.init.RBTags;
 import com.shnupbups.redstonebits.properties.RBProperties;
 
+import java.util.Optional;
+
 public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	private final PropertyDelegate propertyDelegate = new BreakerPropertyDelegate();
-	private final DefaultedList<ItemStack> inventory;
+	private DefaultedList<ItemStack> inventory;
 	private BlockState breakState;
 	private ItemStack breakStack = ItemStack.EMPTY;
 	private int breakProgress = 0;
@@ -133,7 +134,12 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		if (breakState == null) return 0;
 		float baseTime = this.calcBlockBreakingTime();
 		float itemMultiplier = stack.getMiningSpeedMultiplier(breakState);
-		int level = EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack);
+		int level = Optional.ofNullable(getWorld())
+				.map(s -> s.getRegistryManager().createRegistryLookup())
+				.flatMap(s -> s.getOptional(RegistryKeys.ENCHANTMENT))
+				.flatMap(s -> s.getOptional(Enchantments.EFFICIENCY))
+				.map(s -> EnchantmentHelper.getLevel(s, stack))
+				.orElse(0);
 		if (level > 0 && itemMultiplier > 1.0f) {
 			itemMultiplier += (level * level + 1);
 		}
@@ -244,6 +250,16 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	@Override
+	protected DefaultedList<ItemStack> getHeldStacks() {
+		return inventory;
+	}
+
+	@Override
+	protected void setHeldStacks(DefaultedList<ItemStack> inventory) {
+		this.inventory = inventory;
+	}
+
+	@Override
 	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
 		return new BreakerScreenHandler(syncId, playerInventory, this, this.getPropertyDelegate());
 	}
@@ -259,17 +275,17 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound nbt) {
-		super.readNbt(nbt);
-		Inventories.readNbt(nbt, this.inventory);
-		this.readBreakerNbt(nbt);
+	public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.readNbt(nbt, registryLookup);
+		Inventories.readNbt(nbt, this.inventory, registryLookup);
+		this.readBreakerNbt(registryLookup, nbt);
 	}
 
 	@Override
-	public void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
-		Inventories.writeNbt(nbt, this.inventory);
-		this.writeBreakerNbt(nbt);
+	public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.writeNbt(nbt, registryLookup);
+		Inventories.writeNbt(nbt, this.inventory, registryLookup);
+		this.writeBreakerNbt(registryLookup, nbt);
 	}
 
 	@Override
@@ -317,29 +333,30 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		return getBreakPercentage(this.getBreakProgress(), this.getBreakTime());
 	}
 
-	public void writeBreakerNbt(NbtCompound nbt) {
+	public void writeBreakerNbt(RegistryWrapper.WrapperLookup wrapperLookup, NbtCompound nbt) {
 		nbt.putInt("BreakProgress", this.getBreakProgress());
 		if (this.getBreakState() != null) {
 			nbt.put("BreakState", NbtHelper.fromBlockState(this.getBreakState()));
 		}
-		NbtCompound breakStack = new NbtCompound();
-		this.getBreakStack().writeNbt(breakStack);
-		nbt.put("BreakStack", breakStack);
+		ItemStack.CODEC.encode(this.getBreakStack(), wrapperLookup.getOps(NbtOps.INSTANCE), new NbtCompound())
+				.resultOrPartial(error -> RedstoneBits.LOGGER.error("Couldn't serialize breaker stack: {}", error))
+				.ifPresent(breakStack -> nbt.put("BreakStack", breakStack));
 	}
 
-	public void readBreakerNbt(NbtCompound nbt) {
+	public void readBreakerNbt(RegistryWrapper.WrapperLookup wrapperLookup, NbtCompound nbt) {
 		this.setBreakProgress(nbt.getInt("BreakProgress"));
 		if (nbt.contains("BreakState")) {
 			RegistryWrapper<Block> registryEntryLookup = this.world != null ? this.world.createCommandRegistryWrapper(RegistryKeys.BLOCK) : Registries.BLOCK.getReadOnlyWrapper();
 			this.setBreakState(NbtHelper.toBlockState(registryEntryLookup, nbt.getCompound("BreakState")));
 		} else this.setBreakState(null);
-		this.setBreakStack(ItemStack.fromNbt(nbt.getCompound("BreakStack")));
+		ItemStack.fromNbt(wrapperLookup, nbt.getCompound("BreakStack"))
+				.ifPresent(this::setBreakStack);
 	}
 
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
+	public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
 		NbtCompound nbt = new NbtCompound();
-		writeBreakerNbt(nbt);
+		writeBreakerNbt(registryLookup, nbt);
 		return nbt;
 	}
 

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 9,
-  "ingredient": {
-    "item": "minecraft:weathered_copper"
-  },
-  "result": "redstonebits:weathered_copper_button"
-}

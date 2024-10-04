@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:exposed_copper"
+  },
+  "result": {
+    "count": 9,
+    "id": "redstonebits:exposed_copper_button"
+  }
+}

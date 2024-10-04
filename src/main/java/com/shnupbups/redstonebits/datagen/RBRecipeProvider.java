@@ -1,6 +1,6 @@
 package com.shnupbups.redstonebits.datagen;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
@@ -15,10 +15,11 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.init.RBBlocks;
+import net.minecraft.registry.RegistryWrapper;
 
 public class RBRecipeProvider extends FabricRecipeProvider {
-	public RBRecipeProvider(FabricDataOutput output) {
-		super(output);
+	public RBRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+		super(output, registriesFuture);
 	}
 
 	@Override

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "waxed_oxidized_copper_button",
+  "ingredients": [
+    {
+      "item": "redstonebits:oxidized_copper_button"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "redstonebits:waxed_oxidized_copper_button"
+  }
+}

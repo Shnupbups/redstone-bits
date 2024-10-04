@@ -57,9 +57,9 @@ public class OxidizableCopperButtonBlock extends CopperButtonBlock implements Ox
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (player.getStackInHand(hand).isOf(Items.HONEYCOMB) && !state.get(POWERED))
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+		if (player.getStackInHand(Hand.MAIN_HAND).isOf(Items.HONEYCOMB) && !state.get(POWERED))
 			return ActionResult.PASS;
-		return super.onUse(state, world, pos, player, hand, hit);
+		return super.onUse(state, world, pos, player, hit);
 	}
 }

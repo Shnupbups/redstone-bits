@@ -5,10 +5,13 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.init.RBBlocks;
+import net.minecraft.registry.RegistryWrapper;
+
+import java.util.concurrent.CompletableFuture;
 
 public class RBBlockLootTableProvider extends FabricBlockLootTableProvider {
-	protected RBBlockLootTableProvider(FabricDataOutput output) {
-		super(output);
+	protected RBBlockLootTableProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+		super(output, registriesFuture);
 	}
 
 	@Override

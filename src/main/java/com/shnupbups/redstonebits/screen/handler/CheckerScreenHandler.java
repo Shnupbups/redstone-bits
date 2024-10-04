@@ -5,12 +5,22 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
 import com.shnupbups.redstonebits.init.RBScreenHandlers;
+import net.minecraft.util.math.BlockPos;
 
 public class CheckerScreenHandler extends ScreenHandler {
+	public record Data(BlockPos pos) {
+		public static final PacketCodec<RegistryByteBuf, CheckerScreenHandler.Data> PACKET_CODEC = PacketCodec.tuple(
+				BlockPos.PACKET_CODEC, CheckerScreenHandler.Data::pos,
+				CheckerScreenHandler.Data::new
+		);
+	}
+
 	public final PlayerInventory playerInventory;
 	public final Inventory inventory;
 

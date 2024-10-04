@@ -52,7 +52,7 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (!player.getAbilities().allowModifyWorld) {
 			return ActionResult.PASS;
 		} else {

@@ -5,6 +5,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -15,8 +18,16 @@ import net.fabricmc.api.Environment;
 
 import com.shnupbups.redstonebits.init.RBScreenHandlers;
 import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
+import net.minecraft.util.math.BlockPos;
 
 public class BreakerScreenHandler extends ScreenHandler {
+	public record Data(BlockPos pos) {
+		public static final PacketCodec<RegistryByteBuf, Data> PACKET_CODEC = PacketCodec.tuple(
+				BlockPos.PACKET_CODEC, Data::pos,
+				Data::new
+		);
+	}
+
 	public final PlayerInventory playerInventory;
 	public final Inventory inventory;
 	private final PropertyDelegate propertyDelegate;

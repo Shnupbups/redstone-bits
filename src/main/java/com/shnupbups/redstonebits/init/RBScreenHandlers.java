@@ -11,8 +11,8 @@ import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
 import com.shnupbups.redstonebits.screen.handler.CheckerScreenHandler;
 
 public class RBScreenHandlers {
-	public static final ScreenHandlerType<BreakerScreenHandler> BREAKER = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new BreakerScreenHandler(syncId, playerInventory));
-	public static final ScreenHandlerType<CheckerScreenHandler> CHECKER = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new CheckerScreenHandler(syncId, playerInventory));
+	public static final ScreenHandlerType<BreakerScreenHandler> BREAKER = new ExtendedScreenHandlerType<>((syncId, playerInventory, data) -> new BreakerScreenHandler(syncId, playerInventory), BreakerScreenHandler.Data.PACKET_CODEC);
+	public static final ScreenHandlerType<CheckerScreenHandler> CHECKER = new ExtendedScreenHandlerType<>((syncId, playerInventory, data) -> new CheckerScreenHandler(syncId, playerInventory), CheckerScreenHandler.Data.PACKET_CODEC);
 
 	public static void init() {
 		Registry.register(Registries.SCREEN_HANDLER, RedstoneBits.id("breaker"), BREAKER);

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:waxed_oxidized_copper"
+  },
+  "result": {
+    "count": 9,
+    "id": "redstonebits:waxed_oxidized_copper_button"
+  }
+}

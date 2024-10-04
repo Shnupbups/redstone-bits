@@ -13,7 +13,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 
@@ -75,7 +74,7 @@ public class RBBlocks {
 
 	public static <T extends Block> T register(String name, T block) {
 		T b = Registry.register(Registries.BLOCK, RedstoneBits.id(name), block);
-		BlockItem item = new BlockItem(b, new FabricItemSettings());
+		BlockItem item = new BlockItem(b, new Item.Settings());
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		Registry.register(Registries.ITEM, RedstoneBits.id(name), item);
 		return b;

@@ -1,7 +1,5 @@
 package com.shnupbups.redstonebits.blockentity;
 
-import java.util.Iterator;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +8,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
@@ -77,16 +76,16 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
+	protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.readNbt(nbt, registryLookup);
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		Inventories.readNbt(tag, this.inventory);
+		Inventories.readNbt(nbt, this.inventory, registryLookup);
 	}
 
 	@Override
-	public void writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		Inventories.writeNbt(tag, this.inventory);
+	protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.writeNbt(nbt, registryLookup);
+		Inventories.writeNbt(nbt, this.inventory, registryLookup);
 	}
 
 	@Override
@@ -132,6 +131,16 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	@Override
 	public boolean checkUnlocked(PlayerEntity player) {
 		return super.checkUnlocked(player) && !player.isSpectator();
+	}
+
+	@Override
+	protected DefaultedList<ItemStack> getHeldStacks() {
+		return inventory;
+	}
+
+	@Override
+	protected void setHeldStacks(DefaultedList<ItemStack> inventory) {
+		this.inventory = inventory;
 	}
 
 	@Override
