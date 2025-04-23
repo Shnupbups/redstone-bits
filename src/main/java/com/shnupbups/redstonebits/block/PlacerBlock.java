@@ -38,7 +38,7 @@ public class PlacerBlock extends DispenserBlock {
 	}
 
 	@Override
-	protected DispenserBehavior getBehaviorForItem(ItemStack stack) {
+	protected DispenserBehavior getBehaviorForItem(World world, ItemStack stack) {
 		return stack.isIn(RBTags.Items.PLACER_BLACKLIST) ? DispenserBehavior.NOOP : PLACE_BLOCK;
 	}
 
@@ -48,7 +48,7 @@ public class PlacerBlock extends DispenserBlock {
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (!world.isClient) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof PlacerBlockEntity placerBlockEntity) {
@@ -71,7 +71,7 @@ public class PlacerBlock extends DispenserBlock {
 				world.emitGameEvent(GameEvent.BLOCK_ACTIVATE, pos, GameEvent.Emitter.of(placerBlockEntity.getCachedState()));
 			} else {
 				ItemStack itemStack = placerBlockEntity.getStack(i);
-				DispenserBehavior dispenserBehavior = this.getBehaviorForItem(itemStack);
+				DispenserBehavior dispenserBehavior = this.getBehaviorForItem(world, itemStack);
 				if (dispenserBehavior != DispenserBehavior.NOOP) {
 					placerBlockEntity.setStack(i, dispenserBehavior.dispense(blockPointer, itemStack));
 				}

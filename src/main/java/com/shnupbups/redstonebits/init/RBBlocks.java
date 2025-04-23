@@ -1,11 +1,7 @@
 package com.shnupbups.redstonebits.init;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSetType;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
+import net.minecraft.block.*;
 import net.minecraft.block.Oxidizable.OxidationLevel;
-import net.minecraft.block.WeightedPressurePlateBlock;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -13,33 +9,29 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.block.*;
 
 public class RBBlocks {
+	public static final Block ITEM_USER = new ItemUserBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER));
+	public static final Block PLACER = new PlacerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER));
+	public static final Block BREAKER = new BreakerBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER));
 
+	public static final Block CHECKER = new CheckerBlock(AbstractBlock.Settings.copy(Blocks.OBSERVER));
 
-	public static final Block ITEM_USER = new ItemUserBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER));
-	public static final Block PLACER = new PlacerBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER));
-	public static final Block BREAKER = new BreakerBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER));
+	public static final Block ROTATOR = new RotatorBlock(AbstractBlock.Settings.create().mapColor(MapColor.STONE_GRAY).strength(1.5F));
 
-	public static final Block CHECKER = new CheckerBlock(FabricBlockSettings.copyOf(Blocks.OBSERVER));
+	public static final Block COUNTER = new CounterBlock(AbstractBlock.Settings.copy(Blocks.REPEATER));
+	public static final Block RESISTOR = new ResistorBlock(AbstractBlock.Settings.copy(Blocks.REPEATER));
+	public static final Block ADDER = new AdderBlock(AbstractBlock.Settings.copy(Blocks.REPEATER));
+	public static final Block INVERTER = new InverterBlock(AbstractBlock.Settings.copy(Blocks.REPEATER));
 
-	public static final Block ROTATOR = new RotatorBlock(FabricBlockSettings.create().mapColor(MapColor.STONE_GRAY).strength(1.5F));
+	public static final Block ANALOG_REDSTONE_LAMP = new AnalogRedstoneReceiverBlock(AbstractBlock.Settings.copy(Blocks.REDSTONE_LAMP).luminance((state) -> state.get(AnalogRedstoneReceiverBlock.POWER)));
+	public static final Block REDSTONE_DISPLAY = new AnalogRedstoneReceiverBlock(AbstractBlock.Settings.copy(Blocks.REDSTONE_LAMP).luminance((state) -> 0));
 
-	public static final Block COUNTER = new CounterBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
-	public static final Block RESISTOR = new ResistorBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
-	public static final Block ADDER = new AdderBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
-	public static final Block INVERTER = new InverterBlock(FabricBlockSettings.copyOf(Blocks.REPEATER));
-
-	public static final Block ANALOG_REDSTONE_LAMP = new AnalogRedstoneReceiverBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP).luminance((state) -> state.get(AnalogRedstoneReceiverBlock.POWER)));
-	public static final Block REDSTONE_DISPLAY = new AnalogRedstoneReceiverBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP).luminance(0));
-
-	public static final Block REDSTONE_GLASS = new RedstoneGlassBlock(FabricBlockSettings.copyOf(Blocks.TINTED_GLASS).solidBlock(RedstoneGlassBlock::shouldBeOpaque).suffocates(RedstoneGlassBlock::shouldBeOpaque).blockVision(RedstoneGlassBlock::shouldBeOpaque));
+	public static final Block REDSTONE_GLASS = new RedstoneGlassBlock(AbstractBlock.Settings.copy(Blocks.TINTED_GLASS).solidBlock(RedstoneGlassBlock::shouldBeOpaque).suffocates(RedstoneGlassBlock::shouldBeOpaque).blockVision(RedstoneGlassBlock::shouldBeOpaque));
 
 	public static final Block COPPER_BUTTON = new OxidizableCopperButtonBlock(RedstoneBits.getConfig().buttonPressTimes().unaffectedPressTicks(), OxidationLevel.UNAFFECTED, createCopperButtonSettings(OxidationLevel.UNAFFECTED));
 	public static final Block EXPOSED_COPPER_BUTTON = new OxidizableCopperButtonBlock(RedstoneBits.getConfig().buttonPressTimes().exposedPressTicks(), OxidationLevel.EXPOSED, createCopperButtonSettings(OxidationLevel.EXPOSED));
@@ -61,23 +53,23 @@ public class RBBlocks {
 	public static final Block WAXED_WEATHERED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().weatheredWeight(), BlockSetType.COPPER, createCopperPressurePlateSettings(OxidationLevel.WEATHERED));
 	public static final Block WAXED_OXIDIZED_MEDIUM_WEIGHTED_PRESSURE_PLATE = new WeightedPressurePlateBlock(RedstoneBits.getConfig().pressurePlateWeights().oxidizedWeight(), BlockSetType.COPPER, createCopperPressurePlateSettings(OxidationLevel.OXIDIZED));
 
-	public static FabricBlockSettings createCopperButtonSettings(OxidationLevel level) {
+	public static AbstractBlock.Settings createCopperButtonSettings(OxidationLevel level) {
 		MapColor color = switch(level) {
 			case UNAFFECTED -> MapColor.ORANGE;
 			case EXPOSED -> MapColor.TERRACOTTA_LIGHT_GRAY;
 			case WEATHERED -> MapColor.DARK_AQUA;
 			case OXIDIZED -> MapColor.TEAL;
 		};
-		return FabricBlockSettings.create().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER).pistonBehavior(PistonBehavior.DESTROY).mapColor(color);
+		return AbstractBlock.Settings.create().noCollision().strength(0.5f).sounds(BlockSoundGroup.COPPER).pistonBehavior(PistonBehavior.DESTROY).mapColor(color);
 	}
 
-	public static FabricBlockSettings createCopperPressurePlateSettings(OxidationLevel level) {
+	public static AbstractBlock.Settings createCopperPressurePlateSettings(OxidationLevel level) {
 		return createCopperButtonSettings(level).requiresTool().solid();
 	}
 
 	public static <T extends Block> T register(String name, T block) {
 		T b = Registry.register(Registries.BLOCK, RedstoneBits.id(name), block);
-		BlockItem item = new BlockItem(b, new FabricItemSettings());
+		BlockItem item = new BlockItem(b, new Item.Settings());
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		Registry.register(Registries.ITEM, RedstoneBits.id(name), item);
 		return b;

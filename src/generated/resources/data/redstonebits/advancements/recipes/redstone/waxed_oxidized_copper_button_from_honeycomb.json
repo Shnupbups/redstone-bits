@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "redstonebits:oxidized_copper_button"
-            ]
+            "items": "redstonebits:oxidized_copper_button"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_oxidized_copper_button",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_oxidized_copper_button"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:waxed_oxidized_copper_button_from_honeycomb"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

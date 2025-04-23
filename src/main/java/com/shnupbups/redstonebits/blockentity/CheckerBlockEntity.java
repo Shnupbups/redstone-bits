@@ -10,6 +10,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
@@ -77,16 +78,16 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
+	public void readNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+		super.readNbt(tag, registryLookup);
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		Inventories.readNbt(tag, this.inventory);
+		Inventories.readNbt(tag, this.inventory, registryLookup);
 	}
 
 	@Override
-	public void writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		Inventories.writeNbt(tag, this.inventory);
+	public void writeNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+		super.writeNbt(tag, registryLookup);
+		Inventories.writeNbt(tag, this.inventory, registryLookup);
 	}
 
 	@Override
@@ -132,6 +133,16 @@ public class CheckerBlockEntity extends LockableContainerBlockEntity {
 	@Override
 	public boolean checkUnlocked(PlayerEntity player) {
 		return super.checkUnlocked(player) && !player.isSpectator();
+	}
+
+	@Override
+	protected DefaultedList<ItemStack> getHeldStacks() {
+		return inventory;
+	}
+
+	@Override
+	protected void setHeldStacks(DefaultedList<ItemStack> inventory) {
+		this.inventory = inventory;
 	}
 
 	@Override

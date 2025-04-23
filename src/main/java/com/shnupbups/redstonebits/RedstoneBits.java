@@ -56,7 +56,7 @@ public class RedstoneBits implements ModInitializer {
 		ConfigHolder<RedstoneBitsConfig> configHolder = AutoConfig.register(RedstoneBitsConfig.class, GsonConfigSerializer::new);
 		config = configHolder.getConfig();
 
-		LOGGER.info("Redstone Bits config version " + getConfig().getVersion());
+        LOGGER.info("Redstone Bits config version {}", getConfig().getVersion());
 
 		if (ConfigUpdaters.shouldUpdate(config)) {
 			LOGGER.info("Redstone Bits config outdated! Attempting to update...");

@@ -8,10 +8,12 @@ import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ButtonBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -45,8 +47,8 @@ public class CopperButtonBlock extends ButtonBlock {
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (player.getStackInHand(hand).isIn(ItemTags.AXES) && !state.get(POWERED)) return ActionResult.PASS;
-		return super.onUse(state, world, pos, player, hand, hit);
+	protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (stack.isIn(ItemTags.AXES) && !state.get(POWERED)) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 	}
 }

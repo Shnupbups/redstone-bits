@@ -32,7 +32,7 @@ public class ConfigUpdaters {
 			int version = config.getVersion();
 			ConfigUpdater updater = UPDATERS.get(version);
 			config = updater.update(config);
-			RedstoneBits.LOGGER.info("Ran config updater " + updater);
+            RedstoneBits.LOGGER.info("Ran config updater {}", updater);
 		}
 		if(shouldUpdate(config)) RedstoneBits.LOGGER.warn("Could not update config! Config version is "+config.getVersion()+" when latest is "+LATEST_CONFIG_VERSION+".");
 		return config;

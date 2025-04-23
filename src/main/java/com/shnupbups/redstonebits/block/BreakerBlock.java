@@ -1,6 +1,8 @@
 package com.shnupbups.redstonebits.block;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -74,7 +76,7 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (!world.isClient) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof BreakerBlockEntity) {
@@ -86,12 +88,7 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 
 	@Override
 	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		return new ExtendedScreenHandlerFactory() {
-			@Override
-			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-				buf.writeBlockPos(pos);
-			}
-
+		return new NamedScreenHandlerFactory() {
 			@Override
 			public Text getDisplayName() {
 				return Text.translatable(getTranslationKey());
@@ -168,16 +165,6 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
-	}
-
-	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-		if (itemStack.hasCustomName()) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof BreakerBlockEntity breakerBlockEntity) {
-				breakerBlockEntity.setCustomName(itemStack.getName());
-			}
-		}
 	}
 
 	@Override

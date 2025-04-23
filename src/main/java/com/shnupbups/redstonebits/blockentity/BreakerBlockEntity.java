@@ -1,7 +1,6 @@
 package com.shnupbups.redstonebits.blockentity;
 
-import java.util.Iterator;
-
+import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,6 +14,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
@@ -22,6 +23,7 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -30,20 +32,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-import com.shnupbups.redstonebits.FakePlayerEntity;
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.init.RBBlockEntities;
 import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
 import com.shnupbups.redstonebits.init.RBTags;
 import com.shnupbups.redstonebits.properties.RBProperties;
+import org.jetbrains.annotations.Nullable;
 
 public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	private final PropertyDelegate propertyDelegate = new BreakerPropertyDelegate();
-	private final DefaultedList<ItemStack> inventory;
+	private DefaultedList<ItemStack> inventory;
 	private BlockState breakState;
 	private ItemStack breakStack = ItemStack.EMPTY;
 	private int breakProgress = 0;
-	private FakePlayerEntity fakePlayerEntity;
 
 	public BreakerBlockEntity(BlockPos pos, BlockState state) {
 		super(RBBlockEntities.BREAKER, pos, state);
@@ -80,7 +81,10 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		int breakPercentage = getBreakPercentage();
 		int crackProgress = breakPercentage <= 0 || breakPercentage >= 100 ? -1 : breakPercentage / 10;
 
-		this.getWorld().setBlockBreakingInfo(getFakePlayer().getId(), getBreakPos(), crackProgress);
+		FakePlayer fakePlayer = getFakePlayer();
+		if(fakePlayer != null) {
+			this.getWorld().setBlockBreakingInfo(getFakePlayer().getId(), getBreakPos(), crackProgress);
+		}
 	}
 
 	public static int getBreakPercentage(int breakProgress, int breakTime) {
@@ -210,10 +214,10 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 
 	public void breakBlock() {
 		//System.out.println("break at "+getBreakPos().toString());
-		World world = this.getWorld();
-		if (world != null && !world.isClient()) {
+		FakePlayer fakePlayer = this.getFakePlayer();
+		if (fakePlayer != null) {
 			BlockState breakState = this.getBreakState();
-			PlayerEntity fakePlayer = this.getFakePlayer();
+			World world = this.getWorld();
 			BlockEntity blockEntity = breakState.hasBlockEntity() ? world.getBlockEntity(getBreakPos()) : null;
 			fakePlayer.setStackInHand(Hand.MAIN_HAND, getBreakStack());
 			if (getTool().getItem().canMine(breakState, world, getBreakPos(), fakePlayer) && isToolEffective()) {
@@ -233,14 +237,25 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		return this.getStack(0);
 	}
 
-	public PlayerEntity getFakePlayer() {
-		if (fakePlayerEntity == null) fakePlayerEntity = new FakePlayerEntity(this.getWorld(), this.getPos());
-		return fakePlayerEntity;
+	@Nullable
+	public FakePlayer getFakePlayer() {
+		if (this.getWorld() instanceof ServerWorld serverWorld) return FakePlayer.get(serverWorld);
+		return null;
 	}
 
 	@Override
 	public Text getContainerName() {
 		return Text.translatable("container.redstonebits.breaker");
+	}
+
+	@Override
+	protected DefaultedList<ItemStack> getHeldStacks() {
+		return inventory;
+	}
+
+	@Override
+	protected void setHeldStacks(DefaultedList<ItemStack> inventory) {
+		this.inventory = inventory;
 	}
 
 	@Override
@@ -259,17 +274,17 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound nbt) {
-		super.readNbt(nbt);
-		Inventories.readNbt(nbt, this.inventory);
-		this.readBreakerNbt(nbt);
+	public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.readNbt(nbt, registryLookup);
+		Inventories.readNbt(nbt, this.inventory, registryLookup);
+		this.readBreakerNbt(nbt, registryLookup);
 	}
 
 	@Override
-	public void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
-		Inventories.writeNbt(nbt, this.inventory);
-		this.writeBreakerNbt(nbt);
+	public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.writeNbt(nbt, registryLookup);
+		Inventories.writeNbt(nbt, this.inventory, registryLookup);
+		this.writeBreakerNbt(nbt, registryLookup);
 	}
 
 	@Override
@@ -317,29 +332,33 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		return getBreakPercentage(this.getBreakProgress(), this.getBreakTime());
 	}
 
-	public void writeBreakerNbt(NbtCompound nbt) {
+	public void writeBreakerNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
 		nbt.putInt("BreakProgress", this.getBreakProgress());
 		if (this.getBreakState() != null) {
 			nbt.put("BreakState", NbtHelper.fromBlockState(this.getBreakState()));
 		}
-		NbtCompound breakStack = new NbtCompound();
-		this.getBreakStack().writeNbt(breakStack);
-		nbt.put("BreakStack", breakStack);
+		if (!this.getBreakStack().isEmpty()) {
+			NbtCompound breakStack = new NbtCompound();
+			this.getBreakStack().encode(registryLookup, breakStack);
+			nbt.put("BreakStack", breakStack);
+		}
 	}
 
-	public void readBreakerNbt(NbtCompound nbt) {
+	public void readBreakerNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
 		this.setBreakProgress(nbt.getInt("BreakProgress"));
 		if (nbt.contains("BreakState")) {
 			RegistryWrapper<Block> registryEntryLookup = this.world != null ? this.world.createCommandRegistryWrapper(RegistryKeys.BLOCK) : Registries.BLOCK.getReadOnlyWrapper();
 			this.setBreakState(NbtHelper.toBlockState(registryEntryLookup, nbt.getCompound("BreakState")));
 		} else this.setBreakState(null);
-		this.setBreakStack(ItemStack.fromNbt(nbt.getCompound("BreakStack")));
+		if (nbt.contains("BreakStack")) {
+			this.setBreakStack(ItemStack.fromNbt(registryLookup, nbt.getCompound("BreakStack")).orElse(ItemStack.EMPTY));
+		} else this.setBreakStack(ItemStack.EMPTY);
 	}
 
 	@Override
-	public NbtCompound toInitialChunkDataNbt() {
+	public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
 		NbtCompound nbt = new NbtCompound();
-		writeBreakerNbt(nbt);
+		writeBreakerNbt(nbt, registryLookup);
 		return nbt;
 	}
 

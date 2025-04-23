@@ -1,16 +1,15 @@
 plugins {
-    id 'fabric-loom' version "${loom_version}"
-    id 'maven-publish'
-    id "com.modrinth.minotaur" version "${minotaur_version}"
-    id 'net.darkhax.curseforgegradle' version "${cfgradle_version}"
+	id 'fabric-loom' version "${loom_version}"
+	id 'maven-publish'
+	id "me.modmuss50.mod-publish-plugin" version "${mod_publish_plugin_version}"
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.mod_name
 version = project.mod_version + "+" + project.version_meta + "-mc" + project.wider_minecraft_version
 group = project.maven_group
+
+base {
+	archivesName = project.mod_name
+}
 
 loom {
     runs {
@@ -57,10 +56,10 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     // RoughlyEnoughItems
-    //modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    // modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
     // Architectury Fabric
-    //modRuntimeOnly "dev.architectury:architectury-fabric:${project.arch_version}"
+    modRuntimeOnly "dev.architectury:architectury-fabric:${project.arch_version}"
 
     // Cloth Config
     modApi ("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
@@ -68,22 +67,23 @@ dependencies {
     }
 }
 
-java {
-    withSourcesJar()
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-
-    it.options.release = 17
+	it.options.release = 21
 }
 
-processResources {
-    inputs.property "version", project.version
+java {
+	withSourcesJar()
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
@@ -104,35 +104,46 @@ jar {
     }
 }
 
-modrinth {
-    projectId = project.modrinth_project
-    uploadFile = remapJar
-    versionName = "${project.mod_version} for Minecraft ${project.wider_minecraft_version}"
-    gameVersions = ["${project.minecraft_version}"]
-    dependencies {
-        required.project "fabric-api"
-        required.project "cloth-config"
+publishMods {
+	changelog = ""
+    type = STABLE
+	
+    file = remapJar.archiveFile
+    modLoaders.add("fabric")
+	
+	curseforge {
+        projectId = "${project.cf_project}"
+        accessToken = providers.environmentVariable("CF_TOKEN")
+        minecraftVersions.add("${project.minecraft_version}")
+		requires("fabric-api", "cloth-config")
     }
-}
-
-task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
-    apiToken = findProperty('CF_TOKEN')
-
-    def mainFile = upload(project.cf_project, remapJar)
-    mainFile.displayName = "${project.mod_version} for Minecraft ${project.wider_minecraft_version}"
-    mainFile.addModLoader("Fabric")
-    mainFile.addGameVersion("${project.minecraft_version}")
-    mainFile.addRequirement("fabric-api", "cloth-config")
+	
+	modrinth {
+        projectId = "${project.modrinth_project}"
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.add("${project.minecraft_version}")
+		requires("fabric-api", "cloth-config")
+    }
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
 
-    repositories {
-        mavenLocal()
-    }
+	repositories {
+		mavenLocal()
+		
+		if (System.getenv("MAVEN_PASS") != null) {
+            maven {
+                url = "https://deploy.shedaniel.me/"
+                credentials {
+                    username = "shedaniel"
+                    password = System.getenv("MAVEN_PASS")
+                }
+            }
+        }
+	}
 }

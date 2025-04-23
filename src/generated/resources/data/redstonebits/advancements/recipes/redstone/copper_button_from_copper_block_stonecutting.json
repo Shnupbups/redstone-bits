@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:copper_block"
-            ]
+            "items": "minecraft:copper_block"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_copper_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_copper_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:copper_button_from_copper_block_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

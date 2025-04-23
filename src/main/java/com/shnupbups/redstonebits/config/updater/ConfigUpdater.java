@@ -12,7 +12,7 @@ public abstract class ConfigUpdater {
 		int outputVersion = getOutputVersion();
 
 		if(configVersion < outputVersion - 1) {
-			RedstoneBits.LOGGER.warn("Config updater "+getName()+" may be running too early! Attempting to update from config version "+configVersion+" to "+outputVersion+", potentially skipping updates.");
+            RedstoneBits.LOGGER.warn("Config updater {} may be running too early! Attempting to update from config version {} to {}, potentially skipping updates.", getName(), configVersion, outputVersion);
 		}
 
 		return configVersion < outputVersion;

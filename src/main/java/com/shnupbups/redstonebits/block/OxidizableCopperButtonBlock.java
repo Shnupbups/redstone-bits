@@ -9,11 +9,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.block.OxidizableDoorBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -57,9 +59,12 @@ public class OxidizableCopperButtonBlock extends CopperButtonBlock implements Ox
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (player.getStackInHand(hand).isOf(Items.HONEYCOMB) && !state.get(POWERED))
-			return ActionResult.PASS;
-		return super.onUse(state, world, pos, player, hand, hit);
+	protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if ((stack.isOf(Items.HONEYCOMB) || (canBeScraped(state) && stack.isIn(ItemTags.AXES))) && !state.get(POWERED)) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+	}
+
+	public boolean canBeScraped(BlockState state) {
+		return Oxidizable.getDecreasedOxidationBlock(state.getBlock()).isPresent();
 	}
 }

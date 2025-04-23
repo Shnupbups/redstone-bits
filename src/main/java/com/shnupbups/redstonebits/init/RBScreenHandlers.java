@@ -2,6 +2,7 @@ package com.shnupbups.redstonebits.init;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
@@ -9,10 +10,11 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
 import com.shnupbups.redstonebits.screen.handler.CheckerScreenHandler;
+import net.minecraft.util.math.BlockPos;
 
 public class RBScreenHandlers {
-	public static final ScreenHandlerType<BreakerScreenHandler> BREAKER = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new BreakerScreenHandler(syncId, playerInventory));
-	public static final ScreenHandlerType<CheckerScreenHandler> CHECKER = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new CheckerScreenHandler(syncId, playerInventory));
+	public static final ScreenHandlerType<BreakerScreenHandler> BREAKER = new ScreenHandlerType<>(BreakerScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
+	public static final ScreenHandlerType<CheckerScreenHandler> CHECKER = new ScreenHandlerType<>(CheckerScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
 
 	public static void init() {
 		Registry.register(Registries.SCREEN_HANDLER, RedstoneBits.id("breaker"), BREAKER);

@@ -2,6 +2,7 @@ package com.shnupbups.redstonebits.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
+import net.minecraft.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.registry.RegistryWrapper;
@@ -35,6 +36,10 @@ public class RBItemTagProvider extends FabricTagProvider.ItemTagProvider {
 		getOrCreateTagBuilder(RBTags.Items.ITEM_USER_BLACKLIST);
 
 		getOrCreateTagBuilder(ItemTags.BUTTONS).addTag(RBTags.Items.COPPER_BUTTONS);
+
+		getOrCreateTagBuilder(RBTags.Items.DECENT_TOOLS)
+			.add(Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL,
+			Items.NETHERITE_PICKAXE, Items.NETHERITE_AXE, Items.NETHERITE_SHOVEL);
 
 		RedstoneBits.LOGGER.info("Finished generating item tags!");
 	}

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "redstonebits:exposed_copper_button"
-            ]
+            "items": "redstonebits:exposed_copper_button"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_exposed_copper_button",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_exposed_copper_button"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:waxed_exposed_copper_button_from_honeycomb"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

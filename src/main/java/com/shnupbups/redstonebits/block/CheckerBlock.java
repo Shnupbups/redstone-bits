@@ -174,7 +174,7 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (!world.isClient) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof CheckerBlockEntity) {
@@ -195,12 +195,7 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 
 	@Override
 	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		return new ExtendedScreenHandlerFactory() {
-			@Override
-			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-				buf.writeBlockPos(pos);
-			}
-
+		return new NamedScreenHandlerFactory() {
 			@Override
 			public Text getDisplayName() {
 				return Text.translatable(getTranslationKey());

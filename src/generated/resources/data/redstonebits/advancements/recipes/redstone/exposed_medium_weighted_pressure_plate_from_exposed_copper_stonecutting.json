@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:exposed_copper"
-            ]
+            "items": "minecraft:exposed_copper"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_exposed_copper",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_exposed_copper"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:exposed_medium_weighted_pressure_plate_from_exposed_copper_stonecutting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

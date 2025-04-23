@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_copper_block": {
+    "has_echo_shard": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:copper_block"
+            "items": "minecraft:echo_shard"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:medium_weighted_pressure_plate_from_copper_block_stonecutting"
+        "recipe": "redstonebits:item_user"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_copper_block"
+      "has_echo_shard"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:medium_weighted_pressure_plate_from_copper_block_stonecutting"
+      "redstonebits:item_user"
     ]
   }
 }
