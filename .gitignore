@@ -29,3 +29,4 @@ src/generated/resources/.cache/
 # stuff
 
 ignored/
+/src/main/generated/.cache

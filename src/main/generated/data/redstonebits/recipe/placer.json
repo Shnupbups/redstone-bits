@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "c": "minecraft:cobblestone",
+    "i": "minecraft:bricks",
+    "r": "minecraft:redstone"
+  },
+  "pattern": [
+    "ccc",
+    "cic",
+    "crc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "redstonebits:placer"
+  }
+}

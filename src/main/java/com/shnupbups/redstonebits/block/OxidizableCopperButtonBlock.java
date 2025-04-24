@@ -4,10 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.shnupbups.redstonebits.mixin.ButtonBlockAccessor;
-import net.minecraft.block.BlockSetType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Oxidizable;
-import net.minecraft.block.OxidizableDoorBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -15,7 +12,6 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -38,10 +34,10 @@ public class OxidizableCopperButtonBlock extends CopperButtonBlock implements Ox
 		this.oxidationLevel = oxidationLevel;
 	}
 
-	/*TODO: @Override
-	public MapCodec<? extends OxidizableCopperButtonBlock> getCodec() {
-		return CODEC;
-	}*/
+	@Override
+	public MapCodec<ButtonBlock> getCodec() {
+		return CODEC.xmap(copperButtonBlock -> copperButtonBlock, buttonBlock -> (OxidizableCopperButtonBlock) buttonBlock);
+	}
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
@@ -59,8 +55,8 @@ public class OxidizableCopperButtonBlock extends CopperButtonBlock implements Ox
 	}
 
 	@Override
-	protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if ((stack.isOf(Items.HONEYCOMB) || (canBeScraped(state) && stack.isIn(ItemTags.AXES))) && !state.get(POWERED)) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+	protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if ((stack.isOf(Items.HONEYCOMB) || (canBeScraped(state) && stack.isIn(ItemTags.AXES))) && !state.get(POWERED)) return ActionResult.SUCCESS;
 		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 	}
 

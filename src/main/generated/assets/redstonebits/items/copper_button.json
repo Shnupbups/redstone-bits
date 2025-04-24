@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "redstonebits:block/copper_button_inventory"
+  }
+}

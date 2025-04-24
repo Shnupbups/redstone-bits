@@ -1,0 +1,132 @@
+package com.shnupbups.redstonebits.block;
+
+import java.util.List;
+
+import com.mojang.serialization.MapCodec;
+import com.shnupbups.redstonebits.RedstoneBits;
+import com.shnupbups.redstonebits.block.entity.UtilizerBlockEntity;
+import com.shnupbups.redstonebits.init.RBBlockEntities;
+
+import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.command.argument.EntityAnchorArgumentType;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldEvents;
+import net.minecraft.world.event.GameEvent;
+
+public class UtilizerBlock extends DispenserBlock {
+	public static final MapCodec<UtilizerBlock> CODEC = createCodec(UtilizerBlock::new);
+
+	public UtilizerBlock(Settings settings) {
+		super(settings);
+	}
+
+	@Override
+	public MapCodec<? extends UtilizerBlock> getCodec() {
+		return CODEC;
+	}
+
+	@Override
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new UtilizerBlockEntity(pos, state);
+	}
+
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+		if (!world.isClient) {
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof UtilizerBlockEntity utilizerBlockEntity) {
+				player.openHandledScreen(utilizerBlockEntity);
+			}
+		}
+		return ActionResult.SUCCESS;
+	}
+
+	private ActionResult interactInternal(ServerWorld targetWorld, PlayerEntity player, Hand hand, BlockHitResult hitResult) {
+		BlockPos blockPos = hitResult.getBlockPos();
+		ItemStack itemStack = player.getStackInHand(hand);
+
+		if (!(player.shouldCancelInteraction() && !player.getMainHandStack().isEmpty())) {
+			BlockState blockState = targetWorld.getBlockState(blockPos);
+
+			ActionResult actionResult = blockState.onUse(targetWorld, player, hitResult);
+			if (actionResult.isAccepted()) {
+				return actionResult;
+			}
+		}
+
+		if (!itemStack.isEmpty() && !player.getItemCooldownManager().isCoolingDown(itemStack)) {
+			ItemUsageContext itemUsageContext = new ItemUsageContext(player, hand, hitResult);
+			return itemStack.useOnBlock(itemUsageContext);
+		} else {
+			return ActionResult.PASS;
+		}
+	}
+
+	@Override
+	protected void dispense(ServerWorld world, BlockState state, BlockPos pos) {
+		UtilizerBlockEntity utilizerBlockEntity = world.getBlockEntity(pos, RBBlockEntities.UTILIZER).orElse(null);
+		if (utilizerBlockEntity == null) {
+			RedstoneBits.LOGGER.warn("Ignoring dispensing attempt for Utilizer without matching block entity at {}",
+					pos);
+		} else {
+			world.emitGameEvent(GameEvent.BLOCK_ACTIVATE, pos, GameEvent.Emitter.of(utilizerBlockEntity.getCachedState()));
+
+			int i = utilizerBlockEntity.chooseNonEmptySlot(world.random);
+			if (i < 0) {
+				i = 0;
+			}
+			Direction direction = world.getBlockState(pos).get(FACING);
+			ItemStack itemStack = utilizerBlockEntity.getStack(i);
+			FakePlayer fakePlayer = FakePlayer.get(world);
+			ActionResult result = ActionResult.PASS;
+
+			BlockPos endPos = pos.offset(direction);
+			fakePlayer.setPosition(pos.down().toCenterPos());
+			fakePlayer.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, Vec3d.ofCenter(endPos));
+			fakePlayer.setStackInHand(Hand.MAIN_HAND, itemStack);
+
+			List<Entity> nearbyRealEntities = world.getEntitiesByClass(Entity.class,
+					new Box(endPos),
+					e -> e != fakePlayer);
+			for (var targetEntity : nearbyRealEntities) {
+				ActionResult entityResult = fakePlayer.interact(targetEntity, Hand.MAIN_HAND);
+				if(entityResult.isAccepted()) {
+					result = entityResult;
+					break;
+				}
+			}
+
+			if(!result.isAccepted()) {
+				BlockHitResult blockHitResult = new BlockHitResult(Vec3d.ofCenter(pos),
+					direction.getOpposite(), endPos, false);
+				result = interactInternal(world, fakePlayer, Hand.MAIN_HAND, blockHitResult);
+			}
+
+
+			utilizerBlockEntity.setStack(i, fakePlayer.getEquippedStack(EquipmentSlot.MAINHAND));
+
+			if(result.isAccepted()) {
+				world.syncWorldEvent(WorldEvents.DISPENSER_DISPENSES, pos, 0);
+				world.syncWorldEvent(WorldEvents.DISPENSER_ACTIVATED, pos, 0);
+			} else {
+				world.syncWorldEvent(WorldEvents.DISPENSER_FAILS, pos, 0);
+			}
+		}
+	}
+}

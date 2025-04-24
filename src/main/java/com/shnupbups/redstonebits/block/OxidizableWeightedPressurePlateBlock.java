@@ -29,10 +29,10 @@ public class OxidizableWeightedPressurePlateBlock extends WeightedPressurePlateB
 		this.oxidationLevel = oxidationLevel;
 	}
 
-	/*TODO: @Override
-	public MapCodec<? extends OxidizableWeightedPressurePlateBlock> getCodec() {
-		return CODEC;
-	}*/
+	@Override
+	public MapCodec<WeightedPressurePlateBlock> getCodec() {
+		return CODEC.xmap(oxidizableWeightedPressurePlateBlock -> oxidizableWeightedPressurePlateBlock, weightedPressurePlateBlock -> (OxidizableWeightedPressurePlateBlock) weightedPressurePlateBlock);
+	}
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {

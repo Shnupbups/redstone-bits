@@ -1,6 +1,11 @@
 package com.shnupbups.redstonebits.block;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.world.WorldView;
+import net.minecraft.world.block.OrientationHelper;
+import net.minecraft.world.block.WireOrientation;
+import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -10,25 +15,20 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -38,16 +38,14 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-
 import com.shnupbups.redstonebits.init.RBBlockEntities;
-import com.shnupbups.redstonebits.blockentity.CheckerBlockEntity;
+import com.shnupbups.redstonebits.block.entity.CheckerBlockEntity;
 import com.shnupbups.redstonebits.screen.handler.CheckerScreenHandler;
 
 public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneConnector {
 	public static final MapCodec<CheckerBlock> CODEC = createCodec(CheckerBlock::new);
 
-	public static final DirectionProperty FACING = Properties.FACING;
+	public static final EnumProperty<Direction> FACING = Properties.FACING;
 	public static final IntProperty POWER = Properties.POWER;
 
 	public CheckerBlock(Settings settings) {
@@ -99,25 +97,35 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos pos2) {
+	protected BlockState getStateForNeighborUpdate(
+			BlockState state,
+			WorldView world,
+			ScheduledTickView tickView,
+			BlockPos pos,
+			Direction direction,
+			BlockPos neighborPos,
+			BlockState neighborState,
+			Random random
+	) {
 		if (state.get(FACING) == direction) {
-			this.scheduleTick(world, pos);
+			this.scheduleTick(world, tickView, pos);
 		}
 
-		return super.getStateForNeighborUpdate(state, direction, newState, world, pos, pos2);
+		return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
 	}
 
-	private void scheduleTick(WorldAccess world, BlockPos pos) {
-		if (!world.isClient() && !world.getBlockTickScheduler().isQueued(pos, this)) {
-			world.scheduleBlockTick(pos, this, 2);
+	private void scheduleTick(WorldView world, ScheduledTickView tickView, BlockPos pos) {
+		if (!world.isClient() && !tickView.getBlockTickScheduler().isQueued(pos, this)) {
+			tickView.scheduleBlockTick(pos, this, 2);
 		}
 	}
 
 	protected void updateNeighbors(World world, BlockPos pos, BlockState state) {
 		Direction direction = state.get(FACING);
-		BlockPos pos2 = pos.offset(direction.getOpposite());
-		world.updateNeighbor(pos2, this, pos);
-		world.updateNeighborsExcept(pos2, this, direction);
+		BlockPos blockPos = pos.offset(direction.getOpposite());
+		WireOrientation wireOrientation = OrientationHelper.getEmissionOrientation(world, direction.getOpposite(), null);
+		world.updateNeighbor(blockPos, this, wireOrientation);
+		world.updateNeighborsExcept(blockPos, this, direction, wireOrientation);
 	}
 
 	@Override
@@ -148,19 +156,17 @@ public class CheckerBlock extends BlockWithEntity implements AdvancedRedstoneCon
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-		if (!state.isOf(oldState.getBlock())) {
-			if (!world.isClient && state.get(POWER) > 0 && world.getBlockTickScheduler().isQueued(pos, this)) {
-				this.updateNeighbors(world, pos, state.with(POWER, 0));
-			}
+	protected void onStateReplaced(BlockState state, ServerWorld world, BlockPos pos, boolean moved) {
+        if (!world.isClient && state.get(POWER) > 0 && world.getBlockTickScheduler().isQueued(pos, this)) {
+            this.updateNeighbors(world, pos, state.with(POWER, 0));
+        }
 
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof CheckerBlockEntity) {
-				ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
-				world.updateComparators(pos, this);
-			}
-		}
-		super.onStateReplaced(state, world, pos, oldState, notify);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof CheckerBlockEntity) {
+            ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
+            world.updateComparators(pos, this);
+        }
+        super.onStateReplaced(state, world, pos, moved);
 	}
 
 	@Override

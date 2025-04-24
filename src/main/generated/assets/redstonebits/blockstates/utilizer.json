@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "redstonebits:block/utilizer_vertical",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "redstonebits:block/utilizer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "redstonebits:block/utilizer"
+    },
+    "facing=south": {
+      "model": "redstonebits:block/utilizer",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "redstonebits:block/utilizer_vertical"
+    },
+    "facing=west": {
+      "model": "redstonebits:block/utilizer",
+      "y": 270
+    }
+  }
+}

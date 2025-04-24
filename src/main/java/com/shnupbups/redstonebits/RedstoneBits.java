@@ -1,6 +1,7 @@
 package com.shnupbups.redstonebits;
 
 import com.mojang.logging.LogUtils;
+import com.shnupbups.redstonebits.init.*;
 import org.slf4j.Logger;
 
 import net.minecraft.util.Identifier;
@@ -13,11 +14,6 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 
 import com.shnupbups.redstonebits.config.RedstoneBitsConfig;
 import com.shnupbups.redstonebits.config.updater.ConfigUpdaters;
-import com.shnupbups.redstonebits.init.RBBlockEntities;
-import com.shnupbups.redstonebits.init.RBBlocks;
-import com.shnupbups.redstonebits.init.RBItemGroupStuff;
-import com.shnupbups.redstonebits.init.RBScreenHandlers;
-import com.shnupbups.redstonebits.init.RBSoundEvents;
 
 public class RedstoneBits implements ModInitializer {
 	public static final String MOD_ID = "redstonebits";
@@ -29,7 +25,7 @@ public class RedstoneBits implements ModInitializer {
 	private static RedstoneBitsConfig config;
 
 	public static Identifier id(String name) {
-		return new Identifier(MOD_ID, name);
+		return Identifier.of(MOD_ID, name);
 	}
 
 	@Override
@@ -37,6 +33,7 @@ public class RedstoneBits implements ModInitializer {
 		if(!isConfigLoaded()) loadConfig();
 
 		RBBlocks.init();
+		RBItems.init();
 		RBBlockEntities.init();
 		RBSoundEvents.init();
 		RBScreenHandlers.init();

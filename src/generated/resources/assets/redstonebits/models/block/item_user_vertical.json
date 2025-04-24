@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/orientable_vertical",
-  "textures": {
-    "front": "redstonebits:block/item_user_front_vertical",
-    "side": "minecraft:block/furnace_top"
-  }
-}

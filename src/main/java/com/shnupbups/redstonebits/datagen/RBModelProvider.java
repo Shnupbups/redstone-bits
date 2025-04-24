@@ -7,16 +7,21 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import com.shnupbups.redstonebits.init.RBItems;
+import com.shnupbups.redstonebits.properties.RBProperties;
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.data.client.*;
+import net.minecraft.client.data.*;
+import net.minecraft.client.render.model.json.ModelVariantOperator;
+import net.minecraft.client.render.model.json.WeightedVariant;
+import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 
 import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.block.AdderOrCounterBlock;
@@ -24,6 +29,8 @@ import com.shnupbups.redstonebits.block.InverterBlock;
 import com.shnupbups.redstonebits.block.ResistorBlock;
 import com.shnupbups.redstonebits.init.RBBlocks;
 import com.shnupbups.redstonebits.properties.ResistorMode;
+
+import static net.minecraft.client.data.BlockStateModelGenerator.*;
 
 public class RBModelProvider extends FabricModelProvider {
 	public static final Model TEMPLATE_CHECKER = createModel("template_checker", TextureKey.PARTICLE, TextureKey.BOTTOM, TextureKey.SIDE, TextureKey.TOP, TextureKey.FRONT);
@@ -40,6 +47,29 @@ public class RBModelProvider extends FabricModelProvider {
 	public static final Model TEMPLATE_INVERTER = createRedstoneGateModel("template_inverter", false);
 	public static final Model TEMPLATE_INVERTER_LOCKED = createRedstoneGateModel("template_inverter_locked", true);
 
+	// TODO: remove when TAW'd by FAPI
+	private static final BlockStateVariantMap<ModelVariantOperator> NORTH_DEFAULT_ROTATION_OPERATIONS = BlockStateVariantMap.operations(Properties.FACING)
+			.register(Direction.DOWN, ROTATE_X_90)
+			.register(Direction.UP, ROTATE_X_270)
+			.register(Direction.NORTH, NO_OP)
+			.register(Direction.SOUTH, ROTATE_Y_180)
+			.register(Direction.WEST, ROTATE_Y_270)
+			.register(Direction.EAST, ROTATE_Y_90);
+	private static final BlockStateVariantMap<ModelVariantOperator> SOUTH_DEFAULT_HORIZONTAL_ROTATION_OPERATIONS = BlockStateVariantMap.operations(
+					Properties.HORIZONTAL_FACING
+			)
+			.register(Direction.SOUTH, NO_OP)
+			.register(Direction.WEST, ROTATE_Y_90)
+			.register(Direction.NORTH, ROTATE_Y_180)
+			.register(Direction.EAST, ROTATE_Y_270);
+	private static final BlockStateVariantMap<ModelVariantOperator> UP_DEFAULT_ROTATION_OPERATIONS = BlockStateVariantMap.operations(Properties.FACING)
+			.register(Direction.DOWN, ROTATE_X_180)
+			.register(Direction.UP, NO_OP)
+			.register(Direction.NORTH, ROTATE_X_90)
+			.register(Direction.SOUTH, ROTATE_X_90.then(ROTATE_Y_180))
+			.register(Direction.WEST, ROTATE_X_90.then(ROTATE_Y_270))
+			.register(Direction.EAST, ROTATE_X_90.then(ROTATE_Y_90));
+
 	public RBModelProvider(FabricDataOutput output) {
 		super(output);
 	}
@@ -48,7 +78,7 @@ public class RBModelProvider extends FabricModelProvider {
 	public void generateBlockStateModels(BlockStateModelGenerator generator) {
 		RedstoneBits.LOGGER.info("Generating blockstate models...");
 
-		registerDispenserLikeOrientable(generator, RBBlocks.ITEM_USER);
+		registerDispenserLikeOrientable(generator, RBBlocks.UTILIZER);
 		registerDispenserLikeOrientable(generator, RBBlocks.PLACER);
 		registerDispenserLikeOrientable(generator, RBBlocks.BREAKER);
 
@@ -110,14 +140,24 @@ public class RBModelProvider extends FabricModelProvider {
 		TextureMap onTextureMap = TextureMap.all(TextureMap.getSubId(Blocks.REDSTONE_LAMP, "_on"));
 		TextureMap mediumTextureMap = TextureMap.all(TextureMap.getSubId(block, "_medium"));
 
-		Identifier offModelId = Models.CUBE_ALL.upload(block, offTextureMap, generator.modelCollector);
-		Identifier onModelId = Models.CUBE_ALL.upload(block, "_on", onTextureMap, generator.modelCollector);
-		Identifier mediumModelId = Models.CUBE_ALL.upload(block, "_medium", mediumTextureMap, generator.modelCollector);
+        WeightedVariant offModel = createWeightedVariant(Models.CUBE_ALL.upload(block, offTextureMap, generator.modelCollector));
+        WeightedVariant onModel = createWeightedVariant(generator.createSubModel(block, "_on", Models.CUBE_ALL, id -> onTextureMap));
+        WeightedVariant mediumModel = createWeightedVariant(generator.createSubModel(block, "_medium", Models.CUBE_ALL, id -> mediumTextureMap));
 
-		generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(createValueBasedModelMap(Properties.POWER, (power) -> power == 0 ? offModelId : power == 15 ? onModelId : mediumModelId)));
+		generator.blockStateCollector.accept(createAnalogLampBlockState(block, offModel, onModel, mediumModel));
 
 		registerParentedItemModel(generator, block);
 	}
+
+    public static BlockModelDefinitionCreator createAnalogLampBlockState(
+            Block block, WeightedVariant offModel, WeightedVariant onModel, WeightedVariant mediumModel
+    ) {
+        return VariantsBlockModelDefinitionCreator.of(block).with(BlockStateVariantMap.models(Properties.POWER).generate(power -> switch(power) {
+            case 0 -> offModel;
+            case 15 -> onModel;
+            default -> mediumModel;
+        }));
+    }
 
 	public void registerDisplay(BlockStateModelGenerator generator) {
 		Block block = RBBlocks.REDSTONE_DISPLAY;
@@ -133,13 +173,19 @@ public class RBModelProvider extends FabricModelProvider {
 		TextureMap offTextureMap = TextureMap.all(TextureMap.getSubId(block, "_off"));
 		TextureMap onTextureMap = TextureMap.all(TextureMap.getSubId(block, "_on"));
 
-		Identifier offModelId = Models.CUBE_ALL.upload(block, offTextureMap, generator.modelCollector);
-		Identifier onModelId = Models.CUBE_ALL.upload(block, "_on", onTextureMap, generator.modelCollector);
+        WeightedVariant offModel = createWeightedVariant(Models.CUBE_ALL.upload(block, offTextureMap, generator.modelCollector));
+        WeightedVariant onModel = createWeightedVariant(generator.createSubModel(block, "_on", Models.CUBE_ALL, id -> onTextureMap));
 
-		generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(createValueBasedModelMap(Properties.POWER, (power) -> power == 0 ? offModelId : onModelId)));
+		generator.blockStateCollector.accept(createRedstoneGlassBlockState(block, offModel, onModel));
 
 		registerParentedItemModel(generator, block);
 	}
+
+    public static BlockModelDefinitionCreator createRedstoneGlassBlockState(
+            Block block, WeightedVariant offModel, WeightedVariant onModel
+    ) {
+        return VariantsBlockModelDefinitionCreator.of(block).with(BlockStateVariantMap.models(Properties.POWER).generate(power -> power == 0? offModel : onModel));
+    }
 
 	public void registerDispenserLikeOrientable(BlockStateModelGenerator generator, Block block) {
 		generator.registerDispenserLikeOrientable(block);
@@ -154,15 +200,19 @@ public class RBModelProvider extends FabricModelProvider {
 		TextureMap offTextureMap = baseTextureMap.copyAndAdd(TextureKey.BOTTOM, TextureMap.getSubId(Blocks.OBSERVER, "_back"));
 		TextureMap onTextureMap = baseTextureMap.copyAndAdd(TextureKey.BOTTOM, TextureMap.getSubId(Blocks.OBSERVER, "_back_on"));
 
-		Identifier offModelId = ModelIds.getBlockModelId(block);
-		Identifier onModelId = ModelIds.getBlockSubModelId(block, "_on");
-
 		TEMPLATE_CHECKER.upload(RBBlocks.CHECKER, offTextureMap, generator.modelCollector);
 		TEMPLATE_CHECKER.upload(RBBlocks.CHECKER, "_on", onTextureMap, generator.modelCollector);
 
-		generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(BlockStateModelGenerator.createValueFencedModelMap(Properties.POWER, 1, onModelId, offModelId)).coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates()));
+		WeightedVariant offModel = createWeightedVariant(ModelIds.getBlockModelId(block));
+		WeightedVariant onModel = createWeightedVariant(ModelIds.getBlockSubModelId(block, "_on"));
+		generator.blockStateCollector
+				.accept(
+						VariantsBlockModelDefinitionCreator.of(block)
+								.with(createValueFencedModelMap(Properties.POWER, 1, onModel, offModel))
+								.coordinate(NORTH_DEFAULT_ROTATION_OPERATIONS)
+				);
 
-		generator.registerParentedItemModel(RBBlocks.CHECKER, offModelId);
+		registerParentedItemModel(generator, block);
 	}
 
 	private void registerRotator(BlockStateModelGenerator generator) {
@@ -172,21 +222,28 @@ public class RBModelProvider extends FabricModelProvider {
 		TextureMap regularTextureMap = baseTextureMap.copyAndAdd(TextureKey.SIDE, TextureMap.getSubId(block, "_side"));
 		TextureMap invertedTextureMap = baseTextureMap.copyAndAdd(TextureKey.SIDE, TextureMap.getSubId(block, "_side_inverted"));
 
-		Identifier regularModelId = Models.CUBE_BOTTOM_TOP.upload(block, regularTextureMap, generator.modelCollector);
-		Identifier invertedModelId = Models.CUBE_BOTTOM_TOP.upload(block, "_inverted", invertedTextureMap, generator.modelCollector);
+		WeightedVariant regularModel = createWeightedVariant(Models.CUBE_BOTTOM_TOP.upload(block, regularTextureMap, generator.modelCollector));
+		WeightedVariant invertedModel = createWeightedVariant(generator.createSubModel(block, "_inverted", Models.CUBE_BOTTOM_TOP, id -> invertedTextureMap));
 
-		generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.INVERTED, invertedModelId, regularModelId)).coordinate(createUpDefaultRotationStates()));
+		generator.blockStateCollector.accept(createRotatorBlockState(block, regularModel, invertedModel));
 
-		generator.registerParentedItemModel(block, regularModelId);
+		registerParentedItemModel(generator, block);
+	}
+
+	public static BlockModelDefinitionCreator createRotatorBlockState(
+			Block block, WeightedVariant regularModel, WeightedVariant invertedModel
+	) {
+		return VariantsBlockModelDefinitionCreator.of(block).with(BlockStateVariantMap.models(Properties.INVERTED).generate(inverted -> inverted ? invertedModel : regularModel))
+				.coordinate(UP_DEFAULT_ROTATION_OPERATIONS);
 	}
 	
 	public void registerButton(BlockStateModelGenerator generator, Block button, Block textureSource) {
 		TextureMap textureMap = TextureMap.texture(textureSource);
 
-		Identifier buttonModelId = Models.BUTTON.upload(button, textureMap, generator.modelCollector);
-		Identifier buttonPressedModelId = Models.BUTTON_PRESSED.upload(button, textureMap, generator.modelCollector);
+		WeightedVariant unpressedModel = createWeightedVariant(Models.BUTTON.upload(button, textureMap, generator.modelCollector));
+		WeightedVariant pressedModel = createWeightedVariant(generator.createSubModel(button, "_pressed", Models.BUTTON_PRESSED, id -> textureMap));
 
-		generator.blockStateCollector.accept(BlockStateModelGenerator.createButtonBlockState(button, buttonModelId, buttonPressedModelId));
+		generator.blockStateCollector.accept(BlockStateModelGenerator.createButtonBlockState(button, unpressedModel, pressedModel));
 
 		Identifier buttonInventoryModelId = Models.BUTTON_INVENTORY.upload(button, textureMap, generator.modelCollector);
 		generator.registerParentedItemModel(button, buttonInventoryModelId);
@@ -199,6 +256,22 @@ public class RBModelProvider extends FabricModelProvider {
 	}
 
 	public void registerAdderOrCounter(BlockStateModelGenerator generator, Block block)  {
+		generator.registerItemModel(block.asItem());
+
+		generator.blockStateCollector
+				.accept(
+						VariantsBlockModelDefinitionCreator.of(block)
+								.with(BlockStateVariantMap.models(RBProperties.BACKWARDS, Properties.LOCKED, Properties.POWER).generate((backwards, locked, power) -> {
+									StringBuilder stringBuilder = new StringBuilder();
+									if (backwards) stringBuilder.append("_backwards");
+									if (locked) stringBuilder.append("_locked");
+									stringBuilder.append("_").append(power);
+
+									return createWeightedVariant(TextureMap.getSubId(block, stringBuilder.toString()));
+								}))
+								.coordinate(SOUTH_DEFAULT_HORIZONTAL_ROTATION_OPERATIONS)
+				);
+
 		BiFunction<Integer, Boolean, TextureMap> unlockedTextureMapper = (power, backwards) -> new TextureMap().put(TextureKey.TOP, TextureMap.getSubId(block, "_"+power)).put(TextureKey.PARTICLE, TextureMap.getSubId(block, "_"+power)).put(SLAB, TextureMap.getId(Blocks.SMOOTH_STONE)).put(TextureKey.TORCH, getRedstoneTorchTextureId(backwards));
 		BiFunction<Integer, Boolean, TextureMap> lockedTextureMapper = (power, backwards) -> unlockedTextureMapper.apply(power, backwards).copyAndAdd(LOCK, TextureMap.getId(Blocks.BEDROCK));
 
@@ -208,73 +281,78 @@ public class RBModelProvider extends FabricModelProvider {
 			TEMPLATE_ADDER_OR_COUNTER_LOCKED.upload(block, "_locked_"+power, lockedTextureMapper.apply(power, false), generator.modelCollector);
 			TEMPLATE_ADDER_OR_COUNTER_LOCKED.upload(block, "_backwards_locked_"+power, lockedTextureMapper.apply(power, true), generator.modelCollector);
 		}
-
-		BiFunction<Integer, Boolean, Identifier> unlockedModelIdMapper = (power, backwards) -> TextureMap.getSubId(block, (backwards ? "_backwards_" : "_")+power);
-		BiFunction<Integer, Boolean, Identifier> lockedModelIdMapper = (power, backwards) -> TextureMap.getSubId(block, (backwards ? "_backwards" : "")+"_locked_"+power);
-
-		generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(BlockStateVariantMap.create(AdderOrCounterBlock.POWER, AdderOrCounterBlock.BACKWARDS, AdderOrCounterBlock.LOCKED, AdderOrCounterBlock.FACING).register((power, backwards, locked, facing) -> BlockStateVariant.create().put(VariantSettings.MODEL, (locked ? lockedModelIdMapper : unlockedModelIdMapper).apply(power, backwards)).put(VariantSettings.Y, getRotationForGateFacing(facing)))));
-
-		registerFlatItemModel(generator, block);
 	}
 
 	public void registerResistor(BlockStateModelGenerator generator) {
 		Block block = RBBlocks.RESISTOR;
 
-		Function<Boolean, TextureMap> unlockedTextureMapper = (powered) -> new TextureMap().put(TextureKey.TOP, TextureMap.getSubId(block, "_"+getOffOrOn(powered))).put(TextureKey.PARTICLE, TextureMap.getSubId(block, "_"+getOffOrOn(powered))).put(SLAB, TextureMap.getId(Blocks.SMOOTH_STONE)).put(TextureKey.TORCH, getRedstoneTorchTextureId(powered));
-		Function<Boolean, TextureMap> lockedTextureMapper = (powered) -> unlockedTextureMapper.apply(powered).copyAndAdd(LOCK, TextureMap.getId(Blocks.BEDROCK));
+		generator.registerItemModel(block.asItem());
+
+		generator.blockStateCollector
+				.accept(
+						VariantsBlockModelDefinitionCreator.of(block)
+								.with(BlockStateVariantMap.models(RBProperties.RESISTOR_MODE, Properties.LOCKED, Properties.POWERED).generate((mode, locked, on) -> {
+									StringBuilder stringBuilder = new StringBuilder();
+									stringBuilder.append('_').append(mode.asString());
+									if (locked) stringBuilder.append("_locked");
+									if (on) stringBuilder.append("_on");
+
+									return createWeightedVariant(TextureMap.getSubId(block, stringBuilder.toString()));
+								}))
+								.coordinate(SOUTH_DEFAULT_HORIZONTAL_ROTATION_OPERATIONS)
+				);
+
+		Function<Boolean, TextureMap> unlockedTextureMapper = powered -> new TextureMap().put(TextureKey.TOP, TextureMap.getSubId(block, "_"+getOffOrOn(powered))).put(TextureKey.PARTICLE, TextureMap.getSubId(block, "_"+getOffOrOn(powered))).put(SLAB, TextureMap.getId(Blocks.SMOOTH_STONE)).put(TextureKey.TORCH, getRedstoneTorchTextureId(powered));
+		Function<Boolean, TextureMap> lockedTextureMapper = powered -> unlockedTextureMapper.apply(powered).copyAndAdd(LOCK, TextureMap.getId(Blocks.BEDROCK));
 
 		uploadBooleanGateModelTextures(generator, block, "_halve", TEMPLATE_RESISTOR_HALVE, TEMPLATE_RESISTOR_HALVE_LOCKED, unlockedTextureMapper, lockedTextureMapper);
 		uploadBooleanGateModelTextures(generator, block, "_third", TEMPLATE_RESISTOR_THIRD, TEMPLATE_RESISTOR_THIRD_LOCKED, unlockedTextureMapper, lockedTextureMapper);
 		uploadBooleanGateModelTextures(generator, block, "_one_point_five", TEMPLATE_RESISTOR_ONE_POINT_FIVE, TEMPLATE_RESISTOR_ONE_POINT_FIVE_LOCKED, unlockedTextureMapper, lockedTextureMapper);
-
-		BiFunction<Boolean, ResistorMode, Identifier> unlockedModelIdMapper = (powered, mode) -> TextureMap.getSubId(block, "_"+mode.asString()+(powered ? "_on" : ""));
-		BiFunction<Boolean, ResistorMode, Identifier> lockedModelIdMapper = (powered, mode) -> TextureMap.getSubId(block, "_"+mode.asString()+"_locked"+(powered ? "_on" : ""));
-
-		generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(BlockStateVariantMap.create(ResistorBlock.POWERED, ResistorBlock.MODE, ResistorBlock.LOCKED, ResistorBlock.FACING).register((powered, mode, locked, facing) -> BlockStateVariant.create().put(VariantSettings.MODEL, (locked ? lockedModelIdMapper : unlockedModelIdMapper).apply(powered, mode)).put(VariantSettings.Y, getRotationForGateFacing(facing)))));
-
-		registerFlatItemModel(generator, block);
 	}
 
 	public void registerInverter(BlockStateModelGenerator generator) {
 		Block block = RBBlocks.INVERTER;
+
+		generator.registerItemModel(block.asItem());
+
+		generator.blockStateCollector
+				.accept(
+						VariantsBlockModelDefinitionCreator.of(block)
+								.with(BlockStateVariantMap.models(Properties.INVERTED, Properties.LOCKED, Properties.POWERED).generate((inverted, locked, on) -> {
+									StringBuilder stringBuilder = new StringBuilder();
+									if (!inverted) stringBuilder.append("_no_inverting");
+									if (locked) stringBuilder.append("_locked");
+									if (on) stringBuilder.append("_on");
+
+									return createWeightedVariant(TextureMap.getSubId(block, stringBuilder.toString()));
+								}))
+								.coordinate(SOUTH_DEFAULT_HORIZONTAL_ROTATION_OPERATIONS)
+				);
 
 		BiFunction<Boolean, Boolean, TextureMap> unlockedTextureMapper = (powered, noInverting) -> new TextureMap().put(TextureKey.TOP, TextureMap.getSubId(block, (noInverting ? "_no_inverting_" : "_")+getOffOrOn(powered))).put(TextureKey.PARTICLE, TextureMap.getSubId(block, (noInverting ? "_no_inverting_" : "_")+getOffOrOn(powered))).put(SLAB, TextureMap.getId(Blocks.SMOOTH_STONE)).put(TextureKey.TORCH, getRedstoneTorchTextureId(powered == noInverting));
 		BiFunction<Boolean, Boolean, TextureMap> lockedTextureMapper = (powered, noInverting) -> unlockedTextureMapper.apply(powered, noInverting).copyAndAdd(LOCK, TextureMap.getId(Blocks.BEDROCK));
 
 		uploadBooleanGateModelTextures(generator, block, "", TEMPLATE_INVERTER, TEMPLATE_INVERTER_LOCKED, (powered) -> unlockedTextureMapper.apply(powered, false), (powered) -> lockedTextureMapper.apply(powered, false));
 		uploadBooleanGateModelTextures(generator, block, "_no_inverting", TEMPLATE_INVERTER, TEMPLATE_INVERTER_LOCKED, (powered) -> unlockedTextureMapper.apply(powered, true), (powered) -> lockedTextureMapper.apply(powered, true));
-
-		BiFunction<Boolean, Boolean, Identifier> unlockedModelIdMapper = (powered, noInverting) -> TextureMap.getSubId(block, (noInverting ? "_no_inverting" : "")+(powered ? "_on" : ""));
-		BiFunction<Boolean, Boolean, Identifier> lockedModelIdMapper = (powered, noInverting) -> TextureMap.getSubId(block, (noInverting ? "_no_inverting" : "")+"_locked"+(powered ? "_on" : ""));
-
-		generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(BlockStateVariantMap.create(InverterBlock.POWERED, InverterBlock.INVERTED, InverterBlock.LOCKED, InverterBlock.FACING).register((powered, inverted, locked, facing) -> BlockStateVariant.create().put(VariantSettings.MODEL, (locked ? lockedModelIdMapper : unlockedModelIdMapper).apply(powered, !inverted)).put(VariantSettings.Y, getRotationForGateFacing(facing)))));
-
-		registerFlatItemModel(generator, block);
 	}
 
-	public void registerFullAnalogBlock(BlockStateModelGenerator generator, Block block,Function<Integer, Identifier> textureMapper,  Function<Integer, String> modelSuffixMapper) {
-		Function<Integer, Identifier> modelMapper = (power) -> TextureMap.getSubId(block, "_"+modelSuffixMapper.apply(power));
+	public void registerFullAnalogBlock(BlockStateModelGenerator generator, Block block, Function<Integer, Identifier> textureMapper,  Function<Integer, String> modelSuffixMapper) {
+		Function<Integer, Identifier> modelIdMapper = power -> generator.createSubModel(block, "_"+modelSuffixMapper.apply(power), Models.CUBE_ALL, id -> TextureMap.all(textureMapper.apply(power)));
+		Function<Integer, WeightedVariant> modelMapper = modelIdMapper.andThen(BlockStateModelGenerator::createWeightedVariant);
 
-		for(int power = 0; power <= 15; power++) {
-			Models.CUBE_ALL.upload(block, "_"+modelSuffixMapper.apply(power), TextureMap.all(textureMapper.apply(power)), generator.modelCollector);
-		}
+		generator.blockStateCollector.accept(createFullAnalogBlockState(block, modelMapper));
 
-		generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block).coordinate(createValueBasedModelMap(Properties.POWER, modelMapper)));
-
-		generator.registerParentedItemModel(block, modelMapper.apply(0));
+		generator.registerParentedItemModel(block, TextureMap.getSubId(block, "_0"));
 	}
 
 	public void registerFullAnalogBlock(BlockStateModelGenerator generator, Block block, Function<Integer, Identifier> textureMapper) {
 		registerFullAnalogBlock(generator, block, textureMapper, String::valueOf);
 	}
 
-	public VariantSettings.Rotation getRotationForGateFacing(Direction facing) {
-		return switch(facing) {
-			default -> VariantSettings.Rotation.R0;
-			case WEST -> VariantSettings.Rotation.R90;
-			case NORTH -> VariantSettings.Rotation.R180;
-			case EAST -> VariantSettings.Rotation.R270;
-		};
+	public static BlockModelDefinitionCreator createFullAnalogBlockState(
+			Block block, Function<Integer, WeightedVariant> models
+	) {
+		return VariantsBlockModelDefinitionCreator.of(block).with(BlockStateVariantMap.models(Properties.POWER).generate(models));
 	}
 
 	public void uploadBooleanGateModelTextures(BlockStateModelGenerator generator, Block block, String suffix, Model unlockedModel, Model lockedModel, Function<Boolean, TextureMap> unlockedTextureMapper, Function<Boolean, TextureMap> lockedTextureMapper) {
@@ -285,15 +363,6 @@ public class RBModelProvider extends FabricModelProvider {
 	public void uploadBooleanGateModelTextures(BlockStateModelGenerator generator, Block block, String suffix, Model model, Function<Boolean, TextureMap> textureMapper) {
 		model.upload(block, suffix, textureMapper.apply(false), generator.modelCollector);
 		model.upload(block, suffix+"_on", textureMapper.apply(true), generator.modelCollector);
-	}
-
-	public static BlockStateVariantMap createUpDefaultRotationStates() {
-		return BlockStateVariantMap.create(Properties.FACING).register(Direction.DOWN, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R180)).register(Direction.UP, BlockStateVariant.create()).register(Direction.NORTH, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R90)).register(Direction.SOUTH, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R180)).register(Direction.WEST, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R270)).register(Direction.EAST, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90));
-	}
-
-	public static <T extends Comparable<T>> BlockStateVariantMap createValueBasedModelMap(Property<T> property, Function<T, Identifier> mapper) {
-		Map<Identifier, BlockStateVariant> variants = new HashMap<>();
-		return BlockStateVariantMap.create(property).register(value -> variants.computeIfAbsent(mapper.apply(value), (id) -> BlockStateVariant.create().put(VariantSettings.MODEL, id)));
 	}
 
 	public static Model createModel(String name, TextureKey... requiredKeys) {

@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.block.AbstractRedstoneGateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
@@ -22,12 +23,13 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.tick.ScheduledTickView;
 import net.minecraft.world.tick.TickPriority;
 
 import com.shnupbups.redstonebits.init.RBSoundEvents;
 import com.shnupbups.redstonebits.properties.RBProperties;
 
-public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector {
+public abstract class AdderOrCounterBlock extends AbstractRedstoneBitsGateBlock {
 	public static final IntProperty POWER = Properties.POWER;
 	public static final BooleanProperty BACKWARDS = RBProperties.BACKWARDS;
 	public static final BooleanProperty LOCKED = Properties.LOCKED;
@@ -39,20 +41,6 @@ public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock impl
 
 	@Override
 	protected abstract MapCodec<? extends AdderOrCounterBlock> getCodec();
-
-	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		BlockState state = super.getPlacementState(ctx);
-		return state.with(LOCKED, this.isLocked(ctx.getWorld(), ctx.getBlockPos(), state));
-	}
-
-	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (!world.isClient() && direction.getAxis() != state.get(FACING).getAxis()) {
-			return state.with(LOCKED, this.isLocked(world, pos, state));
-		}
-		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
-	}
 
 	@Override
 	public int getWeakRedstonePower(BlockState state, BlockView view, BlockPos pos, Direction facing) {
@@ -71,7 +59,8 @@ public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock impl
 
 	@Override
 	public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWER, POWERED, BACKWARDS, LOCKED);
+		super.appendProperties(builder);
+		builder.add(POWER, BACKWARDS);
 	}
 
 	@Override
@@ -89,8 +78,8 @@ public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock impl
 				int powerChange = getPowerChange(receivedPower);
 				if (backwards) powerChange = -powerChange;
 				newPower += powerChange;
-				if (newPower > 15) newPower -= 15;
-				else if (newPower < 0) newPower += 15;
+				if (newPower > 15) newPower -= 16;
+				else if (newPower < 0) newPower += 16;
 				world.setBlockState(pos, state.with(POWERED, true).with(POWER, newPower), Block.NOTIFY_LISTENERS);
 				if (!hasPower) {
 					world.scheduleBlockTick(pos, this, this.getUpdateDelayInternal(state), TickPriority.HIGH);
@@ -108,28 +97,9 @@ public abstract class AdderOrCounterBlock extends AbstractRedstoneGateBlock impl
 			float pitch = backwards ? 0.55F : 0.5F;
 			world.playSound(player, pos, RBSoundEvents.BLOCK_ADDER_CLICK, SoundCategory.BLOCKS, 0.3F, pitch);
 			world.setBlockState(pos, state.with(BACKWARDS, !backwards), Block.NOTIFY_ALL);
-			return ActionResult.success(world.isClient());
+			return ActionResult.SUCCESS;
 		}
 	}
 
-	@Override
-	public boolean connectsToRedstoneInDirection(BlockState state, Direction direction) {
-		if (direction != null) {
-			Direction facing = state.get(FACING);
-			return direction == facing || direction.getOpposite() == facing;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean isLocked(WorldView world, BlockPos pos, BlockState state) {
-		return this.getMaxInputLevelSides(world, pos, state) > 0;
-	}
-
-	@Override
-	public boolean getSideInputFromGatesOnly() {
-		return true;
-	}
-
-	public abstract int getPowerChange(int receivedPower);
+    public abstract int getPowerChange(int receivedPower);
 }

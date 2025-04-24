@@ -11,6 +11,8 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
+import org.jetbrains.annotations.Nullable;
 
 public class AnalogRedstoneReceiverBlock extends Block {
 	public static final MapCodec<AnalogRedstoneReceiverBlock> CODEC = createCodec(AnalogRedstoneReceiverBlock::new);
@@ -33,7 +35,7 @@ public class AnalogRedstoneReceiverBlock extends Block {
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
 		if (!world.isClient) {
 			int power = state.get(POWER);
 			int receivedPower = world.getReceivedRedstonePower(pos);

@@ -31,13 +31,13 @@ public class BetterAutomaticItemPlacementContext extends ItemPlacementContext {
 	@Override
 	public Direction[] getPlacementDirections() {
 		return switch (this.facing) {
-			default -> new Direction[]{Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP};
-			case UP -> new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+            case UP -> new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 			case NORTH -> new Direction[]{Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.SOUTH};
 			case SOUTH -> new Direction[]{Direction.DOWN, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.NORTH};
 			case WEST -> new Direction[]{Direction.DOWN, Direction.WEST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.EAST};
 			case EAST -> new Direction[]{Direction.DOWN, Direction.EAST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.WEST};
-		};
+            default -> new Direction[]{Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP};
+        };
 	}
 
 	@Override
@@ -52,6 +52,6 @@ public class BetterAutomaticItemPlacementContext extends ItemPlacementContext {
 
 	@Override
 	public float getPlayerYaw() {
-		return this.facing.getHorizontal() * 90;
+		return this.facing.getHorizontalQuarterTurns() * 90;
 	}
 }

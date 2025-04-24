@@ -12,7 +12,6 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
@@ -20,7 +19,6 @@ import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -28,6 +26,8 @@ import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.init.RBSoundEvents;
 import com.shnupbups.redstonebits.init.RBTags;
+import net.minecraft.world.block.WireOrientation;
+import org.jetbrains.annotations.Nullable;
 
 public class RotatorBlock extends FacingBlock {
 	public static final MapCodec<RotatorBlock> CODEC = createCodec(RotatorBlock::new);
@@ -66,12 +66,12 @@ public class RotatorBlock extends FacingBlock {
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos pos2, boolean notify) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
 		boolean receivingPower = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 		boolean powered = state.get(POWERED);
 
 		BlockPos facingPos = getFacingPos(state, pos);
-		boolean shouldUpdateComparators = pos2.equals(facingPos);
+		boolean shouldUpdateComparators = true;
 
 		if(receivingPower && !powered) {
 			world.setBlockState(pos, state.with(POWERED, true), Block.NOTIFY_ALL | Block.NO_REDRAW);
@@ -126,10 +126,10 @@ public class RotatorBlock extends FacingBlock {
 		if(canGetComparatorValue(state)) {
 			Property<?> rotationProperty = getRotationProperty(state);
 
-			if(rotationProperty instanceof DirectionProperty property) {
-				return getComparatorValue(state.get(property));
-			} else if(rotationProperty instanceof EnumProperty property) {
-				if(state.get(property) instanceof Direction.Axis axis) {
+			if(rotationProperty instanceof EnumProperty<?> property) {
+				if(state.get(property) instanceof Direction direction) {
+					return getComparatorValue(direction);
+				} else if(state.get(property) instanceof Direction.Axis axis) {
 					return getComparatorValue(axis);
 				} else if(state.get(property) instanceof RailShape railShape) {
 					return getComparatorValue(railShape);

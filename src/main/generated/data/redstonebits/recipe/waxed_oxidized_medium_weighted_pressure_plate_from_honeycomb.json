@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "waxed_oxidized_medium_weighted_pressure_plate",
+  "ingredients": [
+    "redstonebits:oxidized_medium_weighted_pressure_plate",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "count": 1,
+    "id": "redstonebits:waxed_oxidized_medium_weighted_pressure_plate"
+  }
+}

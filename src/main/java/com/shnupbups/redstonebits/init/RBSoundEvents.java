@@ -19,7 +19,7 @@ public class RBSoundEvents {
 	public static final SoundEvent BLOCK_ROTATOR_FAIL = SoundEvent.of(RedstoneBits.id("block.rotator.fail"));
 
 	public static SoundEvent register(SoundEvent event) {
-		Identifier identifier = event.getId();
+		Identifier identifier = event.id();
 		return Registry.register(Registries.SOUND_EVENT, identifier, event);
 	}
 

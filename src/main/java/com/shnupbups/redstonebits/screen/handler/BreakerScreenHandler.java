@@ -14,7 +14,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import com.shnupbups.redstonebits.init.RBScreenHandlers;
-import com.shnupbups.redstonebits.blockentity.BreakerBlockEntity;
+import com.shnupbups.redstonebits.block.entity.BreakerBlockEntity;
 
 public class BreakerScreenHandler extends ScreenHandler {
 	public final PlayerInventory playerInventory;
@@ -100,6 +100,6 @@ public class BreakerScreenHandler extends ScreenHandler {
 	@Environment(EnvType.CLIENT)
 	public int getBreakPercentage() {
 		PropertyDelegate propertyDelegate = this.getPropertyDelegate();
-		return BreakerBlockEntity.getBreakPercentage(propertyDelegate.get(0), propertyDelegate.get(1));
+		return propertyDelegate.get(0);
 	}
 }

@@ -5,6 +5,7 @@
   "mixins": [
     "ButtonBlockAccessor",
     "RedstoneWireMixin",
+    "ServerPlayerInteractionManagerAccessor",
     "WeightedPressurePlateBlockAccessor"
   ],
   "injectors": {

@@ -1,14 +1,10 @@
 package com.shnupbups.redstonebits.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.AbstractRedstoneGateBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -16,21 +12,18 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.TickPriority;
 
 import com.shnupbups.redstonebits.init.RBSoundEvents;
-import com.shnupbups.redstonebits.blockentity.RedstoneGateBlockEntity;
+import com.shnupbups.redstonebits.block.entity.RedstoneGateBlockEntity;
 
-public class InverterBlock extends AbstractRedstoneGateBlock implements AdvancedRedstoneConnector, BlockEntityProvider {
+public class InverterBlock extends AbstractRedstoneBitsGateBlock implements BlockEntityProvider {
 	public static final MapCodec<InverterBlock> CODEC = createCodec(InverterBlock::new);
 
 	public static final BooleanProperty LOCKED = Properties.LOCKED;
@@ -62,22 +55,8 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 			BlockState newState = state.with(INVERTED, !inverted);
 			world.setBlockState(pos, newState, Block.NOTIFY_ALL);
 			this.update(world, pos, newState);
-			return ActionResult.success(world.isClient());
+			return ActionResult.SUCCESS;
 		}
-	}
-
-	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		BlockState state = super.getPlacementState(ctx);
-		return state.with(LOCKED, this.isLocked(ctx.getWorld(), ctx.getBlockPos(), state));
-	}
-
-	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (!world.isClient() && direction.getAxis() != state.get(FACING).getAxis()) {
-			return state.with(LOCKED, this.isLocked(world, pos, state));
-		}
-		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
 
 	@Override
@@ -92,19 +71,11 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 
 	@Override
 	public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED, LOCKED, INVERTED);
+		super.appendProperties(builder);
+		builder.add(INVERTED);
 	}
 
-	@Override
-	public boolean connectsToRedstoneInDirection(BlockState state, Direction direction) {
-		if (direction != null) {
-			Direction facing = state.get(FACING);
-			return direction == facing || direction.getOpposite() == facing;
-		}
-		return false;
-	}
-
-	@Override
+    @Override
 	protected void updatePowered(World world, BlockPos pos, BlockState state) {
 		if (!world.getBlockTickScheduler().isTicking(pos, this)) {
 			TickPriority tickPriority = this.isTargetNotAligned(world, pos, state) ? TickPriority.EXTREMELY_HIGH : state.get(POWERED) ? TickPriority.VERY_HIGH : TickPriority.HIGH;
@@ -160,17 +131,7 @@ public class InverterBlock extends AbstractRedstoneGateBlock implements Advanced
 		return state.get(INVERTED) ? 15 - power : power;
 	}
 
-	@Override
-	public boolean isLocked(WorldView world, BlockPos pos, BlockState state) {
-		return this.getMaxInputLevelSides(world, pos, state) > 0;
-	}
-
-	@Override
-	public boolean getSideInputFromGatesOnly() {
-		return true;
-	}
-
-	@Override
+    @Override
 	public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction facing) {
 		return state.get(FACING) == facing ? this.getOutputLevel(world, pos, state) : 0;
 	}

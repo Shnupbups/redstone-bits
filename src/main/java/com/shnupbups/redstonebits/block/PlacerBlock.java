@@ -11,14 +11,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.shnupbups.redstonebits.block.placer.BetterBlockPlacementDispenserBehavior;
-import com.shnupbups.redstonebits.blockentity.PlacerBlockEntity;
+import com.shnupbups.redstonebits.block.entity.PlacerBlockEntity;
 import com.shnupbups.redstonebits.init.RBTags;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;

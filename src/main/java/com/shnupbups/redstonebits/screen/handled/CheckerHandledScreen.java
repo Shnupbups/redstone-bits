@@ -2,6 +2,7 @@ package com.shnupbups.redstonebits.screen.handled;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -31,7 +32,7 @@ public class CheckerHandledScreen extends HandledScreen<CheckerScreenHandler> {
 	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
 		int x = (this.width - this.backgroundWidth) / 2;
 		int y = (this.height - this.backgroundHeight) / 2;
-		context.drawTexture(TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
+		context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight, 256, 256);
 		for (int row = 0; row < 3; row++) {
 			for (int column = 0; column < 5; column++) {
 				int slot = (column + row * 5);

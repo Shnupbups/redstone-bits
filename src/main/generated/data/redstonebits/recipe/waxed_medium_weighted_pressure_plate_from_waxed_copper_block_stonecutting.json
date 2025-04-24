@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:waxed_copper_block",
+  "result": {
+    "count": 5,
+    "id": "redstonebits:waxed_medium_weighted_pressure_plate"
+  }
+}

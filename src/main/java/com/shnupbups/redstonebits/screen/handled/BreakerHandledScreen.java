@@ -2,6 +2,7 @@ package com.shnupbups.redstonebits.screen.handled;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -31,11 +32,11 @@ public class BreakerHandledScreen extends HandledScreen<BreakerScreenHandler> {
 	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
 		int x = (this.width - this.backgroundWidth) / 2;
 		int y = (this.height - this.backgroundHeight) / 2;
-		context.drawTexture(TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
+		context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight, 256, 256);
 		if (!handler.getSlot(0).hasStack()) {
-			context.drawTexture(TEXTURE, x + 80, y + 35, this.backgroundWidth, 0, 16, 16);
+			context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x + 80, y + 35, this.backgroundWidth, 0, 16, 16, 256, 256);
 		}
 		if (handler.getBreakPercentage() > 0)
-			context.drawTexture(TEXTURE, x + 80, y + 53, this.backgroundWidth, 16 + ((int) Math.floor(handler.getBreakPercentage() / 10.0) * 16), 16, 16);
+			context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x + 80, y + 53, this.backgroundWidth, 16 + ((int) Math.floor(handler.getBreakPercentage() / 10.0) * 16), 16, 16, 256, 256);
 	}
 }
