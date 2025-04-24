@@ -33,6 +33,16 @@
   "container.redstonebits.breaker": "Breaker",
   "container.redstonebits.checker": "Checker",
 
+  "tag.item.redstonebits.copper_buttons": "Copper Buttons",
+  "tag.item.redstonebits.copper_pressure_plates": "Copper Pressure Plates",
+  "tag.item.redstonebits.unwaxed_copper_buttons": "Unwaxed Copper Buttons",
+  "tag.item.redstonebits.unwaxed_copper_pressure_plates": "Unwaxed Copper Pressure Plates",
+  "tag.item.redstonebits.waxed_copper_buttons": "Waxed Copper Buttons",
+  "tag.item.redstonebits.waxed_copper_pressure_plates": "Waxed Copper Pressure Plates",
+  "tag.item.redstonebits.breaker_tool_blacklist": "Breaker Tool Blacklist",
+  "tag.item.redstonebits.placer_blacklist": "Placer Blacklist",
+  "tag.item.redstonebits.utilizer_blacklist": "Utilizer Blacklist",
+
   "subtitles.block.counter.click": "Counter clicks",
   "subtitles.block.adder.click": "Adder clicks",
   "subtitles.block.resistor.click": "Resistor clicks",

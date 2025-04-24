@@ -4,6 +4,11 @@
   "block.redstonebits.waxed_oxidized_copper_button": "Waxed Oxidised Copper Button",
   "block.redstonebits.oxidized_medium_weighted_pressure_plate": "Oxidised Medium Weighted Pressure Plate",
   "block.redstonebits.waxed_oxidized_medium_weighted_pressure_plate": "Waxed Oxidised Medium Weighted Pressure Plate",
+  "block.redstonebits.utilizer": "Utiliser",
+
+  "container.redstonebits.utilizer": "Utiliser",
+
+  "tag.item.redstonebits.utilizer_blacklist": "Utiliser Blacklist",
 
   "text.autoconfig.redstonebits.option.buttonPressTimes.oxidizedPressTicks": "Oxidised Copper Button",
   "text.autoconfig.redstonebits.option.buttonPressTimes.oxidizedPressTicks.@Tooltip": "The time (in ticks) the Oxidised Copper Button remains pressed",

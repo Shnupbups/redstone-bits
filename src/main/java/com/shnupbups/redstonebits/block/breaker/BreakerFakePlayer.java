@@ -1,9 +1,11 @@
 package com.shnupbups.redstonebits.block.breaker;
 
 import com.mojang.authlib.GameProfile;
-import com.shnupbups.redstonebits.mixin.ServerPlayerInteractionManagerAccessor;
+import com.shnupbups.redstonebits.mixin.LivingEntityAccessor;
 import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -19,9 +21,19 @@ public class BreakerFakePlayer extends FakePlayer {
         super(world, DEFAULT_PROFILE);
     }
 
-    @Override
-    public void tick() {
+    public void update() {
         this.interactionManager.update();
+        ((LivingEntityAccessor)this).callSendEquipmentChanges();
+    }
+
+    @Override
+    public boolean isSubmergedIn(TagKey<Fluid> fluid) {
+        return false;
+    }
+
+    @Override
+    public boolean isOnGround() {
+        return true;
     }
 
     public ServerPlayerInteractionManager getInteractionManager() {
@@ -30,10 +42,6 @@ public class BreakerFakePlayer extends FakePlayer {
 
     public boolean shouldSkipBlockDrops() {
         return false;
-    }
-
-    public int getBlockBreakingProgress() {
-        return ((ServerPlayerInteractionManagerAccessor)this.getInteractionManager()).getBlockBreakingProgress();
     }
 
     public void startBlockBreak(BlockPos pos, Direction direction) {

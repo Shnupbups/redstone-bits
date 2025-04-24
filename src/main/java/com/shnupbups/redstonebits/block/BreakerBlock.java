@@ -105,9 +105,13 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 		} else if (!powered && triggered) {
 			world.setBlockState(pos, state.with(TRIGGERED, false), Block.NO_REDRAW);
 		}
-		/*if (isBreaking(world, pos) && pos2 == getBreakPos(world, pos)) {
-			cancelBreak(world, pos);
-		}*/
+
+		if(isBreaking(world, pos)) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof BreakerBlockEntity breakerBlockEntity) {
+				breakerBlockEntity.checkCache();
+			}
+		}
 	}
 
 	public boolean startBreak(World world, BlockPos pos) {
@@ -151,11 +155,6 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (this.isBreaking(world, pos)) this.abortBreak(world, pos);
 		else this.startBreak(world, pos);
-		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
-		boolean triggered = state.get(TRIGGERED);
-		if (!powered && triggered) {
-			world.setBlockState(pos, state.with(TRIGGERED, false), Block.NO_REDRAW);
-		}
 	}
 
 	@Override
@@ -183,7 +182,7 @@ public class BreakerBlock extends BlockWithEntity implements BlockEntityProvider
 	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if(blockEntity instanceof BreakerBlockEntity breakerBlockEntity) {
-			return (int) (breakerBlockEntity.getBreakProgress() / (100f / 15f));
+			return breakerBlockEntity.calcComparatorOutput();
 		}
 		return 0;
 	}

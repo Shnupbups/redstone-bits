@@ -33,7 +33,7 @@ public class RBItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
 		getOrCreateTagBuilder(RBTags.Items.BREAKER_TOOL_BLACKLIST);
 		getOrCreateTagBuilder(RBTags.Items.PLACER_BLACKLIST);
-		getOrCreateTagBuilder(RBTags.Items.ITEM_USER_BLACKLIST);
+		getOrCreateTagBuilder(RBTags.Items.UTILIZER_BLACKLIST);
 
 		getOrCreateTagBuilder(ItemTags.BUTTONS).addTag(RBTags.Items.COPPER_BUTTONS);
 

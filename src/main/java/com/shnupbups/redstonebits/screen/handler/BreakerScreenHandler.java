@@ -98,7 +98,7 @@ public class BreakerScreenHandler extends ScreenHandler {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public int getBreakPercentage() {
+	public int getBreakProgressSegmented() {
 		PropertyDelegate propertyDelegate = this.getPropertyDelegate();
 		return propertyDelegate.get(0);
 	}

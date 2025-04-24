@@ -1,16 +1,12 @@
 package com.shnupbups.redstonebits.block.breaker;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.OperatorBlock;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 
 /**
  * Largely copied from ClientPlayerInteractionManager
@@ -31,39 +27,11 @@ public class BreakerFakePlayerInteractionManager {
         this.world = fakePlayer.getServerWorld();
     }
 
-    private boolean breakBlock(BlockPos pos) {
-        World world = this.world;
-        BlockState blockState = world.getBlockState(pos);
-        if (!this.fakePlayer.getMainHandStack().canMine(blockState, world, pos, this.fakePlayer)) {
-            return false;
-        } else {
-            Block block = blockState.getBlock();
-            if (block instanceof OperatorBlock && !this.fakePlayer.isCreativeLevelTwoOp()) {
-                return false;
-            } else if (blockState.isAir()) {
-                return false;
-            } else {
-                block.onBreak(world, pos, blockState, this.fakePlayer);
-                FluidState fluidState = world.getFluidState(pos);
-                boolean bl = world.setBlockState(pos, fluidState.getBlockState(), Block.NOTIFY_ALL_AND_REDRAW);
-                if (bl) {
-                    block.onBroken(world, pos, blockState);
-                }
-
-                return bl;
-            }
-        }
-    }
-
     public boolean attackBlock(BlockPos pos, Direction direction) {
         if (!this.world.getWorldBorder().contains(pos)) {
             return false;
         } else {
-            if (this.fakePlayer.getAbilities().creativeMode) {
-                this.breakBlock(pos);
-                this.fakePlayer.startBlockBreak(pos, direction);
-                this.blockBreakingCooldown = 5;
-            } else if (!this.breakingBlock || !this.isCurrentlyBreaking(pos)) {
+            if (!this.breakingBlock || !this.isCurrentlyBreaking(pos)) {
                 if (this.breakingBlock) {
                     this.fakePlayer.abortBlockBreak(this.currentBreakingPos, direction);
                 }
@@ -74,15 +42,13 @@ public class BreakerFakePlayerInteractionManager {
                     blockState.onBlockBreakStart(this.world, pos, this.fakePlayer);
                 }
 
-                if (bl && blockState.calcBlockBreakingDelta(this.fakePlayer, this.fakePlayer.getWorld(), pos) >= 1.0F) {
-                    this.breakBlock(pos);
-                } else {
+                if (!(bl && blockState.calcBlockBreakingDelta(this.fakePlayer, this.fakePlayer.getWorld(), pos) >= 1.0F)) {
                     this.breakingBlock = true;
                     this.currentBreakingPos = pos;
                     this.currentTool = this.fakePlayer.getMainHandStack();
                     this.currentBreakingProgress = 0.0F;
                     this.blockBreakingSoundCooldown = 0.0F;
-                    this.world.setBlockBreakingInfo(this.fakePlayer.getId(), this.currentBreakingPos, this.getBlockBreakingProgress());
+                    this.world.setBlockBreakingInfo(this.fakePlayer.getId(), this.currentBreakingPos, this.getBlockBreakingProgressSegmented());
                 }
 
                 this.fakePlayer.startBlockBreak(pos, direction);
@@ -106,11 +72,6 @@ public class BreakerFakePlayerInteractionManager {
         if (this.blockBreakingCooldown > 0) {
             this.blockBreakingCooldown--;
             return true;
-        } else if (this.fakePlayer.getAbilities().creativeMode && this.world.getWorldBorder().contains(pos)) {
-            this.blockBreakingCooldown = 5;
-            this.breakBlock(pos);
-            this.fakePlayer.startBlockBreak(pos, direction);
-            return true;
         } else if (this.isCurrentlyBreaking(pos)) {
             BlockState blockState = this.world.getBlockState(pos);
             if (blockState.isAir()) {
@@ -132,14 +93,13 @@ public class BreakerFakePlayerInteractionManager {
                 this.blockBreakingSoundCooldown++;
                 if (this.currentBreakingProgress >= 1.0F) {
                     this.breakingBlock = false;
-                    this.breakBlock(pos);
                     this.fakePlayer.finishBlockBreak(pos, direction);
                     this.currentBreakingProgress = 0.0F;
                     this.blockBreakingSoundCooldown = 0.0F;
                     this.blockBreakingCooldown = 5;
                 }
 
-                this.world.setBlockBreakingInfo(this.fakePlayer.getId(), this.currentBreakingPos, this.getBlockBreakingProgress());
+                this.world.setBlockBreakingInfo(this.fakePlayer.getId(), this.currentBreakingPos, this.getBlockBreakingProgressSegmented());
                 return true;
             }
         } else {
@@ -156,7 +116,13 @@ public class BreakerFakePlayerInteractionManager {
         return this.breakingBlock;
     }
 
-    public int getBlockBreakingProgress() {
+    public float getBlockBreakingProgress() {
+        if(!isBreakingBlock()) return 0.0f;
+        return this.currentBreakingProgress;
+    }
+
+    public int getBlockBreakingProgressSegmented() {
+        if(!isBreakingBlock()) return -1;
         return this.currentBreakingProgress > 0.0F ? (int)(this.currentBreakingProgress * 10.0F) : -1;
     }
 }

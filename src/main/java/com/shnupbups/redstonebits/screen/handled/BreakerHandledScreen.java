@@ -36,7 +36,8 @@ public class BreakerHandledScreen extends HandledScreen<BreakerScreenHandler> {
 		if (!handler.getSlot(0).hasStack()) {
 			context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x + 80, y + 35, this.backgroundWidth, 0, 16, 16, 256, 256);
 		}
-		if (handler.getBreakPercentage() > 0)
-			context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x + 80, y + 53, this.backgroundWidth, 16 + ((int) Math.floor(handler.getBreakPercentage() / 10.0) * 16), 16, 16, 256, 256);
+		RedstoneBits.LOGGER.info("prog: {}",handler.getBreakProgressSegmented());
+		if (handler.getBreakProgressSegmented() > 0)
+			context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x + 80, y + 53, this.backgroundWidth, 16 + (handler.getBreakProgressSegmented() * 16), 16, 16, 256, 256);
 	}
 }

@@ -4,8 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "ButtonBlockAccessor",
+    "LivingEntityAccessor",
     "RedstoneWireMixin",
-    "ServerPlayerInteractionManagerAccessor",
     "WeightedPressurePlateBlockAccessor"
   ],
   "injectors": {

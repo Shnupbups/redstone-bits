@@ -1,29 +1,22 @@
 package com.shnupbups.redstonebits.block.entity;
 
+import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.block.BreakerBlock;
 import com.shnupbups.redstonebits.block.breaker.BreakerFakePlayer;
 import com.shnupbups.redstonebits.block.breaker.BreakerFakePlayerInteractionManager;
-import net.fabricmc.fabric.api.entity.FakePlayer;
-import net.minecraft.block.Block;
+import com.shnupbups.redstonebits.init.RBBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerInteractionManager;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
@@ -31,7 +24,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-import com.shnupbups.redstonebits.RedstoneBits;
 import com.shnupbups.redstonebits.init.RBBlockEntities;
 import com.shnupbups.redstonebits.screen.handler.BreakerScreenHandler;
 import com.shnupbups.redstonebits.init.RBTags;
@@ -39,37 +31,52 @@ import com.shnupbups.redstonebits.properties.RBProperties;
 import org.jetbrains.annotations.Nullable;
 
 public class BreakerBlockEntity extends LockableContainerBlockEntity {
-	public static final String BREAK_PROGRESS_NBT_KEY = "break_progress";
-	public static final String BREAK_STATE_NBT_KEY = "break_state";
-	public static final String BREAK_TOOL_NBT_KEY = "break_tool";
-
 	private final PropertyDelegate propertyDelegate = new BreakerPropertyDelegate();
 	private DefaultedList<ItemStack> inventory;
 
 	public BreakerFakePlayer fakePlayer;
 	public BreakerFakePlayerInteractionManager interactionManager;
 
+	private BlockState breakingState;
+	private ItemStack tool;
+	private int comparatorOutput;
+
 	public BreakerBlockEntity(BlockPos pos, BlockState state) {
 		super(RBBlockEntities.BREAKER, pos, state);
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
 		this.fakePlayer = getFakePlayer();
 		this.interactionManager = getInteractionManager();
+		updateFakePlayer();
 	}
 
 	public static void serverTick(World world, BlockPos pos, BlockState state, BreakerBlockEntity blockEntity) {
 		if (blockEntity.isBreaking()) {
-			BreakerFakePlayer fakePlayer = blockEntity.getFakePlayer();
-			BreakerFakePlayerInteractionManager interactionManager = blockEntity.getInteractionManager();
-			if(fakePlayer == null || interactionManager == null) return;
+			if (blockEntity.isBlacklisted()) {
+				blockEntity.abortBreaking();
+			}
 
-			fakePlayer.setStackInHand(Hand.MAIN_HAND, blockEntity.getTool());
-			interactionManager.updateBlockBreakingProgress(blockEntity.getBreakPos(), blockEntity.getBlockHitDirection());
+			blockEntity.checkCache();
+			blockEntity.updateFakePlayer();
+
+			BreakerFakePlayerInteractionManager interactionManager = blockEntity.getInteractionManager();
+			if (interactionManager != null) {
+				interactionManager.updateBlockBreakingProgress(blockEntity.getBreakPos(), blockEntity.getBlockHitDirection());
+			}
+
+            //RedstoneBits.LOGGER.info("progress: {}, comparator: {}, segmented: {}", blockEntity.getBreakProgress(), blockEntity.calcComparatorOutput(), blockEntity.getBreakProgressSegmented());
 		}
 
-		if (blockEntity.isBreaking() != state.get(RBProperties.BREAKING)) {
-			world.setBlockState(pos, state.with(RBProperties.BREAKING, blockEntity.isBreaking()));
+		boolean breaking = blockEntity.isBreaking();
+
+		if (breaking != state.get(RBProperties.BREAKING)) {
+			world.setBlockState(pos, state.with(RBProperties.BREAKING, breaking));
 			((ServerChunkManager) world.getChunkManager()).markForUpdate(pos);
 			blockEntity.markDirty();
+		}
+
+		if (blockEntity.calcComparatorOutput() != blockEntity.getCachedComparatorOutput()) {
+			blockEntity.comparatorOutput = blockEntity.calcComparatorOutput();
+			world.updateComparators(pos, RBBlocks.BREAKER);
 		}
 	}
 
@@ -77,22 +84,57 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		return inventory.getFirst();
 	}
 
-	public boolean startBreaking() {
+	public ItemStack getCachedTool() {
+		return tool;
+	}
+
+	public BlockState getCachedBreakingState() {
+		return breakingState;
+	}
+
+	public void updateFakePlayer() {
 		BreakerFakePlayer fakePlayer = getFakePlayer();
-		BreakerFakePlayerInteractionManager interactionManager = getInteractionManager();
-		if(fakePlayer == null || interactionManager == null) return false;
+		if(fakePlayer == null) return;
 
 		fakePlayer.setStackInHand(Hand.MAIN_HAND, this.getTool());
+		fakePlayer.setPosition(this.getPos().toCenterPos());
+		fakePlayer.update();
+	}
+
+	public boolean isBlacklisted() {
+        return getTool().isIn(RBTags.Items.BREAKER_TOOL_BLACKLIST) || this.getWorld().getBlockState(getBreakPos()).isIn(RBTags.Blocks.BREAKER_BLACKLIST);
+	}
+
+	public boolean startBreaking() {
+		if (isBlacklisted()) return false;
+
+		updateFakePlayer();
+
+		BreakerFakePlayerInteractionManager interactionManager = getInteractionManager();
+		if(interactionManager == null) return false;
+
+		this.breakingState = this.getWorld().getBlockState(this.getBreakPos());
+		this.tool = this.getTool();
+
 		return interactionManager.attackBlock(this.getBreakPos(), this.getBlockHitDirection());
 	}
 
-	public void abortBreaking() {
-		BreakerFakePlayer fakePlayer = getFakePlayer();
-		BreakerFakePlayerInteractionManager interactionManager = getInteractionManager();
-		if(fakePlayer == null || interactionManager == null) return;
+	public void checkCache() {
+		BlockState breakingState = this.getWorld().getBlockState(this.getBreakPos());
+		if(breakingState != this.getCachedBreakingState() || !ItemStack.areItemsAndComponentsEqual(this.getTool(), this.getCachedTool())) {
+			abortBreaking();
+		}
+	}
 
-		fakePlayer.setStackInHand(Hand.MAIN_HAND, this.getTool());
+	public void abortBreaking() {
+		updateFakePlayer();
+
+		BreakerFakePlayerInteractionManager interactionManager = getInteractionManager();
+		if(interactionManager == null) return;
+
 		interactionManager.cancelBlockBreaking();
+
+		this.getWorld().updateComparators(pos, RBBlocks.BREAKER);
 	}
 
 	public BlockPos getBreakPos() {
@@ -115,10 +157,25 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 		else return false;
 	}
 
-	public int getBreakProgress() {
+	public float getBreakProgress() {
 		BreakerFakePlayerInteractionManager interactionManager = getInteractionManager();
-		if(interactionManager != null) return interactionManager.getBlockBreakingProgress();
+		if(interactionManager != null) return interactionManager.isBreakingBlock() ? interactionManager.getBlockBreakingProgress() : 0;
 		else return 0;
+	}
+
+	public int getBreakProgressSegmented() {
+		BreakerFakePlayerInteractionManager interactionManager = getInteractionManager();
+		if(interactionManager != null) return interactionManager.isBreakingBlock() ? interactionManager.getBlockBreakingProgressSegmented() : 0;
+		else return 0;
+	}
+
+	public int calcComparatorOutput() {
+		if(!isBreaking()) return 0;
+		return (int)Math.max(Math.min((this.getBreakProgress() * 15f)+0.5f,15),1);
+	}
+
+	public int getCachedComparatorOutput() {
+		return comparatorOutput;
 	}
 
 	public PropertyDelegate getPropertyDelegate() {
@@ -227,11 +284,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 	private class BreakerPropertyDelegate implements PropertyDelegate {
 		@Override
 		public int get(int index) {
-			return switch (index) {
-				case 0 -> BreakerBlockEntity.this.getBreakProgress();
-				case 1 -> 0;//BreakerBlockEntity.this.getBreakTime();
-				default -> 0;
-			};
+			return (int)BreakerBlockEntity.this.getBreakProgressSegmented();
 		}
 
 		@Override
@@ -241,7 +294,7 @@ public class BreakerBlockEntity extends LockableContainerBlockEntity {
 
 		@Override
 		public int size() {
-			return 2;
+			return 1;
 		}
 	}
 }

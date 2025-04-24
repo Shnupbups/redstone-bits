@@ -1,13 +1,10 @@
 package com.shnupbups.redstonebits.datagen;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import com.shnupbups.redstonebits.init.RBItems;
 import com.shnupbups.redstonebits.properties.RBProperties;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
@@ -15,20 +12,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
-import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
 import com.shnupbups.redstonebits.RedstoneBits;
-import com.shnupbups.redstonebits.block.AdderOrCounterBlock;
-import com.shnupbups.redstonebits.block.InverterBlock;
-import com.shnupbups.redstonebits.block.ResistorBlock;
 import com.shnupbups.redstonebits.init.RBBlocks;
-import com.shnupbups.redstonebits.properties.ResistorMode;
 
 import static net.minecraft.client.data.BlockStateModelGenerator.*;
 
@@ -55,9 +46,7 @@ public class RBModelProvider extends FabricModelProvider {
 			.register(Direction.SOUTH, ROTATE_Y_180)
 			.register(Direction.WEST, ROTATE_Y_270)
 			.register(Direction.EAST, ROTATE_Y_90);
-	private static final BlockStateVariantMap<ModelVariantOperator> SOUTH_DEFAULT_HORIZONTAL_ROTATION_OPERATIONS = BlockStateVariantMap.operations(
-					Properties.HORIZONTAL_FACING
-			)
+	private static final BlockStateVariantMap<ModelVariantOperator> SOUTH_DEFAULT_HORIZONTAL_ROTATION_OPERATIONS = BlockStateVariantMap.operations(Properties.HORIZONTAL_FACING)
 			.register(Direction.SOUTH, NO_OP)
 			.register(Direction.WEST, ROTATE_Y_90)
 			.register(Direction.NORTH, ROTATE_Y_180)
